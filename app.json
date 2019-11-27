@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "cljs-expo-game",
+    "description": "No description",
+    "slug": "cljs-expo-game",
+    "sdkVersion": "34.0.0",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#cccccc",
+    "privacy": "public",
+    "icon": "./assets/icons/app.png",
+    "splash": {
+      "image": "./assets/icons/loading.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}

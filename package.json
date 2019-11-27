@@ -1,0 +1,14 @@
+{
+  "name": "cljs-expo-game",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "main": "main.js",
+  "dependencies": {
+    "expo": "^34.0.3",
+    "react": "16.8.3",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
+    "create-react-class": "15.6.3"
+  }
+}
