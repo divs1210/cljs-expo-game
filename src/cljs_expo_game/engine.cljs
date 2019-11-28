@@ -14,9 +14,9 @@
 (def game-engine
   (r/adapt-react-class (.-GameEngine ReactNativeGameEngine)))
 
-(def RADIUS 20)
+(def ^:const RADIUS 50)
 
-(defn finger
+(defn render-finger
   [{:keys [id position screen]}]
   (let [[x y] (js->clj position)]
     [com/view {:style {:border-color "#CCC"
@@ -26,31 +26,61 @@
                        :height (* RADIUS 2)
                        :background-color "pink"
                        :position "absolute"
-                       :left x
-                       :top y}}
-     [com/text id]]))
+                       :left (- x RADIUS)
+                       :top (- y RADIUS)}}]))
+
+(defn new-finger
+  [& {:keys [id position]}]
+  #js {:id id
+       :position (clj->js position)
+       :renderer (r/reactify-component render-finger)})
+
+(defn add-finger
+  [entities events]
+  (doseq [t (.-touches events)
+          :when (= "start" (.-type t))
+          :let [id (.-id t)
+                finger (aget entities id)
+                new-pos [(-> t .-event .-locationX)
+                         (-> t .-event .-locationY)]]]
+    (if (nil? finger)
+      ;; create new finger
+      (aset entities id
+            (new-finger :id id
+                        :position new-pos))
+      ;; snap to location
+      (set! (.-position finger)
+            (clj->js new-pos))))
+  entities)
 
 (defn move-finger
   [entities events]
   (doseq [t (.-touches events)
           :when (= "move" (.-type t))
-          :let [finger (aget entities (.-id t))
-                [x y] (js->clj (.-position finger))]
+          :let [finger (aget entities (.-id t))]
           :when (and finger (.-position finger))
-          :let [new-pos #js [(-> t .-delta .-pageX (+ x))
+          :let [[x y] (js->clj (.-position finger))
+                new-pos #js [(-> t .-delta .-pageX (+ x))
                              (-> t .-delta .-pageY (+ y))]]]
     (set! (.-position finger)
           new-pos))
   entities)
 
+(defn remove-finger
+  [entities events]
+  (doseq [t (.-touches events)
+          :when (= "end" (.-type t))
+          :let [id (.-id t)
+                finger (aget entities id)]
+          :when finger]
+    (js-delete entities id))
+  entities)
+
 (defn game []
   [game-engine {:style {:flex 1
                         :background-color "#FFF"}
-                :systems #js [move-finger]
-                :entities #js {"1" #js {:id "1"
-                                        :position #js [40 200]
-                                        :renderer (r/reactify-component finger)}
-                               "2" #js {:id "2"
-                                        :position #js [100 400]
-                                        :renderer (r/reactify-component finger)}}}
+                :systems #js [add-finger
+                              move-finger
+                              remove-finger]
+                :entities #js {}}
    [status-bar {:hidden true}]])
