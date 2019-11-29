@@ -1,12 +1,7 @@
 (ns cljs-expo-game.engine
   (:require [reagent.core :as r]
-            [cljs-expo-game.components :as com]))
-
-(def ReactNative
-  (js/require "react-native"))
-
-(def status-bar
-  (r/adapt-react-class (.-StatusBar ReactNative)))
+            [cljs-expo-game.components :as com]
+            [cljs.pprint :refer [pprint]]))
 
 (def ReactNativeGameEngine
   (js/require "react-native-game-engine"))
@@ -41,8 +36,8 @@
           :when (= "start" (.-type t))
           :let [id (.-id t)
                 finger (aget entities id)
-                new-pos [(-> t .-event .-locationX)
-                         (-> t .-event .-locationY)]]]
+                new-pos [(-> t .-event .-pageX)
+                         (-> t .-event .-pageY)]]]
     (if (nil? finger)
       ;; create new finger
       (aset entities id
@@ -76,11 +71,36 @@
     (js-delete entities id))
   entities)
 
+(defn render-edn-box
+  [{:keys [id position data screen]}]
+  (let [[x y] (js->clj position)
+        data-str (with-out-str (pprint data))]
+    [com/view
+     {:style {:background-color "white"
+              :position "absolute"
+              :left x
+              :top y}}
+     [com/text
+      {:style {:background-color "yellow"
+               :padding 10
+               :border-radius 5}}
+      data-str]]))
+
+(defn new-edn-box
+  [& {:keys [id position data]}]
+  #js {:id id
+       :data data
+       :position (clj->js position)
+       :renderer (r/reactify-component render-edn-box)})
+
 (defn game []
   [game-engine {:style {:flex 1
                         :background-color "#FFF"}
                 :systems #js [add-finger
                               move-finger
                               remove-finger]
-                :entities #js {}}
-   [status-bar {:hidden true}]])
+                :entities #js {:code (new-edn-box
+                                      :id "code"
+                                      :data [1 2 3]
+                                      :position [100 100])}}
+   [com/status-bar {:hidden true}]])
