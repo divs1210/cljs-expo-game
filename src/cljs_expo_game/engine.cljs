@@ -3,26 +3,32 @@
             [re-frame.core :as rf]
             [cljs-expo-game.components :as com]
             [cljs-expo-game.util :refer [<sub evt>]]
+            [cljs-expo-game.tiles :as tiles]
             [cljs.pprint :refer [pprint]]))
 
-(def ^:const RADIUS 50)
+(def ^:const FPS 20)
+
+(def ^:const RES
+  [(-> com/Dimensions (.get "window") .-width)
+   (-> com/Dimensions (.get "window") .-height)])
+
+(def ^:const FRADIUS 50)
 
 (defn finger
   [[x y]]
   [com/view {:style {:border-color "#CCC"
                      :border-width 4
-                     :border-radius (* RADIUS 2)
-                     :width (* RADIUS 2)
-                     :height (* RADIUS 2)
+                     :border-radius (* FRADIUS 2)
+                     :width (* FRADIUS 2)
+                     :height (* FRADIUS 2)
                      :background-color "pink"
                      :position "absolute"
-                     :left (- x RADIUS)
-                     :top (- y RADIUS)}}])
+                     :left (- x FRADIUS)
+                     :top (- y FRADIUS)}}])
 
 (defn game []
   [com/view
    {:style {:flex 1
-            :background-color "#FFF"
             :clickable true}
 
     :on-touch-start
@@ -42,7 +48,12 @@
 
    [com/status-bar
     {:hidden true}]
-
-   (for [[id pos] @(<sub [:fingers])]
-     ^{:key id}
-     [finger pos])])
+   
+   [com/image-background
+    {:source tiles/water
+     :style {:width "100%"
+             :height "100%"}}
+    
+    (for [[id pos] @(<sub [:fingers])]
+      ^{:key id}
+      [finger pos])]])
