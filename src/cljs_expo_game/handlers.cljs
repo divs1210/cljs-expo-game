@@ -2,7 +2,8 @@
   (:require
     [re-frame.core :refer [reg-event-db ->interceptor]]
     [clojure.spec.alpha :as s]
-    [cljs-expo-game.db :as db :refer [app-db]]))
+    [cljs-expo-game.db :as db :refer [app-db]]
+    [cljs-expo-game.util :as u]))
 
 ;; -- Interceptors ----------------------------------------------------------
 ;;
@@ -39,6 +40,11 @@
    (assoc-in db [:fingers id] position)))
 
 (reg-event-db
+ :move-finger
+ (fn [db [_ id position]]
+   (assoc-in db [:fingers id] position)))
+
+(reg-event-db
  :remove-finger
  (fn [db [_ id]]
-   (dissoc (:fingers db) id)))
+   (u/dissoc-in db [:fingers] id)))
