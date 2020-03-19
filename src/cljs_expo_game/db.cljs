@@ -7,21 +7,30 @@
 
 ;; initial state of app-db
 (def app-db
-  {:world [{:pos [0 0]
+  {:world [{:pos [4 0]
+            :tile tiles/beach-tl-grass}
+           {:pos [4 1]
+            :tile tiles/beach-tm-grass}
+           {:pos [4 2]
+            :tile tiles/beach-tm-grass}
+           {:pos [4 3]
+            :tile tiles/beach-tm-grass}
+
+           {:pos [5 0]
             :tile tiles/beach-lm-grass}
-           {:pos [0 1]
+           {:pos [5 1]
             :tile tiles/grass}
-           {:pos [0 2]
+           {:pos [5 2]
             :tile tiles/grass}
-           {:pos [0 3]
+           {:pos [5 3]
             :tile tiles/grass}
 
-           {:pos [1 0]
-            :tile tiles/beach-bl-grass}
-           {:pos [1 1]
-            :tile tiles/beach-bm-grass}
-           {:pos [1 2]
-            :tile tiles/beach-bm-grass}
-           {:pos [1 3]
-            :tile tiles/beach-bm-grass}]
+           {:pos [6 0]
+            :tile tiles/beach-lm-grass}
+           {:pos [6 1]
+            :tile tiles/grass}
+           {:pos [6 2]
+            :tile tiles/grass}
+           {:pos [6 3]
+            :tile tiles/grass}]
    :fingers {}})

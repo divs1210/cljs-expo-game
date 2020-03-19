@@ -28,3 +28,11 @@
 ;; bottom right
 (def beach-br-grass
   (js/require "./assets/images/beach_br_grass.png"))
+
+;; top left
+(def beach-tl-grass
+  (js/require "./assets/images/beach_tl_grass.png"))
+
+;; top medium
+(def beach-tm-grass
+  (js/require "./assets/images/beach_tm_grass.png"))
