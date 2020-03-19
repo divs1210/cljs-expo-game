@@ -6,4 +6,4 @@
 
 ;; initial state of app-db
 (def app-db
-  {})
+  {:fingers {}})

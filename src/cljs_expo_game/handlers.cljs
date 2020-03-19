@@ -33,3 +33,12 @@
   (fn [_ _]
     app-db))
 
+(reg-event-db
+ :add-finger
+ (fn [db [_ id position]]
+   (assoc-in db [:fingers id] position)))
+
+(reg-event-db
+ :remove-finger
+ (fn [db [_ id]]
+   (dissoc (:fingers db) id)))
