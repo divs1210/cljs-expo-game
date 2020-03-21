@@ -94,13 +94,19 @@
 
       ;; render fingers
       (for [[id pos] @(<sub [:fingers])
-            :let [[_ y] pos
+            :let [[x y] pos
                   rama (characters 0)
-                  row (-> rama :pos first)]]
+                  [row col] (:pos rama :pos)]]
         (do
           ;; control player dir
           (if (> y (* TILE-HEIGHT row))
             (evt> [:set-dir 0 :down])
             (evt> [:set-dir 0 :up]))
+          (when (< (- y TILE-HEIGHT)
+                   (* TILE-HEIGHT row)
+                   (+ y TILE-HEIGHT))
+            (if (> x (* TILE-WIDTH col))
+              (evt> [:set-dir 0 :right])
+              (evt> [:set-dir 0 :left])))
           ^{:key id}
           [finger pos]))])])

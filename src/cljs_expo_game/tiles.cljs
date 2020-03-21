@@ -48,6 +48,12 @@
 (def rama-idle-down
   (js/require (str "./assets/images/rama/walk_down_0.png")))
 
+(def rama-idle-left
+  (js/require (str "./assets/images/rama/walk_left_0.png")))
+
+(def rama-idle-right
+  (js/require (str "./assets/images/rama/walk_right_0.png")))
+
 (def rama-walk-up
   (for [i (range 9)]
     (js/require (str "./assets/images/rama/walk_up_" i ".png"))))
@@ -55,3 +61,11 @@
 (def rama-walk-down
   (for [i (range 9)]
     (js/require (str "./assets/images/rama/walk_down_" i ".png"))))
+
+(def rama-walk-left
+  (for [i (range 9)]
+    (js/require (str "./assets/images/rama/walk_left_" i ".png"))))
+
+(def rama-walk-right
+  (for [i (range 9)]
+    (js/require (str "./assets/images/rama/walk_right_" i ".png"))))
