@@ -12,7 +12,11 @@
   [(-> com/Dimensions (.get "window") .-width)
    (-> com/Dimensions (.get "window") .-height)])
 
-(def ^:const TILE-SIZE 128)
+(def ^:const TILE-WIDTH
+  (int (/ (RES 0) 6)))
+
+(def ^:const TILE-HEIGHT
+  (int (/ (RES 1) 15)))
 
 (def ^:const FRADIUS 50)
 
@@ -67,8 +71,11 @@
         [com/image
          {:source tile
           :style {:position :absolute
-                  :left (* TILE-SIZE col)
-                  :top (* TILE-SIZE row)}}])
+                  :resize-mode :stretch
+                  :width TILE-WIDTH
+                  :height TILE-HEIGHT
+                  :left (* TILE-WIDTH col)
+                  :top (* TILE-HEIGHT row)}}])
 
       ;; render characters
       (for [[id character] characters
@@ -79,8 +86,11 @@
         [com/image
          {:source tile
           :style {:position :absolute
-                  :left (* TILE-SIZE col)
-                  :top (* TILE-SIZE row)}}])
+                  :resize-mode :stretch
+                  :width TILE-WIDTH
+                  :height TILE-HEIGHT
+                  :left (* TILE-WIDTH col)
+                  :top (* TILE-HEIGHT row)}}])
 
       ;; render fingers
       (for [[id pos] @(<sub [:fingers])
@@ -88,7 +98,8 @@
                   rama (characters 0)
                   row (-> rama :pos first)]]
         (do
-          (if (> y (* TILE-SIZE row))
+          ;; control player dir
+          (if (> y (* TILE-HEIGHT row))
             (evt> [:set-dir 0 :down])
             (evt> [:set-dir 0 :up]))
           ^{:key id}
