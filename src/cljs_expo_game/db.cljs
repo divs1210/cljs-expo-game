@@ -1,6 +1,7 @@
 (ns cljs-expo-game.db
   (:require [clojure.spec.alpha :as s]
-            [cljs-expo-game.tiles :as tiles]))
+            [cljs-expo-game.tiles :as tiles]
+            [cljs-expo-game.constants :as k]))
 
 ;; spec of app-db
 (s/def ::app-db map?)
@@ -15,6 +16,8 @@
             :tile tiles/beach-tm-grass}
            {:pos [4 3]
             :tile tiles/beach-tm-grass}
+           {:pos [4 4]
+            :tile tiles/beach-tr-grass}
 
            {:pos [5 0]
             :tile tiles/beach-lm-grass}
@@ -24,6 +27,10 @@
             :tile tiles/grass}
            {:pos [5 3]
             :tile tiles/grass}
+           {:pos [5 4]
+            :tile tiles/beach-trd-grass}
+           {:pos [5 5]
+            :tile tiles/beach-tr-grass}
 
            {:pos [6 0]
             :tile tiles/beach-lm-grass}
@@ -32,15 +39,81 @@
            {:pos [6 2]
             :tile tiles/grass}
            {:pos [6 3]
+            :tile tiles/grass}
+           {:pos [6 4]
+            :tile tiles/grass}
+           {:pos [6 5]
+            :tile tiles/beach-rm-grass}
+
+           {:pos [7 0]
+            :tile tiles/beach-tld-grass}
+           {:pos [7 1]
+            :tile tiles/grass}
+           {:pos [7 2]
+            :tile tiles/grass}
+           {:pos [7 3]
+            :tile tiles/grass}
+           {:pos [7 4]
+            :tile tiles/grass}
+           {:pos [7 5]
+            :tile tiles/beach-trd-grass}
+
+           {:pos [8 0]
+            :tile tiles/grass}
+           {:pos [8 1]
+            :tile tiles/grass}
+           {:pos [8 2]
+            :tile tiles/grass}
+           {:pos [8 3]
+            :tile tiles/grass}
+           {:pos [8 4]
+            :tile tiles/grass}
+           {:pos [8 5]
+            :tile tiles/grass}
+
+           {:pos [9 0]
+            :tile tiles/grass}
+           {:pos [9 1]
+            :tile tiles/grass}
+           {:pos [9 2]
+            :tile tiles/grass}
+           {:pos [9 3]
+            :tile tiles/grass}
+           {:pos [9 4]
+            :tile tiles/grass}
+           {:pos [9 5]
+            :tile tiles/grass}
+
+           {:pos [10 0]
+            :tile tiles/grass}
+           {:pos [10 1]
+            :tile tiles/grass}
+           {:pos [10 2]
+            :tile tiles/grass}
+           {:pos [10 3]
+            :tile tiles/grass}
+           {:pos [10 4]
+            :tile tiles/grass}
+           {:pos [10 5]
             :tile tiles/grass}]
-   :sprites {:rama {:idle {:up tiles/rama-idle-up
-                           :down tiles/rama-idle-down
-                           :left tiles/rama-idle-left
-                           :right tiles/rama-idle-right}
-                    :walk {}}}
+   :sprites {:rama {:idle {:up {:frames tiles/rama-idle-up}
+                           :down {:frames tiles/rama-idle-down}
+                           :left {:frames tiles/rama-idle-left}
+                           :right {:frames tiles/rama-idle-right}}
+                    :walk {:up {:frames tiles/rama-walk-up}
+                           :down {:frames tiles/rama-walk-down}
+                           :left {:frames tiles/rama-walk-left}
+                           :right {:frames tiles/rama-walk-right}}}
+             :dpad {:idle tiles/dpad
+                    :up tiles/dpad-up
+                    :down tiles/dpad-down
+                    :left tiles/dpad-left
+                    :right tiles/dpad-right}}
    :characters {0 {:id 0
                    :type :rama
-                   :pos [5 2]
+                   :pos [(* 3 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]
                    :state :idle
-                   :dir :up}}
-   :fingers {}})
+                   :dir :up
+                   :curr-frame 0}}
+   :fingers {}
+   :dpad {:state :idle}})

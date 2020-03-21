@@ -15,8 +15,5 @@
 (def ionicons (.-Ionicons AtExpo))
 (def ion-icon (r/adapt-react-class ionicons))
 
-(def Dimensions
-  (.-Dimensions ReactNative))
-
 (defn alert [text]
   (.alert (.-Alert ReactNative) text))

@@ -39,20 +39,31 @@
 (def beach-tm-grass
   (js/require "./assets/images/terrain/beach_tm_grass.png"))
 
+;; top right
+(def beach-tr-grass
+  (js/require "./assets/images/terrain/beach_tr_grass.png"))
+
+;; top left diagonal
+(def beach-tld-grass
+  (js/require "./assets/images/terrain/beach_tld_grass.png"))
+
+;; top right diagonal
+(def beach-trd-grass
+  (js/require "./assets/images/terrain/beach_trd_grass.png"))
 
 ;; Rama
 ;; ====
 (def rama-idle-up
-  (js/require (str "./assets/images/rama/walk_up_0.png")))
+  [(js/require (str "./assets/images/rama/walk_up_0.png"))])
 
 (def rama-idle-down
-  (js/require (str "./assets/images/rama/walk_down_0.png")))
+  [(js/require (str "./assets/images/rama/walk_down_0.png"))])
 
 (def rama-idle-left
-  (js/require (str "./assets/images/rama/walk_left_0.png")))
+  [(js/require (str "./assets/images/rama/walk_left_0.png"))])
 
 (def rama-idle-right
-  (js/require (str "./assets/images/rama/walk_right_0.png")))
+  [(js/require (str "./assets/images/rama/walk_right_0.png"))])
 
 (def rama-walk-up
   (for [i (range 9)]
@@ -69,3 +80,20 @@
 (def rama-walk-right
   (for [i (range 9)]
     (js/require (str "./assets/images/rama/walk_right_" i ".png"))))
+
+;; Controls
+;; ========
+(def dpad
+  (js/require "./assets/images/controls/dpad.png"))
+
+(def dpad-up
+  (js/require "./assets/images/controls/dpad_up.png"))
+
+(def dpad-down
+  (js/require "./assets/images/controls/dpad_down.png"))
+
+(def dpad-left
+  (js/require "./assets/images/controls/dpad_left.png"))
+
+(def dpad-right
+  (js/require "./assets/images/controls/dpad_right.png"))

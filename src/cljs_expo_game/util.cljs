@@ -18,3 +18,8 @@
         (assoc m k newmap))
       m)
     (dissoc m k)))
+
+(defn box-contains?
+  [[x y width height] [x1 y1]]
+  (and (<= x x1 (+ x width))
+       (<= y y1 (+ y height))))
