@@ -33,4 +33,14 @@
             :tile tiles/grass}
            {:pos [6 3]
             :tile tiles/grass}]
+   :sprites {:rama {:idle {:up tiles/rama-idle-up
+                           :down tiles/rama-idle-down
+                           :left tiles/rama-idle-left
+                           :right tiles/rama-idle-right}
+                    :walk {}}}
+   :characters {0 {:id 0
+                   :type :rama
+                   :pos [5 2]
+                   :state :idle
+                   :dir :up}}
    :fingers {}})

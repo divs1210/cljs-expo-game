@@ -51,21 +51,45 @@
    [com/status-bar
     {:hidden true}]
 
-   [com/image-background
-    {:source tiles/water
-     :style {:width "100%"
-             :height "100%"}}
+   (let [world @(<sub [:world])
+         sprites @(<sub [:sprites])
+         characters @(<sub [:characters])]
+     [com/image-background
+      {:source tiles/water
+       :style {:width "100%"
+               :height "100%"}}
 
-    (for [[id terrain] (map-indexed vector @(<sub [:world]))
-          :let [[row col] (:pos terrain)
-                tile (:tile terrain)]]
-      ^{:key id}
-      [com/image
-       {:source tile
-        :style {:position :absolute
-                :left (* TILE-SIZE col)
-                :top (* TILE-SIZE row)}}])
-    
-    (for [[id pos] @(<sub [:fingers])]
-      ^{:key id}
-      [finger pos])]])
+      ;; render terrain
+      (for [[id terrain] (map-indexed vector world)
+            :let [[row col] (:pos terrain)
+                  tile (:tile terrain)]]
+        ^{:key id}
+        [com/image
+         {:source tile
+          :style {:position :absolute
+                  :left (* TILE-SIZE col)
+                  :top (* TILE-SIZE row)}}])
+
+      ;; render characters
+      (for [[id character] characters
+            :let [{:keys [type pos state dir]} character
+                  [row col] (:pos character)
+                  tile (-> sprites type state dir)]]
+        ^{:key id}
+        [com/image
+         {:source tile
+          :style {:position :absolute
+                  :left (* TILE-SIZE col)
+                  :top (* TILE-SIZE row)}}])
+
+      ;; render fingers
+      (for [[id pos] @(<sub [:fingers])
+            :let [[_ y] pos
+                  rama (characters 0)
+                  row (-> rama :pos first)]]
+        (do
+          (if (> y (* TILE-SIZE row))
+            (evt> [:set-dir 0 :down])
+            (evt> [:set-dir 0 :up]))
+          ^{:key id}
+          [finger pos]))])])

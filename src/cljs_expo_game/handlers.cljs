@@ -48,3 +48,8 @@
  :remove-finger
  (fn [db [_ id]]
    (u/dissoc-in db [:fingers] id)))
+
+(reg-event-db
+ :set-dir
+ (fn [db [_ id dir]]
+   (assoc-in db [:characters id :dir] dir)))
