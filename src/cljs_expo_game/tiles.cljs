@@ -51,6 +51,7 @@
 (def beach-trd-grass
   (js/require "./assets/images/terrain/beach_trd_grass.png"))
 
+
 ;; Rama
 ;; ====
 (def rama-idle-up
@@ -80,6 +81,14 @@
 (def rama-walk-right
   (for [i (range 9)]
     (js/require (str "./assets/images/rama/walk_right_" i ".png"))))
+
+
+;; Vishwamitra
+;; ===========
+(def vishwamitra-idle
+  (for [i (range 1 9)]
+    (js/require (str "./assets/images/vishwamitra/idle_" i ".png"))))
+
 
 ;; Controls
 ;; ========

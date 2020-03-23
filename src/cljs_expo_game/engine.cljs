@@ -94,8 +94,11 @@
                   :top (* k/TILE-HEIGHT row)}}])
 
       ;; render characters
-      (for [[id character] characters
-            :let [{:keys [type pos state dir curr-frame]} character
+      (for [[id character] (sort-by (fn [[id ch]]
+                                      (-> ch :pos last))
+                                    characters)
+            :let [type (:type character)
+                  {:keys [pos state dir curr-frame]} character
                   [x y] pos
                   frames (get-in sprites [type state dir :frames])
                   tile (nth frames curr-frame)]]

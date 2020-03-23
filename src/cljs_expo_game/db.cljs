@@ -104,6 +104,7 @@
                            :down {:frames tiles/rama-walk-down}
                            :left {:frames tiles/rama-walk-left}
                            :right {:frames tiles/rama-walk-right}}}
+             :vishwamitra {:idle {:down {:frames tiles/vishwamitra-idle}}}
              :dpad {:idle tiles/dpad
                     :up tiles/dpad-up
                     :down tiles/dpad-down
@@ -114,6 +115,12 @@
                    :pos [(* 3 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]
                    :state :idle
                    :dir :up
+                   :curr-frame 0}
+                1 {:id 1
+                   :type :vishwamitra
+                   :pos [(* 1 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
+                   :state :idle
+                   :dir :down
                    :curr-frame 0}}
    :fingers {}
    :dpad {:state :idle}})
