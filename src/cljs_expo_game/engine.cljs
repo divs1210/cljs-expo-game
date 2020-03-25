@@ -7,37 +7,38 @@
             [cljs.pprint :refer [pprint]]
             [cljs-expo-game.constants :as k]))
 
-(defn finger
-  [[x y]]
-  [com/view {:style {:border-color "#CCC"
-                     :border-width 4
-                     :border-radius (* k/FRADIUS 2)
-                     :width (* k/FRADIUS 2)
-                     :height (* k/FRADIUS 2)
-                     :background-color "pink"
-                     :position "absolute"
-                     :left (- x k/FRADIUS)
-                     :top (- y k/FRADIUS)}}])
-
 (defn controls []
-  (let [state @(<sub [:dpad :state])
-        tile @(<sub [:sprites :dpad state])]
+  (let [dpad-state @(<sub [:controls :dpad :state])
+        dpad-tile @(<sub [:sprites :dpad dpad-state])
+        shoot-btn-state @(<sub [:controls :shoot-btn :state])
+        shoot-btn-color @(<sub [:sprites :shoot-btn shoot-btn-state])]
     [com/view
      {:style {:position :absolute
               :left 0
               :top k/CONTROLS-Y
               :width (k/RES 0)
               :height (k/RES 1)
-              :background-color :white}}
+              :background-color :gray}}
 
      [com/image
-      {:source tile
+      {:source dpad-tile
        :style {:position :absolute
                :resize-mode :stretch
                :left (k/DPAD-POS 0)
                :top (k/DPAD-POS 1)
                :width k/DPAD-WIDTH
-               :height k/DPAD-HEIGHT}}]]))
+               :height k/DPAD-HEIGHT}}]
+
+     [com/view
+      {:style {:border-color :black
+               :border-width 6
+               :border-radius (* k/FRADIUS 2)
+               :width k/SHOOT-BTN-WIDTH
+               :height k/SHOOT-BTN-HEIGHT
+               :background-color shoot-btn-color
+               :position :absolute
+               :left (k/SHOOT-BTN-POS 0)
+               :top (k/SHOOT-BTN-POS 1)}}]]))
 
 (def ticker
   (js/setInterval #(evt> [:tick])
@@ -72,8 +73,7 @@
 
    (let [world @(<sub [:world])
          sprites @(<sub [:sprites])
-         characters @(<sub [:characters])
-         fingers @(<sub [:fingers])]
+         characters @(<sub [:characters])]
      [com/image-background
       {:source tiles/water
        :style {:width "100%"
@@ -111,12 +111,6 @@
                   :height k/TILE-HEIGHT
                   :left x
                   :top y}}])
-
-      ;; render fingers
-      (for [[id f] fingers
-            :let [pos (-> f :path last)]]
-        ^{:key id}
-        [finger pos])
 
       ;; render control panel
       [controls]])])

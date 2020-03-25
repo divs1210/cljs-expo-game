@@ -25,10 +25,20 @@
   (/ 1000 30)) ;; 30 FPS
 
 (def ^:const DPAD-POS
-  [0 (* 0.75 TILE-HEIGHT)])
+  [0 (* 0.5 TILE-HEIGHT)])
 
 (def ^:const DPAD-WIDTH
-  (* 2.2 TILE-WIDTH))
+  (* 2.5 TILE-WIDTH))
 
 (def ^:const DPAD-HEIGHT
-  (* 2.5 TILE-HEIGHT))
+  (* 3 TILE-HEIGHT))
+
+(def ^:const SHOOT-BTN-POS
+  [(* (RES 0) 0.7)
+   (* (RES 1) 0.065)])
+
+(def ^:const SHOOT-BTN-WIDTH
+  (* FRADIUS 2))
+
+(def ^:const SHOOT-BTN-HEIGHT
+  (* FRADIUS 2))

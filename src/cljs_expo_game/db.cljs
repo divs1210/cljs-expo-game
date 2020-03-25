@@ -103,16 +103,22 @@
                     :walk {:up {:frames tiles/rama-walk-up}
                            :down {:frames tiles/rama-walk-down}
                            :left {:frames tiles/rama-walk-left}
-                           :right {:frames tiles/rama-walk-right}}}
+                           :right {:frames tiles/rama-walk-right}}
+                    :shoot {:up {:frames tiles/rama-shoot-up}
+                            :down {:frames tiles/rama-shoot-down}
+                            :left {:frames tiles/rama-shoot-left}
+                            :right {:frames tiles/rama-shoot-right}}}
              :vishwamitra {:idle {:down {:frames tiles/vishwamitra-idle}}}
              :dpad {:idle tiles/dpad
                     :up tiles/dpad-up
                     :down tiles/dpad-down
                     :left tiles/dpad-left
-                    :right tiles/dpad-right}}
+                    :right tiles/dpad-right}
+             :shoot-btn {:idle :gray
+                         :press :white}}
    :characters {0 {:id 0
                    :type :rama
-                   :pos [(* 3 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]
+                   :pos [(* 1 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]
                    :state :idle
                    :dir :up
                    :curr-frame 0}
@@ -123,4 +129,5 @@
                    :dir :down
                    :curr-frame 0}}
    :fingers {}
-   :dpad {:state :idle}})
+   :controls {:dpad {:state :idle}
+              :shoot-btn {:state :idle}}})

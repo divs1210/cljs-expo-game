@@ -82,11 +82,28 @@
   (for [i (range 9)]
     (js/require (str "./assets/images/rama/walk_right_" i ".png"))))
 
+(def rama-shoot-up
+  (for [i (range 13)]
+    (js/require (str "./assets/images/rama/shoot_up_" i ".png"))))
+
+(def rama-shoot-down
+  (for [i (range 13)]
+    (js/require (str "./assets/images/rama/shoot_down_" i ".png"))))
+
+(def rama-shoot-left
+  (for [i (range 13)]
+    (js/require (str "./assets/images/rama/shoot_left_" i ".png"))))
+
+(def rama-shoot-right
+  (for [i (range 13)]
+    (js/require (str "./assets/images/rama/shoot_right_" i ".png"))))
+
 
 ;; Vishwamitra
 ;; ===========
 (def vishwamitra-idle
-  (for [i (range 1 9)]
+  [(js/require (str "./assets/images/vishwamitra/idle_1.png"))]
+  #_(for [i (range 1 9)]
     (js/require (str "./assets/images/vishwamitra/idle_" i ".png"))))
 
 
