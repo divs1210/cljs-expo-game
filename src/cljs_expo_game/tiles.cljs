@@ -112,6 +112,10 @@
 (def bow-pickup
   [(js/require (str "./assets/images/objects/bow_pickup.png"))])
 
+(def bonfire
+  (for [i (range 5)]
+    (js/require (str "./assets/images/bonfire/" i ".png"))))
+
 
 ;; Controls
 ;; ========

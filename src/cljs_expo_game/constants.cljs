@@ -31,10 +31,10 @@
   [0 (* 0.5 TILE-HEIGHT)])
 
 (def ^:const DPAD-WIDTH
-  (* 3 TILE-HEIGHT))
+  (* (RES 0) 0.4))
 
 (def ^:const DPAD-HEIGHT
-  (* 3 TILE-HEIGHT))
+  DPAD-WIDTH)
 
 (def ^:const SHOOT-BTN-POS
   [(* (RES 0) 0.5)

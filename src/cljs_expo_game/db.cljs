@@ -21,6 +21,7 @@
                             :left {:frames tiles/rama-shoot-left}
                             :right {:frames tiles/rama-shoot-right}}}
              :vishwamitra {:idle {:down {:frames tiles/vishwamitra-idle}}}
+             :bonfire {:idle {:down {:frames tiles/bonfire}}}
              :bow-pickup {:idle {:down {:frames tiles/bow-pickup}}}
              :dpad {:idle tiles/dpad
                     :up tiles/dpad-up
@@ -46,6 +47,14 @@
              2 {:id 2
                 :type :bow-pickup
                 :pos [(* 1.25 k/TILE-WIDTH) (* 5.5 k/TILE-HEIGHT)]
+                :width (/ k/TILE-WIDTH 2)
+                :height (/ k/TILE-HEIGHT 2)
+                :state :idle
+                :dir :down
+                :curr-frame 0}
+             3 {:id 3
+                :type :bonfire
+                :pos [(* 2 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]
                 :width (/ k/TILE-WIDTH 2)
                 :height (/ k/TILE-HEIGHT 2)
                 :state :idle
@@ -103,6 +112,8 @@
             :tile tiles/grass}
            {:pos [7 5]
             :tile tiles/beach-trd-grass}
+           {:pos [7 6]
+            :tile tiles/beach-tm-grass}
 
            {:pos [8 0]
             :tile tiles/grass}
@@ -115,6 +126,8 @@
            {:pos [8 4]
             :tile tiles/grass}
            {:pos [8 5]
+            :tile tiles/grass}
+           {:pos [8 6]
             :tile tiles/grass}
 
            {:pos [9 0]
@@ -129,6 +142,8 @@
             :tile tiles/grass}
            {:pos [9 5]
             :tile tiles/grass}
+           {:pos [9 6]
+            :tile tiles/grass}
 
            {:pos [10 0]
             :tile tiles/grass}
@@ -141,6 +156,8 @@
            {:pos [10 4]
             :tile tiles/grass}
            {:pos [10 5]
+            :tile tiles/grass}
+           {:pos [10 6]
             :tile tiles/grass}
 
            {:pos [11 0]
@@ -155,6 +172,8 @@
             :tile tiles/grass}
            {:pos [11 5]
             :tile tiles/grass}
+           {:pos [11 6]
+            :tile tiles/grass}
 
            {:pos [12 0]
             :tile tiles/grass}
@@ -167,6 +186,8 @@
            {:pos [12 4]
             :tile tiles/grass}
            {:pos [12 5]
+            :tile tiles/grass}
+           {:pos [12 6]
             :tile tiles/grass}
 
            {:pos [13 0]
@@ -181,6 +202,8 @@
             :tile tiles/grass}
            {:pos [13 5]
             :tile tiles/grass}
+           {:pos [13 6]
+            :tile tiles/grass}
 
            {:pos [14 0]
             :tile tiles/grass}
@@ -194,6 +217,8 @@
             :tile tiles/grass}
            {:pos [14 5]
             :tile tiles/grass}
+           {:pos [14 6]
+            :tile tiles/grass}
 
            {:pos [15 0]
             :tile tiles/grass}
@@ -206,4 +231,6 @@
            {:pos [15 4]
             :tile tiles/grass}
            {:pos [15 5]
+            :tile tiles/grass}
+           {:pos [15 6]
             :tile tiles/grass}]})
