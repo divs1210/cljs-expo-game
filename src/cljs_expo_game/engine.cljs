@@ -17,8 +17,7 @@
               :left 0
               :top k/CONTROLS-Y
               :width (k/RES 0)
-              :height (k/RES 1)
-              :background-color :gray}}
+              :height k/CONTROLS-HEIGHT}}
 
      [com/image
       {:source dpad-tile
@@ -31,8 +30,8 @@
 
      (when @(<sub [:objects 0 :inventory :bow])
        [com/view
-        {:style {:border-color :black
-                 :border-width 6
+        {:style {:justify-content :center
+                 :align-items :center
                  :border-radius (* k/FRADIUS 2)
                  :width k/SHOOT-BTN-WIDTH
                  :height k/SHOOT-BTN-HEIGHT

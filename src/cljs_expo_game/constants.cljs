@@ -19,6 +19,9 @@
 (def ^:const CONTROLS-Y
   (* TILE-HEIGHT 11))
 
+(def ^:const CONTROLS-HEIGHT
+  (- (RES 1) CONTROLS-Y))
+
 (def ^:const FRADIUS 50)
 
 (def ^:const FPS
@@ -28,20 +31,20 @@
   [0 (* 0.5 TILE-HEIGHT)])
 
 (def ^:const DPAD-WIDTH
-  (* 2.5 TILE-WIDTH))
+  (* 3 TILE-HEIGHT))
 
 (def ^:const DPAD-HEIGHT
   (* 3 TILE-HEIGHT))
 
 (def ^:const SHOOT-BTN-POS
-  [(* (RES 0) 0.7)
-   (* (RES 1) 0.065)])
+  [(* (RES 0) 0.5)
+   (* (RES 1) 0.09)])
 
 (def ^:const SHOOT-BTN-WIDTH
-  (* FRADIUS 2))
+  (* FRADIUS 1.2))
 
 (def ^:const SHOOT-BTN-HEIGHT
-  (* FRADIUS 2))
+  (* FRADIUS 1.2))
 
 (def ^:const WALK-VEL
   [(/ TILE-WIDTH 14) (/ TILE-HEIGHT 14)])

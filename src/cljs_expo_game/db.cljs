@@ -8,7 +8,53 @@
 
 ;; initial state of app-db
 (def app-db
-  {:world [{:pos [4 0]
+  {:sprites {:rama {:idle {:up {:frames tiles/rama-idle-up}
+                           :down {:frames tiles/rama-idle-down}
+                           :left {:frames tiles/rama-idle-left}
+                           :right {:frames tiles/rama-idle-right}}
+                    :walk {:up {:frames tiles/rama-walk-up}
+                           :down {:frames tiles/rama-walk-down}
+                           :left {:frames tiles/rama-walk-left}
+                           :right {:frames tiles/rama-walk-right}}
+                    :shoot {:up {:frames tiles/rama-shoot-up}
+                            :down {:frames tiles/rama-shoot-down}
+                            :left {:frames tiles/rama-shoot-left}
+                            :right {:frames tiles/rama-shoot-right}}}
+             :vishwamitra {:idle {:down {:frames tiles/vishwamitra-idle}}}
+             :bow-pickup {:idle {:down {:frames tiles/bow-pickup}}}
+             :dpad {:idle tiles/dpad
+                    :up tiles/dpad-up
+                    :down tiles/dpad-down
+                    :left tiles/dpad-left
+                    :right tiles/dpad-right}
+             :shoot-btn {:idle :gold
+                         :press :orange}}
+   :objects {0 {:id 0
+                :type :rama
+                :pos [(* 4 k/TILE-WIDTH) (* 7 k/TILE-HEIGHT)]
+                :state :idle
+                :dir :up
+                :inventory {}
+                :collidables #{:bow-pickup}
+                :curr-frame 0}
+             1 {:id 1
+                :type :vishwamitra
+                :pos [(* 1 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
+                :state :idle
+                :dir :down
+                :curr-frame 0}
+             2 {:id 2
+                :type :bow-pickup
+                :pos [(* 1.25 k/TILE-WIDTH) (* 5.5 k/TILE-HEIGHT)]
+                :width (/ k/TILE-WIDTH 2)
+                :height (/ k/TILE-HEIGHT 2)
+                :state :idle
+                :dir :down
+                :curr-frame 0}}
+   :fingers {}
+   :controls {:dpad {:state :idle}
+              :shoot-btn {:state :idle}}
+   :world [{:pos [4 0]
             :tile tiles/beach-tl-grass}
            {:pos [4 1]
             :tile tiles/beach-tm-grass}
@@ -95,50 +141,69 @@
            {:pos [10 4]
             :tile tiles/grass}
            {:pos [10 5]
-            :tile tiles/grass}]
-   :sprites {:rama {:idle {:up {:frames tiles/rama-idle-up}
-                           :down {:frames tiles/rama-idle-down}
-                           :left {:frames tiles/rama-idle-left}
-                           :right {:frames tiles/rama-idle-right}}
-                    :walk {:up {:frames tiles/rama-walk-up}
-                           :down {:frames tiles/rama-walk-down}
-                           :left {:frames tiles/rama-walk-left}
-                           :right {:frames tiles/rama-walk-right}}
-                    :shoot {:up {:frames tiles/rama-shoot-up}
-                            :down {:frames tiles/rama-shoot-down}
-                            :left {:frames tiles/rama-shoot-left}
-                            :right {:frames tiles/rama-shoot-right}}}
-             :vishwamitra {:idle {:down {:frames tiles/vishwamitra-idle}}}
-             :bow-pickup {:idle {:down {:frames tiles/bow-pickup}}}
-             :dpad {:idle tiles/dpad
-                    :up tiles/dpad-up
-                    :down tiles/dpad-down
-                    :left tiles/dpad-left
-                    :right tiles/dpad-right}
-             :shoot-btn {:idle :gray
-                         :press :white}}
-   :objects {0 {:id 0
-                :type :rama
-                :pos [(* 4 k/TILE-WIDTH) (* 7 k/TILE-HEIGHT)]
-                :state :idle
-                :dir :up
-                :inventory {}
-                :collidables #{:bow-pickup}
-                :curr-frame 0}
-             1 {:id 1
-                :type :vishwamitra
-                :pos [(* 1 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
-                :state :idle
-                :dir :down
-                :curr-frame 0}
-             2 {:id 2
-                :type :bow-pickup
-                :pos [(* 1.25 k/TILE-WIDTH) (* 5.5 k/TILE-HEIGHT)]
-                :width (/ k/TILE-WIDTH 2)
-                :height (/ k/TILE-HEIGHT 2)
-                :state :idle
-                :dir :down
-                :curr-frame 0}}
-   :fingers {}
-   :controls {:dpad {:state :idle}
-              :shoot-btn {:state :idle}}})
+            :tile tiles/grass}
+
+           {:pos [11 0]
+            :tile tiles/grass}
+           {:pos [11 1]
+            :tile tiles/grass}
+           {:pos [11 2]
+            :tile tiles/grass}
+           {:pos [11 3]
+            :tile tiles/grass}
+           {:pos [11 4]
+            :tile tiles/grass}
+           {:pos [11 5]
+            :tile tiles/grass}
+
+           {:pos [12 0]
+            :tile tiles/grass}
+           {:pos [12 1]
+            :tile tiles/grass}
+           {:pos [12 2]
+            :tile tiles/grass}
+           {:pos [12 3]
+            :tile tiles/grass}
+           {:pos [12 4]
+            :tile tiles/grass}
+           {:pos [12 5]
+            :tile tiles/grass}
+
+           {:pos [13 0]
+            :tile tiles/grass}
+           {:pos [13 1]
+            :tile tiles/grass}
+           {:pos [13 2]
+            :tile tiles/grass}
+           {:pos [13 3]
+            :tile tiles/grass}
+           {:pos [13 4]
+            :tile tiles/grass}
+           {:pos [13 5]
+            :tile tiles/grass}
+
+           {:pos [14 0]
+            :tile tiles/grass}
+           {:pos [14 1]
+            :tile tiles/grass}
+           {:pos [14 2]
+            :tile tiles/grass}
+           {:pos [14 3]
+            :tile tiles/grass}
+           {:pos [14 4]
+            :tile tiles/grass}
+           {:pos [14 5]
+            :tile tiles/grass}
+
+           {:pos [15 0]
+            :tile tiles/grass}
+           {:pos [15 1]
+            :tile tiles/grass}
+           {:pos [15 2]
+            :tile tiles/grass}
+           {:pos [15 3]
+            :tile tiles/grass}
+           {:pos [15 4]
+            :tile tiles/grass}
+           {:pos [15 5]
+            :tile tiles/grass}]})
