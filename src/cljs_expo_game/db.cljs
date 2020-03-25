@@ -109,6 +109,7 @@
                             :left {:frames tiles/rama-shoot-left}
                             :right {:frames tiles/rama-shoot-right}}}
              :vishwamitra {:idle {:down {:frames tiles/vishwamitra-idle}}}
+             :bow-pickup {:idle {:down {:frames tiles/bow-pickup}}}
              :dpad {:idle tiles/dpad
                     :up tiles/dpad-up
                     :down tiles/dpad-down
@@ -116,18 +117,27 @@
                     :right tiles/dpad-right}
              :shoot-btn {:idle :gray
                          :press :white}}
-   :characters {0 {:id 0
-                   :type :rama
-                   :pos [(* 1 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]
-                   :state :idle
-                   :dir :up
-                   :curr-frame 0}
-                1 {:id 1
-                   :type :vishwamitra
-                   :pos [(* 1 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
-                   :state :idle
-                   :dir :down
-                   :curr-frame 0}}
+   :objects {0 {:id 0
+                :type :rama
+                :pos [(* 4 k/TILE-WIDTH) (* 7 k/TILE-HEIGHT)]
+                :state :idle
+                :dir :up
+                :inventory []
+                :curr-frame 0}
+             1 {:id 1
+                :type :vishwamitra
+                :pos [(* 1 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
+                :state :idle
+                :dir :down
+                :curr-frame 0}
+             2 {:id 2
+                :type :bow-pickup
+                :pos [(* 1.25 k/TILE-WIDTH) (* 5.5 k/TILE-HEIGHT)]
+                :width (/ k/TILE-WIDTH 2)
+                :height (/ k/TILE-HEIGHT 2)
+                :state :idle
+                :dir :down
+                :curr-frame 0}}
    :fingers {}
    :controls {:dpad {:state :idle}
               :shoot-btn {:state :idle}}})

@@ -29,16 +29,17 @@
                :width k/DPAD-WIDTH
                :height k/DPAD-HEIGHT}}]
 
-     [com/view
-      {:style {:border-color :black
-               :border-width 6
-               :border-radius (* k/FRADIUS 2)
-               :width k/SHOOT-BTN-WIDTH
-               :height k/SHOOT-BTN-HEIGHT
-               :background-color shoot-btn-color
-               :position :absolute
-               :left (k/SHOOT-BTN-POS 0)
-               :top (k/SHOOT-BTN-POS 1)}}]]))
+     (when @(<sub [:objects 0 :inventory :bow])
+       [com/view
+        {:style {:border-color :black
+                 :border-width 6
+                 :border-radius (* k/FRADIUS 2)
+                 :width k/SHOOT-BTN-WIDTH
+                 :height k/SHOOT-BTN-HEIGHT
+                 :background-color shoot-btn-color
+                 :position :absolute
+                 :left (k/SHOOT-BTN-POS 0)
+                 :top (k/SHOOT-BTN-POS 1)}}])]))
 
 (def ticker
   (js/setInterval #(evt> [:tick])
@@ -73,7 +74,7 @@
 
    (let [world @(<sub [:world])
          sprites @(<sub [:sprites])
-         characters @(<sub [:characters])]
+         objects @(<sub [:objects])]
      [com/image-background
       {:source tiles/water
        :style {:width "100%"
@@ -93,12 +94,12 @@
                   :left (* k/TILE-WIDTH col)
                   :top (* k/TILE-HEIGHT row)}}])
 
-      ;; render characters
-      (for [[id character] (sort-by (fn [[id ch]]
+      ;; render objects
+      (for [[id object] (sort-by (fn [[id ch]]
                                       (-> ch :pos last))
-                                    characters)
-            :let [type (:type character)
-                  {:keys [pos state dir curr-frame]} character
+                                    objects)
+            :let [type (:type object)
+                  {:keys [pos width height state dir curr-frame]} object
                   [x y] pos
                   frames (get-in sprites [type state dir :frames])
                   tile (nth frames curr-frame)]]
@@ -107,8 +108,8 @@
          {:source tile
           :style {:position :absolute
                   :resize-mode :stretch
-                  :width k/TILE-WIDTH
-                  :height k/TILE-HEIGHT
+                  :width (or width k/TILE-WIDTH)
+                  :height (or height k/TILE-HEIGHT)
                   :left x
                   :top y}}])
 

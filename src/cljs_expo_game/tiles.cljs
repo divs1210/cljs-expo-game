@@ -107,6 +107,12 @@
     (js/require (str "./assets/images/vishwamitra/idle_" i ".png"))))
 
 
+;; Objects
+;; =======
+(def bow-pickup
+  [(js/require (str "./assets/images/objects/bow_pickup.png"))])
+
+
 ;; Controls
 ;; ========
 (def dpad

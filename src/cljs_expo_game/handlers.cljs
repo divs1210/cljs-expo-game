@@ -79,32 +79,34 @@
       (assoc-in db [:controls :dpad :state] :idle))))
 
 (defn handle-shoot [db]
-  (let [touches (get-touches db)
-        [x y] k/SHOOT-BTN-POS
-        btn-area [x (+ y k/CONTROLS-Y) k/SHOOT-BTN-WIDTH k/SHOOT-BTN-HEIGHT]]
-    (if (some #(u/box-contains? btn-area %) touches)
-      (assoc-in db [:controls :shoot-btn :state] :press)
-      (assoc-in db [:controls :shoot-btn :state] :idle))))
+  (if (get-in db [:characters 0 :inventory :bow])
+    (let [touches (get-touches db)
+          [x y] k/SHOOT-BTN-POS
+          btn-area [x (+ y k/CONTROLS-Y) k/SHOOT-BTN-WIDTH k/SHOOT-BTN-HEIGHT]]
+      (if (some #(u/box-contains? btn-area %) touches)
+        (assoc-in db [:controls :shoot-btn :state] :press)
+        (assoc-in db [:controls :shoot-btn :state] :idle)))
+    db))
 
 (defn set-rama-state [db]
-  (let [dpad-state (-> db :controls :dpad :state)
-        shoot-btn-state (-> db :controls :shoot-btn :state)]
+  (let [shoot-btn-state (-> db :controls :shoot-btn :state)
+        dpad-state (-> db :controls :dpad :state)]
     (cond
       (= :press shoot-btn-state)
-      (assoc-in db [:characters 0 :state] :shoot)
+      (assoc-in db [:objects 0 :state] :shoot)
+
+      (not= :idle dpad-state)
+      (-> db
+          (assoc-in [:objects 0 :state] :walk)
+          (assoc-in [:objects 0 :dir] dpad-state))
 
       (= :idle dpad-state)
-      (assoc-in db [:characters 0 :state] :idle)
-
-      :else-dpad-pressed
-      (-> db
-          (assoc-in [:characters 0 :state] :walk)
-          (assoc-in [:characters 0 :dir] dpad-state)))))
+      (assoc-in db [:objects 0 :state] :idle))))
 
 (defn handle-movements [db]
-  (let [{:keys [state dir]} (get-in db [:characters 0])]
+  (let [{:keys [state dir]} (get-in db [:objects 0])]
     (if (= :walk state)
-      (update-in db [:characters 0 :pos]
+      (update-in db [:objects 0 :pos]
                  (fn [[x y]]
                    (case dir
                      :left [(- x 5) y]
@@ -121,10 +123,10 @@
       handle-movements))
 
 (defn next-frame [db]
-  (let [{:keys [characters sprites]} db]
-    (assoc db :characters
+  (let [{:keys [objects sprites]} db]
+    (assoc db :objects
            (into {}
-                 (for [[id c] characters
+                 (for [[id c] objects
                        :let [{:keys [type state dir pos curr-frame]} c
                              frames (get-in sprites [type state dir :frames])]]
                    [id (update c :curr-frame #(mod (inc %) (count frames)))])))))
