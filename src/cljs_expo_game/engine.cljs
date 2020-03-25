@@ -7,6 +7,10 @@
             [cljs.pprint :refer [pprint]]
             [cljs-expo-game.constants :as k]))
 
+(def ticker
+  (js/setInterval #(evt> [:tick])
+                  k/FPS))
+
 (defn controls []
   (let [dpad-state @(<sub [:controls :dpad :state])
         dpad-tile @(<sub [:sprites :dpad dpad-state])
@@ -39,10 +43,6 @@
                  :position :absolute
                  :left (k/SHOOT-BTN-POS 0)
                  :top (k/SHOOT-BTN-POS 1)}}])]))
-
-(def ticker
-  (js/setInterval #(evt> [:tick])
-                  k/FPS))
 
 (defn game []
   [com/view
@@ -97,8 +97,7 @@
       (for [[id object] (sort-by (fn [[id ch]]
                                       (-> ch :pos last))
                                     objects)
-            :let [type (:type object)
-                  {:keys [pos width height state dir curr-frame]} object
+            :let [{:keys [type pos width height state dir curr-frame]} object
                   [x y] pos
                   frames (get-in sprites [type state dir :frames])
                   tile (nth frames curr-frame)]]
