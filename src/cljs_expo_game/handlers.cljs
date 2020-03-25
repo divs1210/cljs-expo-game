@@ -79,7 +79,7 @@
       (assoc-in db [:controls :dpad :state] :idle))))
 
 (defn handle-shoot [db]
-  (if (get-in db [:characters 0 :inventory :bow])
+  (if (get-in db [:objects 0 :inventory :bow])
     (let [touches (get-touches db)
           [x y] k/SHOOT-BTN-POS
           btn-area [x (+ y k/CONTROLS-Y) k/SHOOT-BTN-WIDTH k/SHOOT-BTN-HEIGHT]]
@@ -104,23 +104,73 @@
       (assoc-in db [:objects 0 :state] :idle))))
 
 (defn handle-movements [db]
-  (let [{:keys [state dir]} (get-in db [:objects 0])]
+  (let [{:keys [state dir]} (get-in db [:objects 0])
+        [dx dy] k/WALK-VEL]
     (if (= :walk state)
       (update-in db [:objects 0 :pos]
                  (fn [[x y]]
                    (case dir
-                     :left [(- x 5) y]
-                     :right [(+ x 5) y]
-                     :up [x (- y 5)]
-                     :down [x (+ y 5)])))
+                     :left [(- x dx) y]
+                     :right [(+ x dx) y]
+                     :up [x (- y dy)]
+                     :down [x (+ y dy)])))
       db)))
+
+(reg-event-db
+ :clean-collisions
+ (fn [db [_ obj1 obj2]]
+   (assoc db :collisions {})))
+
+(reg-event-db
+ :register-collision
+ (fn [db [_ o1 o2]]
+   (update-in db [:collisions (:id o1)] conj (:id o2))))
+
+(defn register-collisions! [db]
+  (u/evt> [:clean-collisions])
+  (doseq [obj1 (-> db :objects vals)
+          col (:collidables obj1)
+          obj2 (filter #(= col (:type %))
+                       (-> db :objects
+                           (dissoc (:id obj1))
+                           vals))
+          :let [[x1 y1] (:pos obj1)
+                [x2 y2] (:pos obj2)
+                w1 (or (:width obj1) k/TILE-WIDTH)
+                w2 (or (:width obj2) k/TILE-WIDTH)
+                h1 (or (:height obj1) k/TILE-HEIGHT)
+                h2 (or (:height obj2) k/TILE-HEIGHT)
+                obj1-box [x1 y1 w1 h1]
+                obj2-box [x2 y2 w2 h2]]
+          :when (u/colliding? obj1-box obj2-box)]
+    (u/evt> [:register-collision obj1 obj2]))
+  db)
+
+(defn handle-collisions
+  [db]
+  (let [rama-collisions (get-in db [:collisions 0])]
+    (reduce (fn [db id]
+              (let [rama (get-in db [:objects 0])
+                    obj (get-in db [:objects id])]
+                (case (:type obj)
+                  :bow-pickup
+                  (-> db
+                      (assoc-in [:objects 0 :inventory :bow] {})
+                      (u/dissoc-in [:objects id]))
+
+                  ;; default
+                  db)))
+            db
+            rama-collisions)))
 
 (defn handle-interactions [db]
   (-> db
       handle-dpad
       handle-shoot
       set-rama-state
-      handle-movements))
+      handle-movements
+      register-collisions!
+      handle-collisions))
 
 (defn next-frame [db]
   (let [{:keys [objects sprites]} db]

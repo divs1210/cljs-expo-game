@@ -42,3 +42,6 @@
 
 (def ^:const SHOOT-BTN-HEIGHT
   (* FRADIUS 2))
+
+(def ^:const WALK-VEL
+  [(/ TILE-WIDTH 14) (/ TILE-HEIGHT 14)])

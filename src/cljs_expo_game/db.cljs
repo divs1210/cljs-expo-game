@@ -122,7 +122,8 @@
                 :pos [(* 4 k/TILE-WIDTH) (* 7 k/TILE-HEIGHT)]
                 :state :idle
                 :dir :up
-                :inventory []
+                :inventory {}
+                :collidables #{:bow-pickup}
                 :curr-frame 0}
              1 {:id 1
                 :type :vishwamitra
