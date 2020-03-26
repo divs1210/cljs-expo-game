@@ -132,6 +132,26 @@
                   :top y
                   :transform [{:rotate (str rot "deg")}]}}])
 
+      (when-let [{:keys [speaker speech]} @(<sub [:text])]
+        [com/view
+         {:style {:justify-content :center
+                  :border-radius (/ k/FRADIUS 2)
+                  :border-width 6
+                  :padding 3
+                  :border-color :black
+                  :align-items :center
+                  :width (* 4 k/TILE-WIDTH)
+                  :background-color :white
+                  :position :absolute
+                  :left k/TILE-WIDTH
+                  :top k/TILE-HEIGHT}
+          :on-touch-start #(evt> [:initialize-db])}
+         [com/text
+          {:style {:font-weight :bold}}
+          speaker]
+         [com/text
+          speech]])
+
       ;; render control panel
       [controls]
 
