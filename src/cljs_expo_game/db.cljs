@@ -23,6 +23,10 @@
              :vishwamitra {:idle {:down {:frames tiles/vishwamitra-idle}}}
              :bonfire {:idle {:down {:frames tiles/bonfire}}}
              :bow-pickup {:idle {:down {:frames tiles/bow-pickup}}}
+             :arrow {:idle {:up {:frames tiles/arrow-up}
+                            :down {:frames tiles/arrow-down}
+                            :left {:frames tiles/arrow-left}
+                            :right {:frames tiles/arrow-right}}}
              :dpad {:idle tiles/dpad
                     :up tiles/dpad-up
                     :down tiles/dpad-down

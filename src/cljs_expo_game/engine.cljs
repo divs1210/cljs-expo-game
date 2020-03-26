@@ -147,4 +147,6 @@
              [x y] (:pos rama)
              [row col] (u/obj->grid rama)]
          (str "Pos: " (int x) "," (int y)
-              " Grid: " (int row) "," (int col)))]])])
+              " Grid: " (int row) "," (int col)
+              " Frame: " (:curr-frame rama)
+              " Objects: " (count objects)))]])])

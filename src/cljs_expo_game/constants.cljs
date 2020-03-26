@@ -48,3 +48,6 @@
 
 (def ^:const WALK-VEL
   [(/ TILE-WIDTH 14) (/ TILE-HEIGHT 14)])
+
+(def ^:const ARROW-VEL
+  [(/ TILE-WIDTH 3) (/ TILE-HEIGHT 3)])

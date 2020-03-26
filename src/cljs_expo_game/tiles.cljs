@@ -104,17 +104,32 @@
 (def vishwamitra-idle
   [(js/require (str "./assets/images/vishwamitra/idle_1.png"))]
   #_(for [i (range 1 9)]
-    (js/require (str "./assets/images/vishwamitra/idle_" i ".png"))))
+      (js/require (str "./assets/images/vishwamitra/idle_" i ".png"))))
+
+
+;; Arrow
+;; =====
+(def arrow-up
+  [(js/require (str "./assets/images/arrow/arrow_up.png"))])
+
+(def arrow-down
+  [(js/require (str "./assets/images/arrow/arrow_down.png"))])
+
+(def arrow-left
+  [(js/require (str "./assets/images/arrow/arrow_left.png"))])
+
+(def arrow-right
+  [(js/require (str "./assets/images/arrow/arrow_right.png"))])
 
 
 ;; Objects
 ;; =======
-(def bow-pickup
-  [(js/require (str "./assets/images/objects/bow_pickup.png"))])
-
 (def bonfire
   (for [i (range 5)]
     (js/require (str "./assets/images/bonfire/" i ".png"))))
+
+(def bow-pickup
+  [(js/require (str "./assets/images/objects/bow_pickup.png"))])
 
 
 ;; Controls
