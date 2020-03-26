@@ -35,7 +35,7 @@
              :shoot-btn {:idle :gold
                          :press :orange}}
    :text {:speaker "Rishi Vishwamitra"
-          :speech "Prince Ram! Time has come to defend dharma. Here, pick up this bow!"}
+          :speech "Prince Rama, you must learn to fight for righteousness and to protect dharma! Take this bow!"}
    :objects {0 {:id 0
                 :type :rama
                 :pos [(* 4 k/TILE-WIDTH) (* 7 k/TILE-HEIGHT)]

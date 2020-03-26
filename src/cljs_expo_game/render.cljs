@@ -135,9 +135,9 @@
       (when-let [{:keys [speaker speech]} @(<sub [:text])]
         [com/view
          {:style {:justify-content :center
-                  :border-radius (/ k/FRADIUS 2)
+                  :border-radius (/ k/FRADIUS 4)
                   :border-width 6
-                  :padding 3
+                  :padding 4
                   :border-color :black
                   :align-items :center
                   :width (* 4 k/TILE-WIDTH)
