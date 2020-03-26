@@ -124,7 +124,7 @@
                                                    :height ah
                                                    :state :idle
                                                    :dir dir
-                                                   :life 100
+                                                   :life 50
                                                    :curr-frame 0})
                                  os)))))
 
