@@ -112,7 +112,12 @@
                                    (let [[x y w h] (u/obj->box obj)]
                                      (+ y h)))
                                  objects)
-            :let [{:keys [type pos width height state dir curr-frame]} object
+            :let [{:keys [type pos width height rot
+                          state dir curr-frame]
+                   :or {rot 0
+                        width k/TILE-WIDTH
+                        height k/TILE-HEIGHT}} object
+
                   [x y] pos
                   frames (get-in sprites [type state dir :frames])
                   tile (nth frames curr-frame)]]
@@ -121,10 +126,11 @@
          {:source tile
           :style {:position :absolute
                   :resize-mode :stretch
-                  :width (or width k/TILE-WIDTH)
-                  :height (or height k/TILE-HEIGHT)
+                  :width width
+                  :height height
                   :left x
-                  :top y}}])
+                  :top y
+                  :transform [{:rotate (str rot "deg")}]}}])
 
       ;; render control panel
       [controls]
