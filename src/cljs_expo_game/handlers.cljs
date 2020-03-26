@@ -151,12 +151,17 @@
   (let [rama-collisions (get-in db [:collisions 0])]
     (reduce (fn [db id]
               (let [rama (get-in db [:objects 0])
-                    obj (get-in db [:objects id])]
+                    obj (get-in db [:objects id])
+                    [x y] (:pos rama)
+                    third-height (/ k/TILE-HEIGHT 3)
+                    rama-charan [x (+ y (* 2 third-height)) k/TILE-WIDTH third-height]]
                 (case (:type obj)
                   :bow-pickup
-                  (-> db
-                      (assoc-in [:objects 0 :inventory :bow] {})
-                      (u/dissoc-in [:objects id]))
+                  (if (u/colliding? rama-charan (u/obj->box obj))
+                    (-> db
+                        (assoc-in [:objects 0 :inventory :bow] {})
+                        (u/dissoc-in [:objects id]))
+                    db)
 
                   ;; default
                   db)))

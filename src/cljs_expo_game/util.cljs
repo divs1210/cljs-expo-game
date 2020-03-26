@@ -1,6 +1,7 @@
 (ns cljs-expo-game.util
   (:require [re-frame.core :as rf]
-            [chivorcam.core :refer [defmacro defmacfn]]))
+            [chivorcam.core :refer [defmacro defmacfn]]
+            [cljs-expo-game.constants :as k]))
 
 (defn <sub
   [path]
@@ -23,6 +24,13 @@
   [[x y width height] [x1 y1]]
   (and (<= x x1 (+ x width))
        (<= y y1 (+ y height))))
+
+(defn obj->box
+  [obj]
+  (let [[x y] (:pos obj)
+        w (or (:width obj) k/TILE-WIDTH)
+        h (or (:height obj) k/TILE-HEIGHT)]
+    [x y w h]))
 
 (defn colliding?
   [[x1 y1 w1 h1 :as b1] [x2 y2 w2 h2 :as b2]]

@@ -2,7 +2,7 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
             [cljs-expo-game.components :as com]
-            [cljs-expo-game.util :refer [<sub evt>]]
+            [cljs-expo-game.util :refer [<sub evt>] :as u]
             [cljs-expo-game.tiles :as tiles]
             [cljs.pprint :refer [pprint]]
             [cljs-expo-game.constants :as k]))
@@ -94,9 +94,10 @@
                   :top (* k/TILE-HEIGHT row)}}])
 
       ;; render objects
-      (for [[id object] (sort-by (fn [[id ch]]
-                                      (-> ch :pos last))
-                                    objects)
+      (for [[id object] (sort-by (fn [[id obj]]
+                                   (let [[x y w h] (u/obj->box obj)]
+                                     (+ y h)))
+                                 objects)
             :let [{:keys [type pos width height state dir curr-frame]} object
                   [x y] pos
                   frames (get-in sprites [type state dir :frames])
