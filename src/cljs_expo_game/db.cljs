@@ -49,6 +49,7 @@
                 :pos [(* 1 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
                 :state :idle
                 :dir :down
+                :collidables #{:arrow}
                 :curr-frame 0}
              2 {:id 2
                 :type :bow-pickup

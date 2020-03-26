@@ -77,7 +77,18 @@
                                                    :state :idle
                                                    :dir dir
                                                    :life 50
-                                                   :curr-frame 0})
+                                                   :curr-frame 0
+                                                   :on-collide (fn [this obj]
+                                                                 (let [s (gensym)]
+                                                                   (case (:type obj)
+                                                                     :vishwamitra
+                                                                     [[:set-text {:speaker "Rishi Vishwamitra"
+                                                                                  :speech "Careful, son!"
+                                                                                  :id s}]
+                                                                      [:remove-object (:id this)]
+                                                                      [:after-ms 2000 [:clear-text s]]]
+                                                                     ;; default
+                                                                     [])))})
                                  os)))))
 
       (not= :idle dpad-state)
@@ -161,18 +172,19 @@
 
 (defn handle-collisions!
   [db]
-  (doseq [id (get-in db [:collisions 0])
-          :let [rama (get-in db [:objects 0])
-                obj (get-in db [:objects id])
-                [x y w h] (u/obj->box rama)
+  (doseq [[this-id obj-ids] (:collisions db)
+          obj-id obj-ids
+          :let [this (get-in db [:objects this-id])
+                obj (get-in db [:objects obj-id])
+                [x y w h] (u/obj->box this)
                 quarter-width (/ w 4)
                 quarter-height (/ h 4)
-                rama-center [(+ x quarter-width)
+                this-center [(+ x quarter-width)
                              (+ y quarter-height)
                              (* 2 quarter-width)
                              (* 2 quarter-height)]]]
-    (when (u/colliding? rama-center (u/obj->box obj))
-      (doseq [event ((:on-collide obj) obj rama)]
+    (when (u/colliding? this-center (u/obj->box obj))
+      (doseq [event ((:on-collide obj) obj this)]
         (u/evt> event))))
   db)
 

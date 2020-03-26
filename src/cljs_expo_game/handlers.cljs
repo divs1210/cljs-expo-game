@@ -73,6 +73,13 @@
    (assoc db :text text)))
 
 (reg-event-db
+ :clear-text
+ (fn [db [_ id]]
+   (if (= id (-> db :text :id))
+     (assoc db :text nil)
+     db)))
+
+(reg-event-db
  :add-to-inventory
  (fn [db [_ key val]]
    (assoc-in db [:objects 0 :inventory key] val)))
@@ -81,3 +88,9 @@
  :remove-object
  (fn [db [_ id]]
    (u/dissoc-in db [:objects id])))
+
+(reg-event-db
+ :after-ms
+ (fn [db [_ ms event]]
+   (js/setTimeout #(u/evt> event) ms)
+   db))
