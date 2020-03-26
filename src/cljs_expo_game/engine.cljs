@@ -139,6 +139,6 @@
                 :padding 3}}
        (let [rama (objects 0)
              [x y] (:pos rama)
-             [row col] (u/pos->grid [x y])]
+             [row col] (u/obj->grid rama)]
          (str "Pos: " (int x) "," (int y)
               " Grid: " (int row) "," (int col)))]])])

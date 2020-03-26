@@ -104,7 +104,8 @@
       (assoc-in db [:objects 0 :state] :idle))))
 
 (defn handle-movements [db]
-  (let [{:keys [state dir pos]} (get-in db [:objects 0])
+  (let [rama (get-in db [:objects 0])
+        {:keys [state dir pos]} rama
         [x y] pos
         [dx dy] k/WALK-VEL
         new-pos (case dir
@@ -113,9 +114,11 @@
                   :up [x (- y dy)]
                   :down [x (+ y dy)]
                   ;; else
-                  [x y])]
+                  [x y])
+        new-rama (assoc rama :pos new-pos)]
     (if (= :walk state)
-      (if (some #(= (u/pos->grid new-pos) (:pos %))
+      (if (some #(= (u/obj->grid new-rama)
+                    (:pos %))
                 (:world db))
         (assoc-in db [:objects 0 :pos] new-pos)
         (assoc-in db [:objects 0 :state] :idle))

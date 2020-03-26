@@ -37,6 +37,13 @@
         h (or (:height obj) k/TILE-HEIGHT)]
     [x y w h]))
 
+(defn obj->grid
+  [obj]
+  (let [[x y w h] (obj->box obj)
+        bottom-middle [(+ x (/ w 2))
+                       (+ y h)]]
+    (pos->grid bottom-middle)))
+
 (defn colliding?
   [[x1 y1 w1 h1 :as b1] [x2 y2 w2 h2 :as b2]]
   (or (box-contains? b1 [x2 y2])
