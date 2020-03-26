@@ -2,7 +2,7 @@
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :as rf]
             [oops.core :refer [ocall]]
-            [cljs-expo-game.engine :refer [game]]
+            [cljs-expo-game.render :refer [game]]
             [cljs-expo-game.handlers]
             [cljs-expo-game.subs]
             [cljs-expo-game.util :refer [evt>]]
