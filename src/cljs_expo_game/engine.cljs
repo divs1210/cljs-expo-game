@@ -22,7 +22,7 @@
               :top k/CONTROLS-Y
               :width (k/RES 0)
               :height k/CONTROLS-HEIGHT}}
-
+     ;; walk
      [com/image
       {:source dpad-tile
        :style {:position :absolute
@@ -31,7 +31,7 @@
                :top (k/DPAD-POS 1)
                :width k/DPAD-WIDTH
                :height k/DPAD-HEIGHT}}]
-
+     ;; shoot
      (when @(<sub [:objects 0 :inventory :bow])
        [com/view
         {:style {:justify-content :center
@@ -42,7 +42,21 @@
                  :background-color shoot-btn-color
                  :position :absolute
                  :left (k/SHOOT-BTN-POS 0)
-                 :top (k/SHOOT-BTN-POS 1)}}])]))
+                 :top (k/SHOOT-BTN-POS 1)}}])
+     ;; reset
+     [com/view
+      {:style {:justify-content :center
+               :border-radius (/ k/FRADIUS 2)
+               :align-items :center
+               :width k/TILE-WIDTH
+               :height k/TILE-HEIGHT
+               :background-color :red
+               :position :absolute
+               :left (* 5 k/TILE-WIDTH)
+               :bottom 0}
+       :on-touch-start #(evt> [:initialize-db])}
+      [com/text
+       "RESET"]]]))
 
 (defn game []
   [com/view
