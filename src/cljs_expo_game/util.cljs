@@ -20,6 +20,11 @@
       m)
     (dissoc m k)))
 
+(defn pos->grid
+  [[x y]]
+  [(int (/ y k/TILE-HEIGHT))
+   (int (/ x k/TILE-WIDTH))])
+
 (defn box-contains?
   [[x y width height] [x1 y1]]
   (and (<= x x1 (+ x width))

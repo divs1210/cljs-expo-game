@@ -104,16 +104,21 @@
       (assoc-in db [:objects 0 :state] :idle))))
 
 (defn handle-movements [db]
-  (let [{:keys [state dir]} (get-in db [:objects 0])
-        [dx dy] k/WALK-VEL]
+  (let [{:keys [state dir pos]} (get-in db [:objects 0])
+        [x y] pos
+        [dx dy] k/WALK-VEL
+        new-pos (case dir
+                  :left [(- x dx) y]
+                  :right [(+ x dx) y]
+                  :up [x (- y dy)]
+                  :down [x (+ y dy)]
+                  ;; else
+                  [x y])]
     (if (= :walk state)
-      (update-in db [:objects 0 :pos]
-                 (fn [[x y]]
-                   (case dir
-                     :left [(- x dx) y]
-                     :right [(+ x dx) y]
-                     :up [x (- y dy)]
-                     :down [x (+ y dy)])))
+      (if (some #(= (u/pos->grid new-pos) (:pos %))
+                (:world db))
+        (assoc-in db [:objects 0 :pos] new-pos)
+        (assoc-in db [:objects 0 :state] :idle))
       db)))
 
 (reg-event-db
