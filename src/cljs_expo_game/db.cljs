@@ -52,6 +52,10 @@
                 :curr-frame 0}
              2 {:id 2
                 :type :bow-pickup
+                :on-collide (fn [this _]
+                              [[:set-text nil]
+                               [:add-to-inventory :bow {}]
+                               [:remove-object (:id this)]])
                 :pos [(* 1.25 k/TILE-WIDTH) (* 5.5 k/TILE-HEIGHT)]
                 :rot -90
                 :width (/ k/TILE-WIDTH 2)

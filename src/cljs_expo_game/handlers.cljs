@@ -4,8 +4,7 @@
     [clojure.spec.alpha :as s]
     [cljs-expo-game.db :as db :refer [app-db]]
     [cljs-expo-game.engine :as e]
-    [cljs-expo-game.util :as u]
-    [cljs-expo-game.constants :as k]))
+    [cljs-expo-game.util :as u]))
 
 ;; -- Interceptors ----------------------------------------------------------
 ;;
@@ -37,6 +36,13 @@
     app-db))
 
 (reg-event-db
+ :tick
+ (fn [db _]
+   (-> db
+       e/handle-interactions
+       e/next-frame)))
+
+(reg-event-db
  :add-finger
  (fn [db [_ {:keys [id pos]}]]
    (assoc-in db [:fingers id :path] [pos])))
@@ -51,7 +57,6 @@
  (fn [db [_ {:keys [id]}]]
    (u/dissoc-in db [:fingers id])))
 
-
 (reg-event-db
  :clean-collisions
  (fn [db [_ obj1 obj2]]
@@ -63,8 +68,16 @@
    (update-in db [:collisions (:id o1)] conj (:id o2))))
 
 (reg-event-db
- :tick
- (fn [db _]
-   (-> db
-       e/handle-interactions
-       e/next-frame)))
+ :set-text
+ (fn [db [_ text]]
+   (assoc db :text text)))
+
+(reg-event-db
+ :add-to-inventory
+ (fn [db [_ key val]]
+   (assoc-in db [:objects 0 :inventory key] val)))
+
+(reg-event-db
+ :remove-object
+ (fn [db [_ id]]
+   (u/dissoc-in db [:objects id])))

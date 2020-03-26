@@ -159,28 +159,22 @@
     (u/evt> [:register-collision obj1 obj2]))
   db)
 
-(defn handle-collisions
+(defn handle-collisions!
   [db]
-  (let [rama-collisions (get-in db [:collisions 0])]
-    (reduce (fn [db id]
-              (let [rama (get-in db [:objects 0])
-                    obj (get-in db [:objects id])
-                    [x y w h] (u/obj->box rama)
-                    third-width (/ w 3)
-                    third-height (/ h 3)
-                    rama-charan [(+ x third-width) (+ y (* 2 third-height)) third-width third-height]]
-                (case (:type obj)
-                  :bow-pickup
-                  (if (u/colliding? rama-charan (u/obj->box obj))
-                    (-> db
-                        (assoc-in [:objects 0 :inventory :bow] {})
-                        (u/dissoc-in [:objects id]))
-                    db)
-
-                  ;; default
-                  db)))
-            db
-            rama-collisions)))
+  (doseq [id (get-in db [:collisions 0])
+          :let [rama (get-in db [:objects 0])
+                obj (get-in db [:objects id])
+                [x y w h] (u/obj->box rama)
+                quarter-width (/ w 4)
+                quarter-height (/ h 4)
+                rama-center [(+ x quarter-width)
+                             (+ y quarter-height)
+                             (* 2 quarter-width)
+                             (* 2 quarter-height)]]]
+    (when (u/colliding? rama-center (u/obj->box obj))
+      (doseq [event ((:on-collide obj) obj rama)]
+        (u/evt> event))))
+  db)
 
 (defn handle-interactions [db]
   (-> db
@@ -189,7 +183,7 @@
       set-rama-state
       handle-movements
       register-collisions!
-      handle-collisions))
+      handle-collisions!))
 
 (defn next-frame [db]
   (let [{:keys [objects sprites]} db]
