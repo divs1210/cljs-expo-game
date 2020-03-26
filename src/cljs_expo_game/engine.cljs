@@ -7,10 +7,6 @@
             [cljs.pprint :refer [pprint]]
             [cljs-expo-game.constants :as k]))
 
-(def ticker
-  (js/setInterval #(evt> [:tick])
-                  k/FPS))
-
 (defn controls []
   (let [dpad-state @(<sub [:controls :dpad :state])
         dpad-tile @(<sub [:sprites :dpad dpad-state])

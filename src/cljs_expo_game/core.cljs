@@ -4,7 +4,9 @@
             [oops.core :refer [ocall]]
             [cljs-expo-game.engine :refer [game]]
             [cljs-expo-game.handlers]
-            [cljs-expo-game.subs]))
+            [cljs-expo-game.subs]
+            [cljs-expo-game.util :refer [evt>]]
+            [cljs-expo-game.constants :as k]))
 
 (defn app-root []
   [game])
@@ -13,4 +15,6 @@
   (rf/dispatch-sync [:initialize-db])
   (ocall (js/require "expo")
          "registerRootComponent"
-         (r/reactify-component app-root)))
+         (r/reactify-component app-root))
+  (js/setInterval #(evt> [:tick])
+                  k/FPS))
