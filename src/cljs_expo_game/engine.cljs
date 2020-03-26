@@ -127,4 +127,18 @@
                   :top y}}])
 
       ;; render control panel
-      [controls]])])
+      [controls]
+
+      ;; render info
+      [com/text
+       {:style {:position :absolute
+                :bottom 10
+                :left 10
+                :background-color :black
+                :color :white
+                :padding 3}}
+       (let [rama (objects 0)
+             [x y] (:pos rama)
+             [row col] (u/pos->grid [x y])]
+         (str "Pos: " (int x) "," (int y)
+              " Grid: " (int row) "," (int col)))]])])
