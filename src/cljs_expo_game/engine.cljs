@@ -33,6 +33,8 @@
         {:style {:justify-content :center
                  :align-items :center
                  :border-radius (* k/FRADIUS 2)
+                 :border-width 6
+                 :border-color :black
                  :width k/SHOOT-BTN-WIDTH
                  :height k/SHOOT-BTN-HEIGHT
                  :background-color shoot-btn-color
@@ -43,6 +45,8 @@
      [com/view
       {:style {:justify-content :center
                :border-radius (/ k/FRADIUS 2)
+               :border-width 6
+               :border-color :black
                :align-items :center
                :width k/TILE-WIDTH
                :height k/TILE-HEIGHT
