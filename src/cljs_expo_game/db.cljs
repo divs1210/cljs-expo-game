@@ -47,7 +47,9 @@
                 :curr-frame 0}
              1 {:id 1
                 :type :vishwamitra
-                :pos [(* 2.2 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]
+                :pos [(* 2.4 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]
+                :width (* 0.6 k/TILE-WIDTH)
+                :height (* 1.1 k/TILE-HEIGHT)
                 :state :idle
                 :dir :down
                 :curr-frame 0
