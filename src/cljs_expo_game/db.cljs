@@ -35,7 +35,8 @@
                     :right tiles/dpad-right}
              :shoot-btn {:idle :gold
                          :press :orange}}
-   :text {:speaker "Rishi Vishwamitra"
+   :text {:id 0
+          :speaker "Rishi Vishwamitra"
           :speech "Prince Rama, you must learn to fight for righteousness and to protect dharma! Take this bow!"}
    :objects {0 {:id 0
                 :type :rama
@@ -43,28 +44,44 @@
                 :state :idle
                 :dir :up
                 :inventory {}
-                :collidables #{:bow-pickup}
                 :curr-frame 0}
              1 {:id 1
                 :type :vishwamitra
-                :pos [(* 2.5 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
+                :pos [(* 2.2 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
                 :state :idle
                 :dir :down
-                :collidables #{:arrow}
-                :curr-frame 0}
+                :curr-frame 0
+                :on-collide {:rama
+                             (fn [this rama dir]
+                               (let [id (gensym)]
+                                 [[:uncollide this rama dir]
+                                  [:set-text {:id id
+                                              :speaker "Rishi Vishwamitra"
+                                              :speech "You are invading my personal space, Prince Rama!"}]
+                                  [:after-ms 2000 [:clear-text id]]]))
+
+                             :arrow
+                             (fn [this arrow _]
+                               (let [id (gensym)]
+                                 [[:remove-object (:id arrow)]
+                                  [:set-text {:id id
+                                              :speaker "Rishi Vishwamitra"
+                                              :speech "Careful, son!"}]
+                                  [:after-ms 2000 [:clear-text id]]]))}}
              2 {:id 2
                 :type :bow-pickup
-                :on-collide (fn [this _]
-                              [[:set-text nil]
-                               [:add-to-inventory :bow {}]
-                               [:remove-object (:id this)]])
-                :pos [(* 2.7 k/TILE-WIDTH) (* 5.5 k/TILE-HEIGHT)]
+                :pos [(* 2.4 k/TILE-WIDTH) (* 5.5 k/TILE-HEIGHT)]
                 :rot -90
                 :width (/ k/TILE-WIDTH 2)
                 :height (/ k/TILE-HEIGHT 2)
                 :state :idle
                 :dir :down
-                :curr-frame 0}
+                :curr-frame 0
+                :on-collide {:rama
+                             (fn [this rama _]
+                               [[:remove-object (:id this)]
+                                [:clear-text 0]
+                                [:add-to-inventory :bow {}]])}}
              3 {:id 3
                 :type :bonfire
                 :pos [(* 3.5 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]
@@ -72,15 +89,25 @@
                 :height (/ k/TILE-HEIGHT 2)
                 :state :idle
                 :dir :down
-                :curr-frame 0}
+                :curr-frame 0
+                :on-collide {:rama
+                             (fn [this rama dir]
+                               [[:uncollide this rama dir]])}}
              4 {:id 4
                 :type :hut
-                :pos [(* 1 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
+                :pos [(* 0.8 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
                 :width (* k/TILE-WIDTH 1.2)
                 :height (* k/TILE-HEIGHT 1.3)
                 :state :idle
                 :dir :down
-                :curr-frame 0}}
+                :curr-frame 0
+                :on-collide {:rama
+                             (fn [this rama dir]
+                               [[:uncollide this rama dir]])
+
+                             :arrow
+                             (fn [this arrow _]
+                               [[:remove-object (:id arrow)]])}}}
    :fingers {}
    :controls {:dpad {:state :idle}
               :shoot-btn {:state :idle}}

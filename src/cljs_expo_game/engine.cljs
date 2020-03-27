@@ -77,18 +77,7 @@
                                                    :state :idle
                                                    :dir dir
                                                    :life 50
-                                                   :curr-frame 0
-                                                   :on-collide (fn [this obj]
-                                                                 (let [s (gensym)]
-                                                                   (case (:type obj)
-                                                                     :vishwamitra
-                                                                     [[:set-text {:speaker "Rishi Vishwamitra"
-                                                                                  :speech "Careful, son!"
-                                                                                  :id s}]
-                                                                      [:remove-object (:id this)]
-                                                                      [:after-ms 2000 [:clear-text s]]]
-                                                                     ;; default
-                                                                     [])))})
+                                                   :curr-frame 0})
                                  os)))))
 
       (not= :idle dpad-state)
@@ -159,33 +148,38 @@
 (defn register-collisions! [db]
   (u/evt> [:clean-collisions])
   (doseq [obj1 (-> db :objects vals)
-          col (:collidables obj1)
+          col (-> obj1 :on-collide keys)
           obj2 (filter #(= col (:type %))
-                       (-> db :objects
+                       (-> db
+                           :objects
                            (dissoc (:id obj1))
                            vals))
-          :let [obj1-box (u/obj->box obj1)
-                obj2-box (u/obj->box obj2)]
-          :when (u/colliding? obj1-box obj2-box)]
-    (u/evt> [:register-collision obj1 obj2]))
+          :let [obj1-center-box (u/obj->center-box obj1)
+                obj2-center-box (u/obj->center-box obj2)]
+          :when (u/colliding? obj1-center-box obj2-center-box)
+          :let [coll-dir (u/collision-dir (u/obj->box obj1)
+                                          (u/obj->box obj2))
+                dir (if (= :center coll-dir)
+                      (case (:dir obj2)
+                        :up :bottom
+                        :down :top
+                        :left :right
+                        :right :left)
+                      coll-dir)]]
+    (u/evt> [:register-collision obj1 obj2 dir]))
   db)
 
 (defn handle-collisions!
   [db]
-  (doseq [[this-id obj-ids] (:collisions db)
-          obj-id obj-ids
+  (doseq [[this-id objs] (:collisions db)
+          [obj-id coll-dir] objs
           :let [this (get-in db [:objects this-id])
-                obj (get-in db [:objects obj-id])
-                [x y w h] (u/obj->box this)
-                quarter-width (/ w 4)
-                quarter-height (/ h 4)
-                this-center [(+ x quarter-width)
-                             (+ y quarter-height)
-                             (* 2 quarter-width)
-                             (* 2 quarter-height)]]]
-    (when (u/colliding? this-center (u/obj->box obj))
-      (doseq [event ((:on-collide obj) obj this)]
-        (u/evt> event))))
+                obj (get-in db [:objects obj-id])]
+          :when (and this obj)
+          :let [methods (:on-collide this)
+                method (methods (:type obj))]
+          event (method this obj coll-dir)]
+    (u/evt> event))
   db)
 
 (defn handle-interactions [db]

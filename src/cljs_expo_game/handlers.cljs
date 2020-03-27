@@ -64,8 +64,8 @@
 
 (reg-event-db
  :register-collision
- (fn [db [_ o1 o2]]
-   (update-in db [:collisions (:id o1)] conj (:id o2))))
+ (fn [db [_ o1 o2 dir]]
+   (assoc-in db [:collisions (:id o1) (:id o2)] dir)))
 
 (reg-event-db
  :set-text
@@ -94,3 +94,15 @@
  (fn [db [_ ms event]]
    (js/setTimeout #(u/evt> event) ms)
    db))
+
+(reg-event-db
+ :uncollide
+ (fn [db [_ this obj dir]]
+   (let [[x1 y1 w1 h1] (u/obj->center-box this)
+         [x2 y2 w2 h2] (u/obj->box obj)
+         new-pos (case dir
+                   :top [x2 (- y1 h2 2)]
+                   :bottom [x2 (+ y1 h1 2)]
+                   :left [(- x1 w2 2) y2]
+                   :right [(+ x1 w1 2) y2])]
+     (assoc-in db [:objects (:id obj) :pos] new-pos))))
