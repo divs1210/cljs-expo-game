@@ -28,7 +28,7 @@
   (/ 1000 30)) ;; 30 FPS
 
 (def ^:const DPAD-POS
-  [0 (* 0.5 TILE-HEIGHT)])
+  [(* 0.5 TILE-WIDTH) 0])
 
 (def ^:const DPAD-WIDTH
   (* (RES 0) 0.4))
