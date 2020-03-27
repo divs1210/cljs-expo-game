@@ -59,7 +59,7 @@
 
 (reg-event-db
  :clean-collisions
- (fn [db [_ obj1 obj2]]
+ (fn [db _]
    (assoc db :collisions {})))
 
 (reg-event-db

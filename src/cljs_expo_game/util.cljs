@@ -9,7 +9,7 @@
 
 (defn evt>
   [evt]
-  (rf/dispatch evt))
+  (rf/dispatch-sync evt))
 
 (defn dissoc-in
   [m [k & ks :as keys]]
