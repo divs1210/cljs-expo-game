@@ -132,6 +132,7 @@
                   :top y
                   :transform [{:rotate (str rot "deg")}]}}])
 
+      ;; render speech
       (when-let [{:keys [speaker speech]} @(<sub [:text])]
         [com/view
          {:style {:justify-content :center
@@ -147,7 +148,8 @@
                   :top k/TILE-HEIGHT}
           :on-touch-start #(evt> [:initialize-db])}
          [com/text
-          {:style {:font-weight :bold}}
+          {:style {:font-weight :bold
+                   :padding 2}}
           speaker]
          [com/text
           speech]])
