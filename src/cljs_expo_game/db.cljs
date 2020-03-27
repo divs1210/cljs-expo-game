@@ -47,7 +47,7 @@
                 :curr-frame 0}
              1 {:id 1
                 :type :vishwamitra
-                :pos [(* 2.2 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
+                :pos [(* 2.2 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]
                 :state :idle
                 :dir :down
                 :curr-frame 0
@@ -70,7 +70,7 @@
                                   [:after-ms 2000 [:clear-text id]]]))}}
              2 {:id 2
                 :type :bow-pickup
-                :pos [(* 2.4 k/TILE-WIDTH) (* 5.5 k/TILE-HEIGHT)]
+                :pos [(* 2.4 k/TILE-WIDTH) (* 6 k/TILE-HEIGHT)]
                 :rot -90
                 :width (/ k/TILE-WIDTH 2)
                 :height (/ k/TILE-HEIGHT 2)
@@ -84,7 +84,7 @@
                                 [:add-to-inventory :bow {}]])}}
              3 {:id 3
                 :type :bonfire
-                :pos [(* 3.5 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]
+                :pos [(* 3.5 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]
                 :width (/ k/TILE-WIDTH 2)
                 :height (/ k/TILE-HEIGHT 2)
                 :state :idle
@@ -95,7 +95,7 @@
                                [[:uncollide this rama dir]])}}
              4 {:id 4
                 :type :hut
-                :pos [(* 0.8 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
+                :pos [(* 0.8 k/TILE-WIDTH) (* 4.7 k/TILE-HEIGHT)]
                 :width (* k/TILE-WIDTH 1.2)
                 :height (* k/TILE-HEIGHT 1.3)
                 :state :idle
