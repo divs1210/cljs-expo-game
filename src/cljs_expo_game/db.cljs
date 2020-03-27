@@ -21,6 +21,7 @@
                             :left {:frames tiles/rama-shoot-left}
                             :right {:frames tiles/rama-shoot-right}}}
              :vishwamitra {:idle {:down {:frames tiles/vishwamitra-idle}}}
+             :hut {:idle {:down {:frames tiles/hut}}}
              :bonfire {:idle {:down {:frames tiles/bonfire}}}
              :bow-pickup {:idle {:down {:frames tiles/bow-pickup}}}
              :arrow {:idle {:up {:frames tiles/arrow-up}
@@ -46,7 +47,7 @@
                 :curr-frame 0}
              1 {:id 1
                 :type :vishwamitra
-                :pos [(* 1 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
+                :pos [(* 2.5 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
                 :state :idle
                 :dir :down
                 :collidables #{:arrow}
@@ -57,7 +58,7 @@
                               [[:set-text nil]
                                [:add-to-inventory :bow {}]
                                [:remove-object (:id this)]])
-                :pos [(* 1.25 k/TILE-WIDTH) (* 5.5 k/TILE-HEIGHT)]
+                :pos [(* 2.7 k/TILE-WIDTH) (* 5.5 k/TILE-HEIGHT)]
                 :rot -90
                 :width (/ k/TILE-WIDTH 2)
                 :height (/ k/TILE-HEIGHT 2)
@@ -66,9 +67,17 @@
                 :curr-frame 0}
              3 {:id 3
                 :type :bonfire
-                :pos [(* 2 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]
+                :pos [(* 3.5 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]
                 :width (/ k/TILE-WIDTH 2)
                 :height (/ k/TILE-HEIGHT 2)
+                :state :idle
+                :dir :down
+                :curr-frame 0}
+             4 {:id 4
+                :type :hut
+                :pos [(* 1 k/TILE-WIDTH) (* 4 k/TILE-HEIGHT)]
+                :width (* k/TILE-WIDTH 1.2)
+                :height (* k/TILE-HEIGHT 1.3)
                 :state :idle
                 :dir :down
                 :curr-frame 0}}

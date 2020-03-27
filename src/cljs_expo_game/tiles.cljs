@@ -131,6 +131,9 @@
 (def bow-pickup
   [(js/require (str "./assets/images/objects/bow_pickup.png"))])
 
+(def hut
+  [(js/require (str "./assets/images/objects/hut.png"))])
+
 
 ;; Controls
 ;; ========
