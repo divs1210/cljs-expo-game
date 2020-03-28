@@ -146,7 +146,7 @@
       move-arrows))
 
 (defn register-collisions! [db]
-  (evt> [:clean-collisions])
+  (u/evt> [:clean-collisions])
   (doseq [obj1 (-> db :objects vals)
           col (-> obj1 :on-collide keys)
           obj2 (filter #(= col (:type %))

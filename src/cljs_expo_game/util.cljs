@@ -9,7 +9,7 @@
 
 (defn evt>
   [evt]
-  (rf/dispatch-sync evt))
+  (rf/dispatch evt))
 
 (defn dissoc-in
   [m [k & ks :as keys]]
@@ -37,15 +37,15 @@
         h (or (:height obj) k/TILE-HEIGHT)]
     [x y w h]))
 
+(defn center-box
+  [[x y w h]]
+  (let [third-width (/ w 2)
+        third-height (/ h 2)]
+    [(+ x third-width) (+ y third-height) third-width third-height]))
+
 (defn obj->center-box
   [obj]
-  (let [[x y w h] (obj->box obj)
-        sixth-width (/ w 6)
-        sixth-height (/ h 6)]
-    [(+ x sixth-width)
-     (+ y sixth-height)
-     (* 4 sixth-width)
-     (* 4 sixth-height)]))
+  (-> obj obj->box center-box))
 
 (defn obj->grid
   [obj]
@@ -66,30 +66,30 @@
       (box-contains? b2 [x1 (+ y1 w1)])
       (box-contains? b2 [(+ x1 w1) (+ y1 w1)])))
 
-(defn quarters
+(defn thirds
   [[x y w h]]
-  (let [quarter-width (js/Math.ceil (/ w 2))
-        quarter-height (js/Math.ceil (/ h 2))]
-    {:top [x y w quarter-height]
-     :bottom [x (+ y (* 3 quarter-height)) w quarter-height]
-     :left [x y quarter-width h]
-     :right [(+ x (* 3 quarter-width)) y quarter-width h]}))
+  (let [third-width (js/Math.ceil (/ w 3))
+        third-height (js/Math.ceil (/ h 3))]
+    {:top [x y w third-height]
+     :bottom [x (+ y (* 2 third-height)) w third-height]
+     :left [x y third-width h]
+     :right [(+ x (* 2 third-width)) y third-width h]}))
 
 (defn collision-dir
   [[x1 y1 w1 h1 :as b1] [x2 y2 w2 y2 :as b2]]
-  (let [b1-quarters (quarters b1)
-        b2-quarters (quarters b2)]
+  (let [b1-thirds (thirds b1)
+        b2-thirds (thirds b2)]
     (cond
-      (colliding? (:top b1-quarters) (:bottom b2-quarters))
+      (colliding? (:top b1-thirds) (:bottom b2-thirds))
       :top
 
-      (colliding? (:bottom b1-quarters) (:top b2-quarters))
+      (colliding? (:bottom b1-thirds) (:top b2-thirds))
       :bottom
 
-      (colliding? (:left b1-quarters) (:right b2-quarters))
+      (colliding? (:left b1-thirds) (:right b2-thirds))
       :left
 
-      (colliding? (:right b1-quarters) (:left b2-quarters))
+      (colliding? (:right b1-thirds) (:left b2-thirds))
       :right
 
       :else :center)))

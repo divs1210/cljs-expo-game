@@ -98,7 +98,7 @@
 (reg-event-db
  :uncollide
  (fn [db [_ this obj dir]]
-   (let [[x1 y1 w1 h1] (u/obj->box this)
+   (let [[x1 y1 w1 h1] (u/obj->center-box this)
          [x2 y2 w2 h2] (u/obj->box obj)
          new-pos (case dir
                    :top [x2 (- y1 h2 1)]
