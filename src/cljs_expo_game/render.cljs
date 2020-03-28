@@ -133,7 +133,7 @@
                   :transform [{:rotate (str rot "deg")}]}}])
 
       ;; render collision boxes
-      (for [[id object] objects
+      #_(for [[id object] objects
             :let [[x y w h] (u/obj->center-box object)]]
         ^{:key id}
         [com/view
