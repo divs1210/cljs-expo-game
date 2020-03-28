@@ -142,7 +142,7 @@
                   :height h
                   :left x
                   :top y
-                  :background-color "rgba(100, 0, 0, 0.5)"}}])
+                  :background-color "rgba(200, 0, 0, 0.3)"}}])
 
       ;; render speech
       (when-let [{:keys [speaker speech]} @(<sub [:text])]

@@ -158,7 +158,7 @@
                 obj2-center-box (u/obj->center-box obj2)]
           :when (u/colliding? obj1-center-box obj2-center-box)
           :let [coll-dir (u/collision-dir (u/obj->box obj1)
-                                          (u/obj->box obj2))
+                                          obj2-center-box)
                 dir (if (= :center coll-dir)
                       (case (:dir obj2)
                         :up :bottom

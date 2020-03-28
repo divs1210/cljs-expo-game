@@ -39,8 +39,8 @@
 
 (defn center-box
   [[x y w h]]
-  (let [third-width (/ w 3)
-        third-height (/ h 3)]
+  (let [third-width (js/Math.ceil (/ w 3))
+        third-height (js/Math.ceil (/ h 3))]
     [(+ x third-width) (+ y third-height) third-width third-height]))
 
 (defn obj->center-box
