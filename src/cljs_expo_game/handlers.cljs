@@ -102,10 +102,10 @@
          [x2 y2 w2 h2 :as b] (u/obj->box obj)
          [cx2 cy2 cw2 ch2] (u/center-box b)
          [ncx2 ncy2] (case dir
-                       :top [cx2 (- cy1 ch2 1)]
-                       :bottom [cx2 (+ cy1 ch1 1)]
-                       :left [(- cx1 cw2 1) cy2]
-                       :right [(+ cx1 cw1 1) cy2])
+                       :top [cx2 (- cy1 ch2 2)]
+                       :bottom [cx2 (+ cy1 ch1 2)]
+                       :left [(- cx1 cw2 2) cy2]
+                       :right [(+ cx1 cw1 2) cy2])
          dx (- ncx2 cx2)
          dy (- ncy2 cy2)
          new-pos [(+ x2 dx) (+ y2 dy)]]
