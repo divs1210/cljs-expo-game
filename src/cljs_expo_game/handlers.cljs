@@ -98,11 +98,15 @@
 (reg-event-db
  :uncollide
  (fn [db [_ this obj dir]]
-   (let [[x1 y1 w1 h1] (u/obj->center-box this)
-         [x2 y2 w2 h2] (u/obj->box obj)
-         new-pos (case dir
-                   :top [x2 (- y1 h2 1)]
-                   :bottom [x2 (+ y1 h1 1)]
-                   :left [(- x1 w2 1) y2]
-                   :right [(+ x1 w1 1) y2])]
+   (let [[cx1 cy1 cw1 ch1] (u/obj->center-box this)
+         [x2 y2 w2 h2 :as b] (u/obj->box obj)
+         [cx2 cy2 cw2 ch2] (u/center-box b)
+         [ncx2 ncy2] (case dir
+                       :top [cx2 (- cy1 ch2 1)]
+                       :bottom [cx2 (+ cy1 ch1 1)]
+                       :left [(- cx1 cw2 1) cy2]
+                       :right [(+ cx1 cw1 1) cy2])
+         dx (- ncx2 cx2)
+         dy (- ncy2 cy2)
+         new-pos [(+ x2 dx) (+ y2 dy)]]
      (assoc-in db [:objects (:id obj) :pos] new-pos))))
