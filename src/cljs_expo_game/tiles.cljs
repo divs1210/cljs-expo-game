@@ -134,6 +134,9 @@
 (def hut
   [(js/require (str "./assets/images/objects/hut.png"))])
 
+(def scarecrow
+  [(js/require (str "./assets/images/objects/ScareCrow.png"))])
+
 
 ;; Controls
 ;; ========

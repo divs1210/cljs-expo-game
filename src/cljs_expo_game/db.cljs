@@ -24,6 +24,7 @@
              :hut {:idle {:down {:frames tiles/hut}}}
              :bonfire {:idle {:down {:frames tiles/bonfire}}}
              :bow-pickup {:idle {:down {:frames tiles/bow-pickup}}}
+             :scarecrow {:idle {:down {:frames tiles/scarecrow}}}
              :arrow {:idle {:up {:frames tiles/arrow-up}
                             :down {:frames tiles/arrow-down}
                             :left {:frames tiles/arrow-left}
@@ -72,7 +73,7 @@
                                   [:after-ms 2000 [:clear-text id]]]))}}
              2 {:id 2
                 :type :bow-pickup
-                :pos [(* 2.3 k/TILE-WIDTH) (* 6 k/TILE-HEIGHT)]
+                :pos [(* 2.4 k/TILE-WIDTH) (* 6 k/TILE-HEIGHT)]
                 :rot -90
                 :width (/ k/TILE-WIDTH 2)
                 :height (/ k/TILE-HEIGHT 2)
@@ -82,7 +83,10 @@
                 :on-collide {:rama
                              (fn [this rama _]
                                [[:remove-object (:id this)]
-                                [:clear-text 0]
+                                [:set-text {:speaker "Rishi Vishwamitra"
+                                            :speech (str "Now shoot at the scarecrow. "
+                                                         "Long press to pull back the string and release an arrow. "
+                                                         "Try shooting from all directions.")}]
                                 [:add-to-inventory :bow {}]])}}
              3 {:id 3
                 :type :bonfire
@@ -109,7 +113,30 @@
 
                              :arrow
                              (fn [this arrow _]
-                               [[:remove-object (:id arrow)]])}}}
+                               [[:remove-object (:id arrow)]])}}
+             5 {:id 5
+                :type :scarecrow
+                :pos [(* 2.5 k/TILE-WIDTH) (* 8 k/TILE-HEIGHT)]
+                :width (* k/TILE-WIDTH 0.8)
+                :height (* k/TILE-HEIGHT 0.8)
+                :state :idle
+                :dir :down
+                :curr-frame 0
+                :on-collide {:rama
+                             (fn [this rama dir]
+                               [[:uncollide this rama dir]])
+
+                             :arrow
+                             (fn [this arrow _]
+                               (let [id (gensym)
+                                     complement (rand-nth ["Good shot!"
+                                                           "Nice!"
+                                                           "Great aim!"])]
+                                 [[:remove-object (:id arrow)]
+                                  [:set-text {:id id
+                                              :speaker "Rishi Vishwamitra"
+                                              :speech complement}]
+                                  [:after-ms 2000 [:clear-text id]]]))}}}
    :fingers {}
    :controls {:dpad {:state :idle}
               :shoot-btn {:state :idle}}
