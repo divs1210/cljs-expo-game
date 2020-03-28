@@ -132,6 +132,18 @@
                   :top y
                   :transform [{:rotate (str rot "deg")}]}}])
 
+      ;; render collision boxes
+      (for [[id object] objects
+            :let [[x y w h] (u/obj->center-box object)]]
+        ^{:key id}
+        [com/view
+         {:style {:position :absolute
+                  :width w
+                  :height h
+                  :left x
+                  :top y
+                  :background-color "rgba(100, 0, 0, 0.5)"}}])
+
       ;; render speech
       (when-let [{:keys [speaker speech]} @(<sub [:text])]
         [com/view
