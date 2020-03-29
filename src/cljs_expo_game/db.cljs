@@ -25,6 +25,7 @@
              :bonfire {:idle {:down {:frames tiles/bonfire}}}
              :bow-pickup {:idle {:down {:frames tiles/bow-pickup}}}
              :scarecrow {:idle {:down {:frames tiles/scarecrow}}}
+             :collision-area {:idle {:down {:frames tiles/collision-area}}}
              :arrow {:idle {:up {:frames tiles/arrow-up}
                             :down {:frames tiles/arrow-down}
                             :left {:frames tiles/arrow-left}
@@ -86,8 +87,23 @@
                                 [:set-text {:speaker "Rishi Vishwamitra"
                                             :speech (str "Now shoot at the scarecrow. "
                                                          "Long press to pull back the string and release an arrow. "
-                                                         "Try shooting from all directions.")}]
-                                [:add-to-inventory :bow {}]])}}
+                                                         "Try shooting from all directions. "
+                                                         "Once you are done, move over to the sacrificial fire.")}]
+                                [:add-to-inventory :bow {}]
+                                [:after-ms 3000
+                                 (let [id (gensym)]
+                                   [:add-object
+                                    {:id id
+                                     :type :collision-area
+                                     :pos [(* 3.5 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]
+                                     :state :idle
+                                     :dir :down
+                                     :width (/ k/TILE-WIDTH 2)
+                                     :height (/ k/TILE-HEIGHT 2)
+                                     :curr-frame 0
+                                     :on-collide {:rama
+                                                  (fn [this rama _]
+                                                    (println :FIRE!))}}])]])}}
              3 {:id 3
                 :type :bonfire
                 :pos [(* 3.5 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]

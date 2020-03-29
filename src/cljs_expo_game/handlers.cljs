@@ -85,6 +85,13 @@
    (assoc-in db [:objects 0 :inventory key] val)))
 
 (reg-event-db
+ :add-object
+ (fn [db [_ {:keys [id]
+             :or {id (gensym)}
+             :as obj}]]
+   (assoc-in db [:objects id] obj)))
+
+(reg-event-db
  :remove-object
  (fn [db [_ id]]
    (u/dissoc-in db [:objects id])))

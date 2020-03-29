@@ -137,6 +137,9 @@
 (def scarecrow
   [(js/require (str "./assets/images/objects/ScareCrow.png"))])
 
+(def collision-area
+  [(js/require (str "./assets/images/objects/collision_area.png"))])
+
 
 ;; Controls
 ;; ========
