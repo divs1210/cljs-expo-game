@@ -101,11 +101,11 @@
                                    [:add-object
                                     {:id id
                                      :type :collision-area
-                                     :pos [(* 3.5 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]
+                                     :pos [(* 2.75 k/TILE-WIDTH) (* 4.2 k/TILE-HEIGHT)]
                                      :state :idle
                                      :dir :down
-                                     :width (/ k/TILE-WIDTH 2)
-                                     :height (/ k/TILE-HEIGHT 2)
+                                     :width (* k/TILE-WIDTH 2)
+                                     :height (* k/TILE-HEIGHT 2)
                                      :curr-frame 0
                                      :on-collide {:rama
                                                   (fn [this rama _]
