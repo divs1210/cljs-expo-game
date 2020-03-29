@@ -164,6 +164,7 @@
                    :padding 2}}
           speaker]
          [com/text
+          {:style {:text-align :center}}
           speech]])
 
       ;; render control panel

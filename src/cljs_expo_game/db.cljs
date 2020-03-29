@@ -39,7 +39,7 @@
                          :press :orange}}
    :text {:id 0
           :speaker "Rishi Vishwamitra"
-          :speech "Prince Rama, you must learn to fight for righteousness and to protect dharma! Take this bow!"}
+          :speech "Prince Rama,\nyou must learn to fight for righteousness and to protect dharma!\nTake this bow!"}
    :objects {0 {:id 0
                 :type :rama
                 :pos [(* 4 k/TILE-WIDTH) (* 7 k/TILE-HEIGHT)]
@@ -85,9 +85,9 @@
                              (fn [this rama _]
                                [[:remove-object (:id this)]
                                 [:set-text {:speaker "Rishi Vishwamitra"
-                                            :speech (str "Now shoot at the scarecrow. "
-                                                         "Long press to pull back the string and release an arrow. "
-                                                         "Try shooting from all directions. "
+                                            :speech (str "Now shoot at the scarecrow.\n"
+                                                         "Long press to pull back the string and release an arrow.\n"
+                                                         "Try shooting from all directions.\n"
                                                          "Once you are done, move over to the sacrificial fire.")}]
                                 [:add-to-inventory :bow {}]
                                 [:after-ms 3000
