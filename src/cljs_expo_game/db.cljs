@@ -30,7 +30,8 @@
                             :down {:frames tiles/arrow-down}
                             :left {:frames tiles/arrow-left}
                             :right {:frames tiles/arrow-right}}}
-             :deer {:idle {:up {:frames tiles/deer-idle-up}}
+             :deer {:idle {:up {:frames tiles/deer-idle-up}
+                           :down {:frames tiles/deer-idle-down}}
                     :run {:up {:frames tiles/deer-run-up}
                           :down {:frames tiles/deer-run-down}
                           :left {:frames tiles/deer-run-left}

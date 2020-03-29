@@ -127,6 +127,9 @@
 (def deer-idle-up
   [(js/require (str "./assets/images/deer/run_up_" 2 ".png"))])
 
+(def deer-idle-down
+  [(js/require (str "./assets/images/deer/run_down_" 2 ".png"))])
+
 (def deer-run-up
   (for [i (range 6)]
     (js/require (str "./assets/images/deer/run_up_" i ".png"))))

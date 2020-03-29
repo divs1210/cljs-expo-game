@@ -127,7 +127,8 @@
                                       :down [x (+ y dy)]
                                       ;; else
                                       [x y])
-                            [_ col] (u/obj->grid deer)]
+                            [rama-row rama-col] (u/obj->grid rama)
+                            [row col] (u/obj->grid deer)]
                         [id
                          (cond
                            (< col 0)
@@ -140,15 +141,22 @@
                                   :pos new-pos
                                   :dir :left)
 
-                           (= col (last (u/obj->grid rama)))
-                           (assoc o
-                                  :dir :up
-                                  :state :idle)
+                           (= col rama-col)
+                           (cond
+                             (< row rama-row)
+                             (assoc o
+                                    :dir :down
+                                    :state :idle)
 
-                           (= :up (:dir deer))
+                             (>= row rama-row)
+                             (assoc o
+                                    :dir :up
+                                    :state :idle))
+
+                           (or (= :down (:dir deer)) (= :up (:dir deer)))
                            (assoc o
-                               :dir (rand-nth [:left :right])
-                               :state :run)
+                                  :dir (rand-nth [:left :right])
+                                  :state :run)
 
                            :else
                            (assoc o :pos new-pos))])
