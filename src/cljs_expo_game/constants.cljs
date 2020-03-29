@@ -1,7 +1,11 @@
 (ns cljs-expo-game.constants)
 
 (def ReactNative (js/require "react-native"))
+(def Platform (.-Platform ReactNative))
 (def Dimensions (.-Dimensions ReactNative))
+
+(def ^:const OS
+  (.-OS Platform))
 
 (def ^:const RES
   [(-> Dimensions (.get "window") .-width)
