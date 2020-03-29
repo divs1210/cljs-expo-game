@@ -81,7 +81,7 @@
              2 {:id 2
                 :type :bow-pickup
                 :pos [(* 2.4 k/TILE-WIDTH) (* 6 k/TILE-HEIGHT)]
-                :rot -90
+                :rot 0
                 :width (/ k/TILE-WIDTH 2)
                 :height (/ k/TILE-HEIGHT 2)
                 :state :idle
