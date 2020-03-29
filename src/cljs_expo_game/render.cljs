@@ -130,7 +130,11 @@
                   :height height
                   :left x
                   :top y
-                  :transform [{:rotate (str rot "deg")}]}}])
+                  :transform [{:rotate (str rot "deg")}]
+                  ;; render border
+                  ;; :border-width 1
+                  ;; :border-color :white
+                  }}])
 
       ;; render collision boxes
       #_(for [[id object] objects
