@@ -30,6 +30,11 @@
                             :down {:frames tiles/arrow-down}
                             :left {:frames tiles/arrow-left}
                             :right {:frames tiles/arrow-right}}}
+             :deer {:idle {:up {:frames tiles/deer-idle-up}}
+                    :run {:up {:frames tiles/deer-run-up}
+                          :down {:frames tiles/deer-run-down}
+                          :left {:frames tiles/deer-run-left}
+                          :right {:frames tiles/deer-run-right}}}
              :dpad {:idle tiles/dpad
                     :up tiles/dpad-up
                     :down tiles/dpad-down
@@ -103,7 +108,32 @@
                                      :curr-frame 0
                                      :on-collide {:rama
                                                   (fn [this rama _]
-                                                    (println :FIRE!))}}])]])}}
+                                                    (let [id (gensym)]
+                                                      [[:remove-object (:id this)]
+                                                       [:set-text {:id id
+                                                                   :speaker :vishwamitra
+                                                                   :speech "AUUUUUUUUUMMMMMM!"}]
+                                                       [:after-ms 2000 [:clear-text id]]
+                                                       [:add-object {:id 6
+                                                                     :type :deer
+                                                                     :pos [(- k/TILE-WIDTH) (* 10 k/TILE-HEIGHT)]
+                                                                     :width (* k/TILE-WIDTH 0.8)
+                                                                     :height (* k/TILE-HEIGHT 0.8)
+                                                                     :state :run
+                                                                     :dir :right
+                                                                     :curr-frame 0
+                                                                     :on-collide {:rama
+                                                                                  (fn [this rama dir]
+                                                                                    [[:uncollide this rama dir]])
+
+                                                                                  :arrow
+                                                                                  (fn [this arrow _]
+                                                                                    (let [id (gensym)]
+                                                                                      [[:remove-object (:id arrow)]
+                                                                                       [:set-text {:id id
+                                                                                                   :speaker "Rishi Vishwamitra"
+                                                                                                   :speech "Hey, Rama!"}]
+                                                                                       [:after-ms 2000 [:clear-text id]]]))}}]]))}}])]])}}
              3 {:id 3
                 :type :bonfire
                 :pos [(* 3.5 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]

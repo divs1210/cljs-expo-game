@@ -109,6 +109,44 @@
         (assoc-in db [:objects 0 :state] :idle))
       db)))
 
+(defn move-deer [db]
+  (let [deer (get-in db [:objects 6])
+        rama (get-in db [:objects 0])
+        {:keys [dir pos]} deer
+        [x y] pos
+        [dx dy] k/WALK-VEL
+        new-pos (case dir
+                  :left [(- x dx) y]
+                  :right [(+ x dx) y]
+                  :up [x (- y dy)]
+                  :down [x (+ y dy)]
+                  ;; else
+                  [x y])
+        [_ col] (u/obj->grid deer)]
+    (cond
+      (> 0 col)
+      (-> db
+          (assoc-in [:objects 6 :pos] new-pos)
+          (assoc-in [:objects 6 :dir] :right))
+
+      (< 5 col)
+      (-> db
+          (assoc-in [:objects 6 :pos] new-pos)
+          (assoc-in [:objects 6 :dir] :left))
+
+      (= col (last (u/obj->grid rama)))
+      (-> db
+          (assoc-in [:objects 6 :dir] :up)
+          (assoc-in [:objects 6 :state] :idle))
+
+      (= :up (:dir deer))
+      (-> db
+          (assoc-in [:objects 6 :dir] (rand-nth [:left :right]))
+          (assoc-in [:objects 6 :state] :run))
+
+      :else
+      (assoc-in db [:objects 6 :pos] new-pos))))
+
 (defn move-arrows [db]
   (update db :objects
           (fn [objects]
@@ -142,6 +180,7 @@
 (defn handle-movements [db]
   (-> db
       move-rama
+      move-deer
       remove-dead-arrows
       move-arrows))
 

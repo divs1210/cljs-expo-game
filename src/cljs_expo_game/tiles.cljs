@@ -122,6 +122,28 @@
   [(js/require (str "./assets/images/arrow/arrow_right.png"))])
 
 
+;; Deer
+;; ====
+(def deer-idle-up
+  [(js/require (str "./assets/images/deer/run_up_" 2 ".png"))])
+
+(def deer-run-up
+  (for [i (range 6)]
+    (js/require (str "./assets/images/deer/run_up_" i ".png"))))
+
+(def deer-run-down
+  (for [i (range 6)]
+    (js/require (str "./assets/images/deer/run_down_" i ".png"))))
+
+(def deer-run-left
+  (for [i (range 6)]
+    (js/require (str "./assets/images/deer/run_left_" i ".png"))))
+
+(def deer-run-right
+  (for [i (range 6)]
+    (js/require (str "./assets/images/deer/run_right_" i ".png"))))
+
+
 ;; Objects
 ;; =======
 (def bonfire
