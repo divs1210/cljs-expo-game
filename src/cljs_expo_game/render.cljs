@@ -131,6 +131,7 @@
                   }}
 
          (if (= "android" k/OS)
+           ;; hack to reduce flickering
            (for [i (range (count frames))
                  :let [tile (nth frames i)
                        opacity (if (= curr-frame i)
