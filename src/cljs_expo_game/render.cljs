@@ -112,29 +112,31 @@
                                    (let [[x y w h] (u/obj->box obj)]
                                      (+ y h)))
                                  objects)
-            :let [{:keys [type pos width height rot
+            :let [{:keys [type width height rot
                           state dir curr-frame]
-                   :or {rot 0
-                        width k/TILE-WIDTH
-                        height k/TILE-HEIGHT}} object
+                   :or {rot 0}} object
 
-                  [x y] pos
+                  [x y width height] (u/obj->box object)
                   frames (get-in sprites [type state dir :frames])
                   tile (nth frames curr-frame)]]
         ^{:key id}
-        [com/image
-         {:source tile
-          :style {:position :absolute
-                  :resize-mode :stretch
+        [com/view
+         {:style {:position :absolute
                   :width width
                   :height height
                   :left x
-                  :top y
-                  :transform [{:rotate (str rot "deg")}]
-                  ;; render border
-                  ;; :border-width 1
-                  ;; :border-color :white
-                  }}])
+                  :top y}}
+         [com/image
+          {:source tile
+           :style {:position :absolute
+                   :resize-mode :stretch
+                   :width width
+                   :height height
+                   :transform [{:rotate (str rot "deg")}]
+                   ;; render border
+                   ;; :border-width 1
+                   ;; :border-color :white
+                   }}]])
 
       ;; render collision boxes
       #_(for [[id object] objects
