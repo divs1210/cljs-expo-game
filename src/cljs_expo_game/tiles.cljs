@@ -98,6 +98,36 @@
   (for [i (range 13)]
     (js/require (str "./assets/images/rama/shoot_right_" i ".png"))))
 
+;; Lakshmana
+;; =========
+(def lxmn-idle-up
+  [(js/require (str "./assets/images/lakshmana/walk_up_0.png"))])
+
+(def lxmn-idle-down
+  [(js/require (str "./assets/images/lakshmana/walk_down_0.png"))])
+
+(def lxmn-idle-left
+  [(js/require (str "./assets/images/lakshmana/walk_left_0.png"))])
+
+(def lxmn-idle-right
+  [(js/require (str "./assets/images/lakshmana/walk_right_0.png"))])
+
+(def lxmn-walk-up
+  (for [i (range 9)]
+    (js/require (str "./assets/images/lakshmana/walk_up_" i ".png"))))
+
+(def lxmn-walk-down
+  (for [i (range 9)]
+    (js/require (str "./assets/images/lakshmana/walk_down_" i ".png"))))
+
+(def lxmn-walk-left
+  (for [i (range 9)]
+    (js/require (str "./assets/images/lakshmana/walk_left_" i ".png"))))
+
+(def lxmn-walk-right
+  (for [i (range 9)]
+    (js/require (str "./assets/images/lakshmana/walk_right_" i ".png"))))
+
 
 ;; Vishwamitra
 ;; ===========

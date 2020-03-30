@@ -245,6 +245,15 @@
       register-collisions!
       handle-collisions!))
 
+(defn update-state [db]
+  (doseq [[id obj] (:objects db)
+          :let [{:keys [on-update]} obj
+                events (when on-update
+                         (on-update db obj))]
+          event events]
+    (u/evt> event))
+  db)
+
 (defn next-frame [db]
   (let [{:keys [objects sprites]} db]
     (assoc db :objects

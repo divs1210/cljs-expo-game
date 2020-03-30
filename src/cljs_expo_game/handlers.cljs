@@ -2,6 +2,7 @@
   (:require
     [re-frame.core :refer [reg-event-db ->interceptor]]
     [clojure.spec.alpha :as s]
+    [cljs-expo-game.constants :as k]
     [cljs-expo-game.db :as db :refer [app-db]]
     [cljs-expo-game.engine :as e]
     [cljs-expo-game.util :as u]))
@@ -49,6 +50,7 @@
  :tick
  (fn [db _]
    (-> db
+       e/update-state
        e/handle-interactions
        e/next-frame)))
 
@@ -127,3 +129,20 @@
          dy (- ncy2 cy2)
          new-pos [(+ x2 dx) (+ y2 dy)]]
      (assoc-in db [:objects (:id obj) :pos] new-pos))))
+
+(reg-event-db
+ :walk
+ (fn [db [_ obj]]
+   (let [{:keys [id state dir pos]} obj
+         [x y] pos
+         [dx dy] k/WALK-VEL
+         new-pos (case dir
+                   :left [(- x dx) y]
+                   :right [(+ x dx) y]
+                   :up [x (- y dy)]
+                   :down [x (+ y dy)]
+                   ;; else
+                   [x y])]
+     (-> db
+         (assoc-in [:objects id :pos] new-pos)
+         (assoc-in [:objects id :state] :walk)))))

@@ -1,7 +1,8 @@
 (ns cljs-expo-game.db
   (:require [clojure.spec.alpha :as s]
             [cljs-expo-game.tiles :as tiles]
-            [cljs-expo-game.constants :as k]))
+            [cljs-expo-game.constants :as k]
+            [cljs-expo-game.util :as u]))
 
 ;; spec of app-db
 (s/def ::app-db map?)
@@ -21,6 +22,14 @@
                             :left {:frames tiles/rama-shoot-left}
                             :right {:frames tiles/rama-shoot-right}}}
              :vishwamitra {:idle {:down {:frames tiles/vishwamitra-idle}}}
+             :lakshmana {:idle {:up {:frames tiles/lxmn-idle-up}
+                                :down {:frames tiles/lxmn-idle-down}
+                                :left {:frames tiles/lxmn-idle-left}
+                                :right {:frames tiles/lxmn-idle-right}}
+                         :walk {:up {:frames tiles/lxmn-walk-up}
+                                :down {:frames tiles/lxmn-walk-down}
+                                :left {:frames tiles/lxmn-walk-left}
+                                :right {:frames tiles/lxmn-walk-right}}}
              :hut {:idle {:down {:frames tiles/hut}}}
              :bonfire {:idle {:down {:frames tiles/bonfire}}}
              :bow-pickup {:idle {:down {:frames tiles/bow-pickup}}}
@@ -53,6 +62,27 @@
                 :dir :up
                 :inventory {}
                 :curr-frame 0}
+             0.5 {:id 0.5
+                  :type :lakshmana
+                  :pos [(* 4.5 k/TILE-WIDTH) (* 7.5 k/TILE-HEIGHT)]
+                  :state :idle
+                  :dir :up
+                  :inventory {}
+                  :curr-frame 0
+                  :on-update (fn [db this]
+                               (let [rama (get-in db [:objects 0])
+
+                                     {:keys [rama-state rama-pos rama-dir]}
+                                     (u/with-prefix rama :rama)
+
+                                     should-walk? (and (= :walk rama-state)
+                                                       (u/ahead-of? rama this)
+                                                       (> (u/distance rama-pos (:pos this))
+                                                          (* 0.75 k/TILE-WIDTH)))]
+                                 [[:set-in [:objects (:id this) :dir] rama-dir]
+                                  (if should-walk?
+                                    [:walk this]
+                                    [:set-in [:objects (:id this) :state] :idle])]))}
              1 {:id 1
                 :type :vishwamitra
                 :pos [(* 2.4 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]

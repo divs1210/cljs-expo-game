@@ -93,3 +93,42 @@
       :right
 
       :else :center)))
+
+(defn with-prefix [m p]
+  (into {} (for [[k v] m]
+             [(keyword (str (name p) "-" (name k))) v])))
+
+(defn ahead-of?
+  [this that]
+  (let [this-dir (:dir this)
+        that-dir (:dir that)
+        [this-x this-y this-w this-h] (obj->box this)
+        [that-x that-y that-w that-h] (obj->box that)]
+    (case that-dir
+      :up (< this-y that-y)
+      :down (> (+ this-y this-h)
+               (+ that-y that-h))
+      :left (< this-x that-x)
+      :right (> (+ this-x this-w)
+                (+ that-x that-w)))))
+
+(defn opposite-dir [dir]
+  (case dir
+    :up :down
+    :down :up
+    :left :right
+    :right :left))
+
+(defn opposite-side [side]
+  (case side
+    :top :bottom
+    :bottom :top
+    :left :right
+    :right :left))
+
+(defn distance
+  [[x1 y1] [x2 y2]]
+  (let [dx (- x2 x1)
+        dy (- y2 y1)]
+    (js/Math.sqrt (+ (* dx dx)
+                     (* dy dy)))))

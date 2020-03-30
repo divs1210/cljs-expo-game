@@ -23,7 +23,10 @@
 
 (defn sprite
   [{:keys [frames curr-frame style]}]
-  (let [{:keys [top left width height rot]
+  (let [curr-frame (if (< curr-frame (count frames))
+                     curr-frame
+                     0)
+        {:keys [top left width height rot]
          :or {rot 0}}
         style]
     [view
