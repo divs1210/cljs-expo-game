@@ -232,7 +232,7 @@
           :when (and this obj)
           :let [methods (:on-collide this)
                 method (methods (:type obj))]
-          event (method this obj coll-dir)]
+          event (method db this obj coll-dir)]
     (u/evt> event))
   db)
 

@@ -36,6 +36,16 @@
     app-db))
 
 (reg-event-db
+  :no-op
+  (fn [db _]
+    db))
+
+(reg-event-db
+  :set-in
+  (fn [db [_ path val]]
+    (assoc-in db path val)))
+
+(reg-event-db
  :tick
  (fn [db _]
    (-> db

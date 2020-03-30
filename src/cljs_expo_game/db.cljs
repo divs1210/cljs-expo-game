@@ -62,7 +62,7 @@
                 :dir :down
                 :curr-frame 0
                 :on-collide {:rama
-                             (fn [this rama dir]
+                             (fn [db this rama dir]
                                (let [id (gensym)]
                                  [[:uncollide this rama dir]
                                   [:set-text {:id id
@@ -71,7 +71,7 @@
                                   [:after-ms 2000 [:clear-text id]]]))
 
                              :arrow
-                             (fn [this arrow _]
+                             (fn [db this arrow _]
                                (let [id (gensym)]
                                  [[:remove-object (:id arrow)]
                                   [:set-text {:id id
@@ -88,7 +88,7 @@
                 :dir :down
                 :curr-frame 0
                 :on-collide {:rama
-                             (fn [this rama _]
+                             (fn [db this rama _]
                                [[:remove-object (:id this)]
                                 [:set-text {:speaker "Rishi Vishwamitra"
                                             :speech (str "Now shoot at the scarecrow.\n"
@@ -105,7 +105,7 @@
                 :dir :down
                 :curr-frame 0
                 :on-collide {:rama
-                             (fn [this rama dir]
+                             (fn [db this rama dir]
                                [[:uncollide this rama dir]])}}
              4 {:id 4
                 :type :hut
@@ -116,11 +116,11 @@
                 :dir :down
                 :curr-frame 0
                 :on-collide {:rama
-                             (fn [this rama dir]
+                             (fn [db this rama dir]
                                [[:uncollide this rama dir]])
 
                              :arrow
-                             (fn [this arrow _]
+                             (fn [db this arrow _]
                                [[:remove-object (:id arrow)]])}}
              5 {:id 5
                 :type :scarecrow
@@ -131,11 +131,11 @@
                 :dir :down
                 :curr-frame 0
                 :on-collide {:rama
-                             (fn [this rama dir]
+                             (fn [db this rama dir]
                                [[:uncollide this rama dir]])
 
                              :arrow
-                             (fn [this arrow _]
+                             (fn [db this arrow _]
                                (let [id (gensym)
                                      complement (rand-nth ["Good shot!"
                                                            "Nice!"
@@ -145,44 +145,47 @@
                                               :speaker "Rishi Vishwamitra"
                                               :speech complement}]
                                   [:after-ms 2000 [:clear-text id]]
-                                  (let [id (gensym)]
-                                    [:add-object
-                                     {:id id
-                                      :type :collision-area
-                                      :pos [(* 2.75 k/TILE-WIDTH) (* 4.2 k/TILE-HEIGHT)]
-                                      :state :idle
-                                      :dir :down
-                                      :width (* k/TILE-WIDTH 2)
-                                      :height (* k/TILE-HEIGHT 2)
-                                      :curr-frame 0
-                                      :on-collide {:rama
-                                                   (fn [this rama _]
-                                                     (let [id (gensym)]
-                                                       [[:remove-object (:id this)]
-                                                        [:set-text {:id id
-                                                                    :speaker "Rishi Vishwamitra"
-                                                                    :speech "AUUUUUUUUUMMMMMM!"}]
-                                                        [:after-ms 2000 [:clear-text id]]
-                                                        [:add-object {:id 6
-                                                                      :type :deer
-                                                                      :pos [(- k/TILE-WIDTH) (* 10 k/TILE-HEIGHT)]
-                                                                      :width (* k/TILE-WIDTH 0.8)
-                                                                      :height (* k/TILE-HEIGHT 0.8)
-                                                                      :state :run
-                                                                      :dir :right
-                                                                      :curr-frame 0
-                                                                      :on-collide {:rama
-                                                                                   (fn [this rama dir]
-                                                                                     [[:uncollide this rama dir]])
+                                  (if (get-in db [:logic :collision-area-set?])
+                                    [:no-op]
+                                    (let [id (gensym)]
+                                      [:add-object
+                                       {:id id
+                                        :type :collision-area
+                                        :pos [(* 2.75 k/TILE-WIDTH) (* 4.2 k/TILE-HEIGHT)]
+                                        :state :idle
+                                        :dir :down
+                                        :width (* k/TILE-WIDTH 2)
+                                        :height (* k/TILE-HEIGHT 2)
+                                        :curr-frame 0
+                                        :on-collide {:rama
+                                                     (fn [db this rama _]
+                                                       (let [id (gensym)]
+                                                         [[:remove-object (:id this)]
+                                                          [:set-text {:id id
+                                                                      :speaker "Rishi Vishwamitra"
+                                                                      :speech "AUUUUUUUUUMMMMMM!"}]
+                                                          [:after-ms 2000 [:clear-text id]]
+                                                          [:add-object {:id 6
+                                                                        :type :deer
+                                                                        :pos [(- k/TILE-WIDTH) (* 10 k/TILE-HEIGHT)]
+                                                                        :width (* k/TILE-WIDTH 0.8)
+                                                                        :height (* k/TILE-HEIGHT 0.8)
+                                                                        :state :run
+                                                                        :dir :right
+                                                                        :curr-frame 0
+                                                                        :on-collide {:rama
+                                                                                     (fn [db this rama dir]
+                                                                                       [[:uncollide this rama dir]])
 
-                                                                                   :arrow
-                                                                                   (fn [this arrow _]
-                                                                                     (let [id (gensym)]
-                                                                                       [[:remove-object (:id arrow)]
-                                                                                        [:set-text {:id id
-                                                                                                    :speaker "Rishi Vishwamitra"
-                                                                                                    :speech "Hey, Rama!"}]
-                                                                                        [:after-ms 2000 [:clear-text id]]]))}}]]))}}])]))}}}
+                                                                                     :arrow
+                                                                                     (fn [db this arrow _]
+                                                                                       (let [id (gensym)]
+                                                                                         [[:remove-object (:id arrow)]
+                                                                                          [:set-text {:id id
+                                                                                                      :speaker "Rishi Vishwamitra"
+                                                                                                      :speech "Hey, Rama!"}]
+                                                                                          [:after-ms 2000 [:clear-text id]]]))}}]]))}}]))
+                                  [:set-in [:logic :collision-area-set?] true]]))}}}
    :fingers {}
    :controls {:dpad {:state :idle}
               :shoot-btn {:state :idle}}
