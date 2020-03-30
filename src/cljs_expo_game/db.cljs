@@ -95,46 +95,7 @@
                                                          "Long press to pull back the string and release an arrow.\n"
                                                          "Try shooting from all directions.\n"
                                                          "Once you are done, move over to the sacrificial fire.")}]
-                                [:add-to-inventory :bow {}]
-                                [:after-ms 3000
-                                 (let [id (gensym)]
-                                   [:add-object
-                                    {:id id
-                                     :type :collision-area
-                                     :pos [(* 2.75 k/TILE-WIDTH) (* 4.2 k/TILE-HEIGHT)]
-                                     :state :idle
-                                     :dir :down
-                                     :width (* k/TILE-WIDTH 2)
-                                     :height (* k/TILE-HEIGHT 2)
-                                     :curr-frame 0
-                                     :on-collide {:rama
-                                                  (fn [this rama _]
-                                                    (let [id (gensym)]
-                                                      [[:remove-object (:id this)]
-                                                       [:set-text {:id id
-                                                                   :speaker :vishwamitra
-                                                                   :speech "AUUUUUUUUUMMMMMM!"}]
-                                                       [:after-ms 2000 [:clear-text id]]
-                                                       [:add-object {:id 6
-                                                                     :type :deer
-                                                                     :pos [(- k/TILE-WIDTH) (* 10 k/TILE-HEIGHT)]
-                                                                     :width (* k/TILE-WIDTH 0.8)
-                                                                     :height (* k/TILE-HEIGHT 0.8)
-                                                                     :state :run
-                                                                     :dir :right
-                                                                     :curr-frame 0
-                                                                     :on-collide {:rama
-                                                                                  (fn [this rama dir]
-                                                                                    [[:uncollide this rama dir]])
-
-                                                                                  :arrow
-                                                                                  (fn [this arrow _]
-                                                                                    (let [id (gensym)]
-                                                                                      [[:remove-object (:id arrow)]
-                                                                                       [:set-text {:id id
-                                                                                                   :speaker "Rishi Vishwamitra"
-                                                                                                   :speech "Hey, Rama!"}]
-                                                                                       [:after-ms 2000 [:clear-text id]]]))}}]]))}}])]])}}
+                                [:add-to-inventory :bow {}]])}}
              3 {:id 3
                 :type :bonfire
                 :pos [(* 3.5 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]
@@ -183,7 +144,45 @@
                                   [:set-text {:id id
                                               :speaker "Rishi Vishwamitra"
                                               :speech complement}]
-                                  [:after-ms 2000 [:clear-text id]]]))}}}
+                                  [:after-ms 2000 [:clear-text id]]
+                                  (let [id (gensym)]
+                                    [:add-object
+                                     {:id id
+                                      :type :collision-area
+                                      :pos [(* 2.75 k/TILE-WIDTH) (* 4.2 k/TILE-HEIGHT)]
+                                      :state :idle
+                                      :dir :down
+                                      :width (* k/TILE-WIDTH 2)
+                                      :height (* k/TILE-HEIGHT 2)
+                                      :curr-frame 0
+                                      :on-collide {:rama
+                                                   (fn [this rama _]
+                                                     (let [id (gensym)]
+                                                       [[:remove-object (:id this)]
+                                                        [:set-text {:id id
+                                                                    :speaker "Rishi Vishwamitra"
+                                                                    :speech "AUUUUUUUUUMMMMMM!"}]
+                                                        [:after-ms 2000 [:clear-text id]]
+                                                        [:add-object {:id 6
+                                                                      :type :deer
+                                                                      :pos [(- k/TILE-WIDTH) (* 10 k/TILE-HEIGHT)]
+                                                                      :width (* k/TILE-WIDTH 0.8)
+                                                                      :height (* k/TILE-HEIGHT 0.8)
+                                                                      :state :run
+                                                                      :dir :right
+                                                                      :curr-frame 0
+                                                                      :on-collide {:rama
+                                                                                   (fn [this rama dir]
+                                                                                     [[:uncollide this rama dir]])
+
+                                                                                   :arrow
+                                                                                   (fn [this arrow _]
+                                                                                     (let [id (gensym)]
+                                                                                       [[:remove-object (:id arrow)]
+                                                                                        [:set-text {:id id
+                                                                                                    :speaker "Rishi Vishwamitra"
+                                                                                                    :speech "Hey, Rama!"}]
+                                                                                        [:after-ms 2000 [:clear-text id]]]))}}]]))}}])]))}}}
    :fingers {}
    :controls {:dpad {:state :idle}
               :shoot-btn {:state :idle}}
