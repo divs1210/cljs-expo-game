@@ -113,8 +113,7 @@
                                      (+ y h)))
                                  objects)
             :let [{:keys [type width height rot
-                          state dir curr-frame]
-                   :or {rot 0}} object
+                          state dir curr-frame]} object
 
                   [x y width height] (u/obj->box object)
                   frames (get-in sprites [type state dir :frames])]]

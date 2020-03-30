@@ -23,7 +23,9 @@
 
 (defn sprite
   [{:keys [frames curr-frame style]}]
-  (let [{:keys [top left width height rot]} style]
+  (let [{:keys [top left width height rot]
+         :or {rot 0}}
+        style]
     [view
      {:style {:position :absolute
               :top top
