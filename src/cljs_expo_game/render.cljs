@@ -9,7 +9,8 @@
 
 (defn controls []
   (let [dpad-state @(<sub [:controls :dpad :state])
-        dpad-tile @(<sub [:sprites :dpad dpad-state])
+        dpad-tiles @(<sub [:sprites :dpad])
+        dpad-states (keys dpad-tiles)
         shoot-btn-state @(<sub [:controls :shoot-btn :state])
         shoot-btn-color @(<sub [:sprites :shoot-btn shoot-btn-state])]
     [com/view
@@ -19,11 +20,10 @@
               :width (k/RES 0)
               :height k/CONTROLS-HEIGHT}}
      ;; walk
-     [com/image
-      {:source dpad-tile
-       :style {:position :absolute
-               :resize-mode :stretch
-               :left (k/DPAD-POS 0)
+     [com/sprite
+      {:frames (map #(dpad-tiles %) dpad-states)
+       :curr-frame (.indexOf dpad-states dpad-state)
+       :style {:left (k/DPAD-POS 0)
                :top (k/DPAD-POS 1)
                :width k/DPAD-WIDTH
                :height k/DPAD-HEIGHT}}]
