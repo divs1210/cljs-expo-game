@@ -1,5 +1,6 @@
 (ns cljs-expo-game.components
-  (:require [reagent.core :as r]))
+  (:require [reagent.core :as r]
+            [cljs-expo-game.constants :as k]))
 
 (def ReactNative (js/require "react-native"))
 (def RNDisplay (js/require "react-native-display"))
@@ -19,3 +20,36 @@
 
 (defn alert [text]
   (.alert (.-Alert ReactNative) text))
+
+(defn sprite
+  [{:keys [frames curr-frame style]}]
+  (let [{:keys [top left width height rot]} style]
+    [view
+     {:style {:position :absolute
+              :top top
+              :left left
+              :width width
+              :height height}}
+     (if (= "android" k/OS)
+       (for [[i f] (map-indexed vector frames)
+             :let [show? (= curr-frame i)]]
+         ^{:key i}
+         [image
+          {:source f
+           :style {:position :absolute
+                   :top 0
+                   :left 0
+                   :width width
+                   :height height
+                   :opacity (if show? 1 0)
+                   :resize-mode :stretch
+                   :transform [{:rotate (str rot "deg")}]}}])
+       [image
+        {:source (nth frames curr-frame)
+         :style {:position :absolute
+                 :top 0
+                 :left 0
+                 :width width
+                 :height height
+                 :resize-mode :stretch
+                 :transform [{:rotate (str rot "deg")}]}}])]))
