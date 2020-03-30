@@ -117,26 +117,41 @@
                    :or {rot 0}} object
 
                   [x y width height] (u/obj->box object)
-                  frames (get-in sprites [type state dir :frames])
-                  tile (nth frames curr-frame)]]
+                  frames (get-in sprites [type state dir :frames])]]
         ^{:key id}
         [com/view
          {:style {:position :absolute
                   :width width
                   :height height
                   :left x
-                  :top y}}
-         [com/image
-          {:source tile
-           :style {:position :absolute
-                   :resize-mode :stretch
-                   :width width
-                   :height height
-                   :transform [{:rotate (str rot "deg")}]
-                   ;; render border
-                   ;; :border-width 1
-                   ;; :border-color :white
-                   }}]])
+                  :top y
+                  ;; render border
+                  ;; :border-width 1
+                  ;; :border-color :white
+                  }}
+
+         (if (= "android" k/OS)
+           (for [i (range (count frames))
+                 :let [tile (nth frames i)
+                       opacity (if (= curr-frame i)
+                                 1
+                                 0)]]
+             ^{:key i}
+             [com/image
+              {:source tile
+               :style {:position :absolute
+                       :resize-mode :stretch
+                       :width width
+                       :height height
+                       :transform [{:rotate (str rot "deg")}]
+                       :opacity opacity}}])
+           [com/image
+            {:source (nth frames curr-frame)
+             :style {:position :absolute
+                     :resize-mode :stretch
+                     :width width
+                     :height height
+                     :transform [{:rotate (str rot "deg")}]}}])])
 
       ;; render collision boxes
       #_(for [[id object] objects
