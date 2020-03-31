@@ -16,19 +16,24 @@
         right-box [(+ x half-width) (+ y k/CONTROLS-Y) half-width k/DPAD-HEIGHT]]
     (cond
       (some #(u/box-contains? up-box %) touches)
-      (assoc-in db [:controls :dpad :state] :up)
+      (assoc-in db [:controls :dpad] {:state :press
+                                      :dir :up})
 
       (some #(u/box-contains? down-box %) touches)
-      (assoc-in db [:controls :dpad :state] :down)
+      (assoc-in db [:controls :dpad] {:state :press
+                                      :dir :down})
 
       (some #(u/box-contains? left-box %) touches)
-      (assoc-in db [:controls :dpad :state] :left)
+      (assoc-in db [:controls :dpad] {:state :press
+                                      :dir :left})
 
       (some #(u/box-contains? right-box %) touches)
-      (assoc-in db [:controls :dpad :state] :right)
+      (assoc-in db [:controls :dpad] {:state :press
+                                      :dir :right})
 
       :else
-      (assoc-in db [:controls :dpad :state] :idle))))
+      (assoc-in db [:controls :dpad] {:state :idle
+                                      :dir :down}))))
 
 (defn handle-shoot [db]
   (if (get-in db [:objects 0 :inventory :bow])
@@ -42,7 +47,8 @@
 
 (defn set-rama-state [db]
   (let [shoot-btn-state (-> db :controls :shoot-btn :state)
-        dpad-state (-> db :controls :dpad :state)]
+        dpad-state (-> db :controls :dpad :state)
+        dpad-dir (-> db :controls :dpad :dir)]
     (cond
       (= :press shoot-btn-state)
       (-> db
@@ -80,10 +86,10 @@
                                                    :curr-frame 0})
                                  os)))))
 
-      (not= :idle dpad-state)
+      (= :press dpad-state)
       (-> db
           (assoc-in [:objects 0 :state] :walk)
-          (assoc-in [:objects 0 :dir] dpad-state))
+          (assoc-in [:objects 0 :dir] dpad-dir))
 
       (= :idle dpad-state)
       (assoc-in db [:objects 0 :state] :idle))))

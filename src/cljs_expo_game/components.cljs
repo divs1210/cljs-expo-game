@@ -22,25 +22,45 @@
   (.alert (.-Alert ReactNative) text))
 
 (defn sprite
-  [{:keys [frames curr-frame style]}]
-  (let [curr-frame (if (< curr-frame (count frames))
+  [{:keys [tile-index curr-state curr-dir curr-frame style]}]
+  (let [curr-tiles (get-in tile-index [curr-state curr-dir :frames])
+
+        curr-frame (if (< curr-frame (count curr-tiles))
                      curr-frame
                      0)
-        {:keys [top left width height rot]
-         :or {rot 0}}
-        style]
-    [view
-     {:style {:position :absolute
-              :top top
-              :left left
-              :width width
-              :height height}}
-     (if (= "android" k/OS)
-       (for [[i f] (map-indexed vector frames)
+
+        {:keys [top left width height rot]} style
+
+        rot (or rot 0)]
+    (if (= "android" k/OS)
+      [view
+       {:style {:position :absolute
+                :top top
+                :left left
+                :width width
+                :height height}}
+       (for [[state dirs-map] tile-index
+             [dir tiles-map] dirs-map
+             :let [first-tile (-> tiles-map :frames first)
+                   show? (and (zero? curr-frame)
+                              (= curr-state state)
+                              (= curr-dir dir))]]
+         ^{:key (hash [state dir])}
+         [image
+          {:source first-tile
+           :style {:position :absolute
+                   :top 0
+                   :left 0
+                   :width width
+                   :height height
+                   :opacity (if show? 1 0.05)
+                   :resize-mode :stretch
+                   :transform [{:rotate (str rot "deg")}]}}])
+       (for [[i tile] (map-indexed vector curr-tiles)
              :let [show? (= curr-frame i)]]
          ^{:key i}
          [image
-          {:source f
+          {:source tile
            :style {:position :absolute
                    :top 0
                    :left 0
@@ -48,13 +68,14 @@
                    :height height
                    :opacity (if show? 1 0)
                    :resize-mode :stretch
-                   :transform [{:rotate (str rot "deg")}]}}])
-       [image
-        {:source (nth frames curr-frame)
-         :style {:position :absolute
-                 :top 0
-                 :left 0
-                 :width width
-                 :height height
-                 :resize-mode :stretch
-                 :transform [{:rotate (str rot "deg")}]}}])]))
+                   :transform [{:rotate (str rot "deg")}]}}])]
+      ;; iOS
+      [image
+       {:source (nth curr-tiles curr-frame)
+        :style {:position :absolute
+                :top top
+                :left left
+                :width width
+                :height height
+                :resize-mode :stretch
+                :transform [{:rotate (str rot "deg")}]}}])))

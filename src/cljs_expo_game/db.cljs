@@ -45,11 +45,11 @@
                           :down {:frames tiles/deer-run-down}
                           :left {:frames tiles/deer-run-left}
                           :right {:frames tiles/deer-run-right}}}
-             :dpad {:idle tiles/dpad
-                    :up tiles/dpad-up
-                    :down tiles/dpad-down
-                    :left tiles/dpad-left
-                    :right tiles/dpad-right}
+             :dpad {:idle {:down {:frames tiles/dpad-idle}}
+                    :press {:up {:frames tiles/dpad-up}
+                            :down {:frames tiles/dpad-down}
+                            :left {:frames tiles/dpad-left}
+                            :right {:frames tiles/dpad-right}}}
              :shoot-btn {:idle :gold
                          :press :orange}}
    :text {:id 0
@@ -217,7 +217,8 @@
                                                                                           [:after-ms 2000 [:clear-text id]]]))}}]]))}}]))
                                   [:set-in [:logic :collision-area-set?] true]]))}}}
    :fingers {}
-   :controls {:dpad {:state :idle}
+   :controls {:dpad {:state :idle
+                     :dir :down}
               :shoot-btn {:state :idle}}
    :world [{:pos [4 0]
             :tile tiles/beach-tl-grass}

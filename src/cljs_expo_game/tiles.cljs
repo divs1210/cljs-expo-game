@@ -198,17 +198,17 @@
 
 ;; Controls
 ;; ========
-(def dpad
-  (js/require "./assets/images/controls/dpad.png"))
+(def dpad-idle
+  [(js/require "./assets/images/controls/dpad.png")])
 
 (def dpad-up
-  (js/require "./assets/images/controls/dpad_up.png"))
+  [(js/require "./assets/images/controls/dpad_up.png")])
 
 (def dpad-down
-  (js/require "./assets/images/controls/dpad_down.png"))
+  [(js/require "./assets/images/controls/dpad_down.png")])
 
 (def dpad-left
-  (js/require "./assets/images/controls/dpad_left.png"))
+  [(js/require "./assets/images/controls/dpad_left.png")])
 
 (def dpad-right
-  (js/require "./assets/images/controls/dpad_right.png"))
+  [(js/require "./assets/images/controls/dpad_right.png")])

@@ -8,9 +8,8 @@
             [cljs-expo-game.constants :as k]))
 
 (defn controls []
-  (let [dpad-state @(<sub [:controls :dpad :state])
-        dpad-tiles @(<sub [:sprites :dpad])
-        dpad-states (keys dpad-tiles)
+  (let [sprites @(<sub [:sprites])
+        dpad @(<sub [:controls :dpad])
         shoot-btn-state @(<sub [:controls :shoot-btn :state])
         shoot-btn-color @(<sub [:sprites :shoot-btn shoot-btn-state])]
     [com/view
@@ -21,10 +20,12 @@
               :height k/CONTROLS-HEIGHT}}
      ;; walk
      [com/sprite
-      {:frames (map #(dpad-tiles %) dpad-states)
-       :curr-frame (.indexOf dpad-states dpad-state)
-       :style {:left (k/DPAD-POS 0)
-               :top (k/DPAD-POS 1)
+      {:tile-index (sprites :dpad)
+       :curr-state (:state dpad)
+       :curr-dir (:dir dpad)
+       :curr-frame 0
+       :style {:top (k/DPAD-POS 1)
+               :left (k/DPAD-POS 0)
                :width k/DPAD-WIDTH
                :height k/DPAD-HEIGHT}}]
      ;; shoot
@@ -115,19 +116,18 @@
             :let [{:keys [type width height rot
                           state dir curr-frame]} object
 
-                  [x y width height] (u/obj->box object)
-                  frames (get-in sprites [type state dir :frames])]]
+                  [x y width height] (u/obj->box object)]]
         ^{:key id}
         [com/sprite
-         {:frames frames
+         {:tile-index (sprites type)
+          :curr-state state
+          :curr-dir dir
           :curr-frame curr-frame
-          :style {:position :absolute
-                  :resize-mode :stretch
-                  :top y
+          :style {:top y
                   :left x
                   :width width
                   :height height
-                  :transform [{:rotate (str rot "deg")}]}}])
+                  :rot rot}}])
 
       ;; render collision boxes
       #_(for [[id object] objects
