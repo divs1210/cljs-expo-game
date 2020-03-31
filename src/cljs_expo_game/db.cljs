@@ -75,8 +75,7 @@
                                      {:keys [rama-state rama-pos rama-dir]}
                                      (u/with-prefix rama :rama)
 
-                                     should-walk? (and (= :walk rama-state)
-                                                       (u/ahead-of? rama this)
+                                     should-walk? (and (u/ahead-of? rama this)
                                                        (> (u/distance rama-pos (:pos this))
                                                           (* 0.75 k/TILE-WIDTH)))]
                                  [[:set-in [:objects (:id this) :dir] rama-dir]
