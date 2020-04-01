@@ -29,6 +29,14 @@
                                 :down {:frames tiles/lxmn-walk-down}
                                 :left {:frames tiles/lxmn-walk-left}
                                 :right {:frames tiles/lxmn-walk-right}}}
+             :tadaka {:idle {:up {:frames tiles/tadaka-idle-up}
+                             :down {:frames tiles/tadaka-idle-down}
+                             :left {:frames tiles/tadaka-idle-left}
+                             :right {:frames tiles/tadaka-idle-right}}
+                      :walk {:up {:frames tiles/tadaka-walk-up}
+                             :down {:frames tiles/tadaka-walk-down}
+                             :left {:frames tiles/tadaka-walk-left}
+                             :right {:frames tiles/tadaka-walk-right}}}
              :hut {:idle {:down {:frames tiles/hut}}}
              :bonfire {:idle {:down {:frames tiles/bonfire}}}
              :bow-pickup {:idle {:down {:frames tiles/bow-pickup}}}
@@ -51,21 +59,32 @@
                             :right {:frames tiles/dpad-right}}}
              :shoot-btn {:idle :gold
                          :press :orange}}
-   :text {:id 0
-          :speaker "Rishi Vishwamitra"
-          :speech "Prince Rama,\nyou must learn to fight for righteousness and to protect dharma!\nTake this bow!"}
-   :objects {:rama o/rama
-             :lakshmana o/lakshmana
+   :text nil #_{:id 0
+               :speaker "Rishi Vishwamitra"
+               :speech "Prince Rama,\nyou must learn to fight for righteousness and to protect dharma!\nTake this bow!"}
+   :objects {:rama (-> o/rama
+                       (assoc :pos [60 390]
+                              :dir :right)
+                       (assoc-in [:inventory :bow] {}))
+             :lakshmana (assoc o/lakshmana
+                               :pos [45 405]
+                               :dir :right)
              :vishwamitra o/vishwamitra
-             :bow-pickup1 (assoc o/bow-pickup :id :bow-pickup1)
+             :tadaka o/tadaka
+             ;; :bow-pickup1 (assoc o/bow-pickup :id :bow-pickup1)
              :bonfire1 (assoc o/bonfire :id :bonfire1)
              :hut1 (assoc o/hut :id :hut1)
-             :scarecrow1 (assoc o/scarecrow :id :scarecrow1)}
+             ;; :scarecrow1 (assoc o/scarecrow :id :scarecrow1)
+             }
    :fingers {}
    :controls {:dpad {:state :idle
                      :dir :down}
               :shoot-btn {:state :idle}}
-   :world [{:pos [4 0]
+   :world (for [row (range 16)
+                col (range 7)]
+            {:pos [row col]
+             :tile tiles/grass})
+   #_[{:pos [4 0]
             :tile tiles/beach-tl-grass}
            {:pos [4 1]
             :tile tiles/beach-tm-grass}

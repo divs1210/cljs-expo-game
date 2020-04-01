@@ -175,7 +175,7 @@
                 :background-color :black
                 :color :white
                 :padding 3}}
-       (let [rama (objects 0)
+       (let [rama (objects :rama)
              [x y] (:pos rama)
              [row col] (u/obj->grid rama)]
          (str "Pos: " (int x) "," (int y)

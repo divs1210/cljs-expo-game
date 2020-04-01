@@ -137,6 +137,37 @@
       (js/require (str "./assets/images/vishwamitra/idle_" i ".png"))))
 
 
+;; Tadaka
+;; ======
+(def tadaka-idle-up
+  [(js/require (str "./assets/images/tadaka/walk_up_0.png"))])
+
+(def tadaka-idle-down
+  [(js/require (str "./assets/images/tadaka/walk_down_0.png"))])
+
+(def tadaka-idle-left
+  [(js/require (str "./assets/images/tadaka/walk_left_0.png"))])
+
+(def tadaka-idle-right
+  [(js/require (str "./assets/images/tadaka/walk_right_0.png"))])
+
+(def tadaka-walk-up
+  (for [i (range 4)]
+    (js/require (str "./assets/images/tadaka/walk_up_" i ".png"))))
+
+(def tadaka-walk-down
+  (for [i (range 4)]
+    (js/require (str "./assets/images/tadaka/walk_down_" i ".png"))))
+
+(def tadaka-walk-left
+  (for [i (range 4)]
+    (js/require (str "./assets/images/tadaka/walk_left_" i ".png"))))
+
+(def tadaka-walk-right
+  (for [i (range 4)]
+    (js/require (str "./assets/images/tadaka/walk_right_" i ".png"))))
+
+
 ;; Arrow
 ;; =====
 (def arrow-up

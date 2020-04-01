@@ -144,5 +144,5 @@
                    ;; else
                    [x y])]
      (-> db
-         (assoc-in [:objects id :pos] new-pos)
-         (assoc-in [:objects id :state] :walk)))))
+         (assoc-in [:objects id :state] :walk)
+         (assoc-in [:objects id :pos] new-pos)))))

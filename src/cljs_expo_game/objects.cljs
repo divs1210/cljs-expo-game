@@ -2,6 +2,29 @@
   (:require [cljs-expo-game.constants :as k]
             [cljs-expo-game.util :as u]))
 
+(def arrow
+  {:type :arrow
+   :pos [0 0]
+   :state :idle
+   :dir :down
+   :life 50
+   :curr-frame 0
+   :on-update (fn [db this]
+                (let [{:keys [id dir pos life]} this
+                      [x y] pos
+                      [dx dy] k/ARROW-VEL
+                      new-pos (case dir
+                                :left [(- x dx) y]
+                                :right [(+ x dx) y]
+                                :up [x (- y dy)]
+                                :down [x (+ y dy)]
+                                ;; else
+                                [x y])]
+                  (if (zero? life)
+                    [[:remove-object id]]
+                    [[:set-in [:objects id :pos] new-pos]
+                     [:set-in [:objects id :life] (dec life)]])))})
+
 (def rama
   {:id :rama
    :type :rama
@@ -9,7 +32,50 @@
    :state :idle
    :dir :up
    :inventory {}
-   :curr-frame 0})
+   :curr-frame 0
+   :on-update (fn [db rama]
+                (let [{:keys [pos dir curr-frame]} rama
+                      shoot-btn-state (-> db :controls :shoot-btn :state)
+                      {:keys [dpad-state dpad-dir]} (u/with-prefix (-> db :controls :dpad)
+                                                                   :dpad)
+                      should-shoot? (= :press shoot-btn-state)
+                      should-walk? (= :press dpad-state)]
+                  (cond
+                    should-shoot?
+                    (let [shoot-frames-count (-> db :sprites :rama :shoot :up :frames count)
+                          [x y w h] (u/obj->box rama)
+                          aw (case dir
+                               :up (/ h 5)
+                               :down (/ h 5)
+                               :left (/ w 2)
+                               :right (/ w 2))
+                          ah (case dir
+                               :up (/ w 2)
+                               :down (/ w 2)
+                               :left (/ h 5)
+                               :right (/ h 5))
+                          [ax ay] (case dir
+                                    :up [(- (+ x (/ w 2)) (/ aw 2)) (- (+ y (/ h 2)) (/ ah 2))]
+                                    :down [(- (+ x (/ w 2)) (/ aw 2)) (+ y (/ h 2))]
+                                    :left [(- (+ x (/ w 2)) aw) (+ y (/ h 3))]
+                                    :right [(+ x (/ w 2)) (+ y (/ h 3))])
+                          release-arrow? (= (- shoot-frames-count 2)
+                                            curr-frame)]
+                      [[:set-in [:objects :rama :state] :shoot]
+                       (if release-arrow?
+                         [:add-object (assoc arrow
+                                             :pos [ax ay]
+                                             :width aw
+                                             :height ah
+                                             :dir dir)]
+                         [:no-op])])
+
+                    should-walk?
+                    [[:set-in [:objects :rama :dir] dpad-dir]
+                     [:walk rama]]
+
+                    (= :idle dpad-state)
+                    [[:set-in [:objects :rama :state] :idle]])))})
 
 (def lakshmana
   {:id :lakshmana
@@ -59,6 +125,15 @@
                                  :speaker "Rishi Vishwamitra"
                                  :speech "Careful, son!"}]
                      [:after-ms 2000 [:clear-text id]]]))}})
+
+(def tadaka
+  {:type :tadaka
+   :pos [(* 4 k/TILE-WIDTH) (* 6 k/TILE-HEIGHT)]
+   :width (* k/TILE-WIDTH 1.2)
+   :height (* k/TILE-HEIGHT 1.3)
+   :state :idle
+   :dir :left
+   :curr-frame 0})
 
 (def hut
   {:type :hut
@@ -208,3 +283,4 @@
                                                              [:after-ms 2000 [:clear-text id]]
                                                              [:add-object deer]]))})])
                      [:set-in [:logic :collision-area-set?] true]]))}})
+
