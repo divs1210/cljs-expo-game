@@ -94,7 +94,7 @@
 (reg-event-db
  :add-to-inventory
  (fn [db [_ key val]]
-   (assoc-in db [:objects 0 :inventory key] val)))
+   (assoc-in db [:objects :rama :inventory key] val)))
 
 (reg-event-db
  :add-object

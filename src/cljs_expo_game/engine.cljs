@@ -36,7 +36,7 @@
                                       :dir :down}))))
 
 (defn handle-shoot [db]
-  (if (get-in db [:objects 0 :inventory :bow])
+  (if (get-in db [:objects :rama :inventory :bow])
     (let [touches (get-touches db)
           [x y] k/SHOOT-BTN-POS
           btn-area [x (+ y k/CONTROLS-Y) k/SHOOT-BTN-WIDTH k/SHOOT-BTN-HEIGHT]]
@@ -52,10 +52,10 @@
     (cond
       (= :press shoot-btn-state)
       (-> db
-          (assoc-in [:objects 0 :state] :shoot)
+          (assoc-in [:objects :rama :state] :shoot)
           (update :objects (fn [os]
                              (let [new-id (->> os keys (apply max) inc)
-                                   {:keys [pos dir curr-frame] :as rama} (get-in db [:objects 0])
+                                   {:keys [pos dir curr-frame] :as rama} (get-in db [:objects :rama])
                                    shoot-frames-count (-> db :sprites :rama :shoot :up :frames count)
                                    [x y w h] (u/obj->box rama)
                                    aw (case dir
@@ -88,14 +88,14 @@
 
       (= :press dpad-state)
       (-> db
-          (assoc-in [:objects 0 :state] :walk)
-          (assoc-in [:objects 0 :dir] dpad-dir))
+          (assoc-in [:objects :rama :state] :walk)
+          (assoc-in [:objects :rama :dir] dpad-dir))
 
       (= :idle dpad-state)
-      (assoc-in db [:objects 0 :state] :idle))))
+      (assoc-in db [:objects :rama :state] :idle))))
 
 (defn move-rama [db]
-  (let [rama (get-in db [:objects 0])
+  (let [rama (get-in db [:objects :rama])
         {:keys [state dir pos]} rama
         [x y] pos
         [dx dy] k/WALK-VEL
@@ -111,8 +111,8 @@
       (if (some #(= (u/obj->grid new-rama)
                     (:pos %))
                 (:world db))
-        (assoc-in db [:objects 0 :pos] new-pos)
-        (assoc-in db [:objects 0 :state] :idle))
+        (assoc-in db [:objects :rama :pos] new-pos)
+        (assoc-in db [:objects :rama :state] :idle))
       db)))
 
 (defn move-arrows [db]

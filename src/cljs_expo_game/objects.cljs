@@ -3,7 +3,7 @@
             [cljs-expo-game.util :as u]))
 
 (def rama
-  {:id 0
+  {:id :rama
    :type :rama
    :pos [(* 4 k/TILE-WIDTH) (* 7 k/TILE-HEIGHT)]
    :state :idle
@@ -12,7 +12,7 @@
    :curr-frame 0})
 
 (def lakshmana
-  {:id 1
+  {:id :lakshmana
    :type :lakshmana
    :pos [(* 4.5 k/TILE-WIDTH) (* 7.5 k/TILE-HEIGHT)]
    :state :idle
@@ -20,7 +20,7 @@
    :inventory {}
    :curr-frame 0
    :on-update (fn [db this]
-                (let [rama (get-in db [:objects 0])
+                (let [rama (get-in db [:objects :rama])
 
                       {:keys [rama-state rama-pos rama-dir]}
                       (u/with-prefix rama :rama)
@@ -34,7 +34,7 @@
                      [:set-in [:objects (:id this) :state] :idle])]))})
 
 (def vishwamitra
-  {:id 2
+  {:id :vishwamitra
    :type :vishwamitra
    :pos [(* 2.4 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]
    :width (* 0.6 k/TILE-WIDTH)
@@ -116,7 +116,7 @@
    :dir :right
    :curr-frame 0
    :on-update (fn [db this]
-                (let [rama (get-in db [:objects 0])
+                (let [rama (get-in db [:objects :rama])
                       {:keys [id dir pos]} this
                       [x y] pos
                       [dx dy] k/WALK-VEL

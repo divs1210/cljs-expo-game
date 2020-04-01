@@ -54,13 +54,13 @@
    :text {:id 0
           :speaker "Rishi Vishwamitra"
           :speech "Prince Rama,\nyou must learn to fight for righteousness and to protect dharma!\nTake this bow!"}
-   :objects {0 o/rama
-             1 o/lakshmana
-             2 o/vishwamitra
-             3 (assoc o/bow-pickup :id 3)
-             4 (assoc o/bonfire :id 4)
-             5 (assoc o/hut :id 5)
-             6 (assoc o/scarecrow :id 6)}
+   :objects {:rama o/rama
+             :lakshmana o/lakshmana
+             :vishwamitra o/vishwamitra
+             :bow-pickup1 (assoc o/bow-pickup :id :bow-pickup1)
+             :bonfire1 (assoc o/bonfire :id :bonfire1)
+             :hut1 (assoc o/hut :id :hut1)
+             :scarecrow1 (assoc o/scarecrow :id :scarecrow1)}
    :fingers {}
    :controls {:dpad {:state :idle
                      :dir :down}

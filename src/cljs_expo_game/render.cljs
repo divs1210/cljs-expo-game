@@ -29,7 +29,7 @@
                :width k/DPAD-WIDTH
                :height k/DPAD-HEIGHT}}]
      ;; shoot
-     (when @(<sub [:objects 0 :inventory :bow])
+     (when @(<sub [:objects :rama :inventory :bow])
        [com/view
         {:style {:justify-content :center
                  :align-items :center
