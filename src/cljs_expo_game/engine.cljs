@@ -115,59 +115,6 @@
         (assoc-in db [:objects 0 :state] :idle))
       db)))
 
-(defn move-deer [db]
-  (update db :objects
-          (fn [objects]
-            (into {}
-                  (for [[id o] objects]
-                    (if (= :deer (:type o))
-                      (let [deer o
-                            rama (get objects 0)
-                            {:keys [dir pos]} deer
-                            [x y] pos
-                            [dx dy] k/WALK-VEL
-                            new-pos (case dir
-                                      :left [(- x dx) y]
-                                      :right [(+ x dx) y]
-                                      :up [x (- y dy)]
-                                      :down [x (+ y dy)]
-                                      ;; else
-                                      [x y])
-                            [rama-row rama-col] (u/obj->grid rama)
-                            [row col] (u/obj->grid deer)]
-                        [id
-                         (cond
-                           (< col 0)
-                           (assoc o
-                                  :pos new-pos
-                                  :dir :right)
-
-                           (> col 5)
-                           (assoc o
-                                  :pos new-pos
-                                  :dir :left)
-
-                           (= col rama-col)
-                           (cond
-                             (< row rama-row)
-                             (assoc o
-                                    :dir :down
-                                    :state :idle)
-
-                             (>= row rama-row)
-                             (assoc o
-                                    :dir :up
-                                    :state :idle))
-
-                           (or (= :down (:dir deer)) (= :up (:dir deer)))
-                           (assoc o
-                                  :dir (rand-nth [:left :right])
-                                  :state :run)
-
-                           :else
-                           (assoc o :pos new-pos))])
-                      [id o]))))))
-
 (defn move-arrows [db]
   (update db :objects
           (fn [objects]
@@ -201,7 +148,6 @@
 (defn handle-movements [db]
   (-> db
       move-rama
-      move-deer
       remove-dead-arrows
       move-arrows))
 

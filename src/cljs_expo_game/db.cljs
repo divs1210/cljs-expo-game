@@ -1,8 +1,7 @@
 (ns cljs-expo-game.db
   (:require [clojure.spec.alpha :as s]
             [cljs-expo-game.tiles :as tiles]
-            [cljs-expo-game.constants :as k]
-            [cljs-expo-game.util :as u]))
+            [cljs-expo-game.objects :as o]))
 
 ;; spec of app-db
 (s/def ::app-db map?)
@@ -55,166 +54,13 @@
    :text {:id 0
           :speaker "Rishi Vishwamitra"
           :speech "Prince Rama,\nyou must learn to fight for righteousness and to protect dharma!\nTake this bow!"}
-   :objects {0 {:id 0
-                :type :rama
-                :pos [(* 4 k/TILE-WIDTH) (* 7 k/TILE-HEIGHT)]
-                :state :idle
-                :dir :up
-                :inventory {}
-                :curr-frame 0}
-             0.5 {:id 0.5
-                  :type :lakshmana
-                  :pos [(* 4.5 k/TILE-WIDTH) (* 7.5 k/TILE-HEIGHT)]
-                  :state :idle
-                  :dir :up
-                  :inventory {}
-                  :curr-frame 0
-                  :on-update (fn [db this]
-                               (let [rama (get-in db [:objects 0])
-
-                                     {:keys [rama-state rama-pos rama-dir]}
-                                     (u/with-prefix rama :rama)
-
-                                     should-walk? (and (u/ahead-of? rama this)
-                                                       (> (u/distance rama-pos (:pos this))
-                                                          (* 0.75 k/TILE-WIDTH)))]
-                                 [[:set-in [:objects (:id this) :dir] rama-dir]
-                                  (if should-walk?
-                                    [:walk this]
-                                    [:set-in [:objects (:id this) :state] :idle])]))}
-             1 {:id 1
-                :type :vishwamitra
-                :pos [(* 2.4 k/TILE-WIDTH) (* 4.5 k/TILE-HEIGHT)]
-                :width (* 0.6 k/TILE-WIDTH)
-                :height (* 1.1 k/TILE-HEIGHT)
-                :state :idle
-                :dir :down
-                :curr-frame 0
-                :on-collide {:rama
-                             (fn [db this rama dir]
-                               (let [id (gensym)]
-                                 [[:uncollide this rama dir]
-                                  [:set-text {:id id
-                                              :speaker "Rishi Vishwamitra"
-                                              :speech "You are invading my personal space, Prince Rama!"}]
-                                  [:after-ms 2000 [:clear-text id]]]))
-
-                             :arrow
-                             (fn [db this arrow _]
-                               (let [id (gensym)]
-                                 [[:remove-object (:id arrow)]
-                                  [:set-text {:id id
-                                              :speaker "Rishi Vishwamitra"
-                                              :speech "Careful, son!"}]
-                                  [:after-ms 2000 [:clear-text id]]]))}}
-             2 {:id 2
-                :type :bow-pickup
-                :pos [(* 2.4 k/TILE-WIDTH) (* 6 k/TILE-HEIGHT)]
-                :rot 0
-                :width (/ k/TILE-WIDTH 2)
-                :height (/ k/TILE-HEIGHT 2)
-                :state :idle
-                :dir :down
-                :curr-frame 0
-                :on-collide {:rama
-                             (fn [db this rama _]
-                               [[:remove-object (:id this)]
-                                [:set-text {:speaker "Rishi Vishwamitra"
-                                            :speech (str "Now shoot at the scarecrow.\n"
-                                                         "Long press to pull back the string and release an arrow.\n"
-                                                         "Try shooting from all directions.\n"
-                                                         "Once you are done, move over to the sacrificial fire.")}]
-                                [:add-to-inventory :bow {}]])}}
-             3 {:id 3
-                :type :bonfire
-                :pos [(* 3.5 k/TILE-WIDTH) (* 5 k/TILE-HEIGHT)]
-                :width (/ k/TILE-WIDTH 2)
-                :height (/ k/TILE-HEIGHT 2)
-                :state :idle
-                :dir :down
-                :curr-frame 0
-                :on-collide {:rama
-                             (fn [db this rama dir]
-                               [[:uncollide this rama dir]])}}
-             4 {:id 4
-                :type :hut
-                :pos [(* 0.8 k/TILE-WIDTH) (* 4.7 k/TILE-HEIGHT)]
-                :width (* k/TILE-WIDTH 1.2)
-                :height (* k/TILE-HEIGHT 1.3)
-                :state :idle
-                :dir :down
-                :curr-frame 0
-                :on-collide {:rama
-                             (fn [db this rama dir]
-                               [[:uncollide this rama dir]])
-
-                             :arrow
-                             (fn [db this arrow _]
-                               [[:remove-object (:id arrow)]])}}
-             5 {:id 5
-                :type :scarecrow
-                :pos [(* 2.5 k/TILE-WIDTH) (* 8 k/TILE-HEIGHT)]
-                :width (* k/TILE-WIDTH 0.8)
-                :height (* k/TILE-HEIGHT 0.8)
-                :state :idle
-                :dir :down
-                :curr-frame 0
-                :on-collide {:rama
-                             (fn [db this rama dir]
-                               [[:uncollide this rama dir]])
-
-                             :arrow
-                             (fn [db this arrow _]
-                               (let [id (gensym)
-                                     complement (rand-nth ["Good shot!"
-                                                           "Nice!"
-                                                           "Great aim!"])]
-                                 [[:remove-object (:id arrow)]
-                                  [:set-text {:id id
-                                              :speaker "Rishi Vishwamitra"
-                                              :speech complement}]
-                                  [:after-ms 2000 [:clear-text id]]
-                                  (if (get-in db [:logic :collision-area-set?])
-                                    [:no-op]
-                                    (let [id (gensym)]
-                                      [:add-object
-                                       {:id id
-                                        :type :collision-area
-                                        :pos [(* 2.75 k/TILE-WIDTH) (* 4.2 k/TILE-HEIGHT)]
-                                        :state :idle
-                                        :dir :down
-                                        :width (* k/TILE-WIDTH 2)
-                                        :height (* k/TILE-HEIGHT 2)
-                                        :curr-frame 0
-                                        :on-collide {:rama
-                                                     (fn [db this rama _]
-                                                       (let [id (gensym)]
-                                                         [[:remove-object (:id this)]
-                                                          [:set-text {:id id
-                                                                      :speaker "Rishi Vishwamitra"
-                                                                      :speech "AUUUUUUUUUMMMMMM!"}]
-                                                          [:after-ms 2000 [:clear-text id]]
-                                                          [:add-object {:id 6
-                                                                        :type :deer
-                                                                        :pos [(- k/TILE-WIDTH) (* 10 k/TILE-HEIGHT)]
-                                                                        :width (* k/TILE-WIDTH 0.8)
-                                                                        :height (* k/TILE-HEIGHT 0.8)
-                                                                        :state :run
-                                                                        :dir :right
-                                                                        :curr-frame 0
-                                                                        :on-collide {:rama
-                                                                                     (fn [db this rama dir]
-                                                                                       [[:uncollide this rama dir]])
-
-                                                                                     :arrow
-                                                                                     (fn [db this arrow _]
-                                                                                       (let [id (gensym)]
-                                                                                         [[:remove-object (:id arrow)]
-                                                                                          [:set-text {:id id
-                                                                                                      :speaker "Rishi Vishwamitra"
-                                                                                                      :speech "Hey, Rama!"}]
-                                                                                          [:after-ms 2000 [:clear-text id]]]))}}]]))}}]))
-                                  [:set-in [:logic :collision-area-set?] true]]))}}}
+   :objects {0 o/rama
+             1 o/lakshmana
+             2 o/vishwamitra
+             3 (assoc o/bow-pickup :id 3)
+             4 (assoc o/bonfire :id 4)
+             5 (assoc o/hut :id 5)
+             6 (assoc o/scarecrow :id 6)}
    :fingers {}
    :controls {:dpad {:state :idle
                      :dir :down}

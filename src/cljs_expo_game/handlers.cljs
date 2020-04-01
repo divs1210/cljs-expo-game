@@ -98,10 +98,10 @@
 
 (reg-event-db
  :add-object
- (fn [db [_ {:keys [id]
-             :or {id (gensym)}
-             :as obj}]]
-   (assoc-in db [:objects id] obj)))
+ (fn [db [_ {:keys [id type] :as obj}]]
+   (let [id (or id (gensym type))
+         obj (assoc obj :id id)]
+     (assoc-in db [:objects id] obj))))
 
 (reg-event-db
  :remove-object
