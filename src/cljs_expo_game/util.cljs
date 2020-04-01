@@ -132,3 +132,16 @@
         dy (- y2 y1)]
     (js/Math.sqrt (+ (* dx dx)
                      (* dy dy)))))
+
+(defn ahead-of
+  [obj [dx dy]]
+  (let [{:keys [id state dir pos]} obj
+        [x y] pos
+        new-pos (case dir
+                  :left [(- x dx) y]
+                  :right [(+ x dx) y]
+                  :up [x (- y dy)]
+                  :down [x (+ y dy)]
+                  ;; else
+                  [x y])]
+    new-pos))

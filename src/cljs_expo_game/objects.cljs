@@ -118,15 +118,7 @@
    :on-update (fn [db this]
                 (let [rama (get-in db [:objects :rama])
                       {:keys [id dir pos]} this
-                      [x y] pos
-                      [dx dy] k/WALK-VEL
-                      new-pos (case dir
-                                :left [(- x dx) y]
-                                :right [(+ x dx) y]
-                                :up [x (- y dy)]
-                                :down [x (+ y dy)]
-                                ;; else
-                                [x y])
+                      new-pos (u/ahead-of this k/WALK-VEL)
                       [rama-row rama-col] (u/obj->grid rama)
                       [row col] (u/obj->grid this)]
                   (cond
@@ -148,7 +140,8 @@
                       [[:set-in [:objects id :state] :idle]
                        [:set-in [:objects id :dir] :up]])
 
-                    (or (= :down (:dir this)) (= :up (:dir this)))
+                    (or (= :down dir)
+                        (= :up dir))
                     [[:set-in [:objects id :state] :run]
                      [:set-in [:objects id :dir] (rand-nth [:left :right])]]
 
