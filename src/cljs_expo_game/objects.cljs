@@ -283,4 +283,3 @@
                                                              [:after-ms 2000 [:clear-text id]]
                                                              [:add-object deer]]))})])
                      [:set-in [:logic :collision-area-set?] true]]))}})
-
