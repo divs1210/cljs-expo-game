@@ -59,23 +59,17 @@
                             :right {:frames tiles/dpad-right}}}
              :shoot-btn {:idle :gold
                          :press :orange}}
-   :text nil #_{:id 0
-               :speaker "Rishi Vishwamitra"
-               :speech "Prince Rama,\nyou must learn to fight for righteousness and to protect dharma!\nTake this bow!"}
    :objects {:rama (-> o/rama
                        (assoc :pos [60 390]
-                              :dir :right)
-                       (assoc-in [:inventory :bow] {}))
+                              :dir :right))
              :lakshmana (assoc o/lakshmana
                                :pos [45 405]
                                :dir :right)
              :vishwamitra o/vishwamitra
              :tadaka o/tadaka
-             ;; :bow-pickup1 (assoc o/bow-pickup :id :bow-pickup1)
              :bonfire1 (assoc o/bonfire :id :bonfire1)
-             :hut1 (assoc o/hut :id :hut1)
-             ;; :scarecrow1 (assoc o/scarecrow :id :scarecrow1)
-             }
+             :hut1 (assoc o/hut :id :hut1)}
+   :text nil
    :fingers {}
    :controls {:dpad {:state :idle
                      :dir :down}
@@ -84,175 +78,4 @@
    :world (for [row (range 16)
                 col (range 7)]
             {:pos [row col]
-             :tile tiles/grass})
-   #_[{:pos [4 0]
-            :tile tiles/beach-tl-grass}
-           {:pos [4 1]
-            :tile tiles/beach-tm-grass}
-           {:pos [4 2]
-            :tile tiles/beach-tm-grass}
-           {:pos [4 3]
-            :tile tiles/beach-tm-grass}
-           {:pos [4 4]
-            :tile tiles/beach-tr-grass}
-
-           {:pos [5 0]
-            :tile tiles/beach-lm-grass}
-           {:pos [5 1]
-            :tile tiles/grass}
-           {:pos [5 2]
-            :tile tiles/grass}
-           {:pos [5 3]
-            :tile tiles/grass}
-           {:pos [5 4]
-            :tile tiles/beach-trd-grass}
-           {:pos [5 5]
-            :tile tiles/beach-tr-grass}
-
-           {:pos [6 0]
-            :tile tiles/beach-lm-grass}
-           {:pos [6 1]
-            :tile tiles/grass}
-           {:pos [6 2]
-            :tile tiles/grass}
-           {:pos [6 3]
-            :tile tiles/grass}
-           {:pos [6 4]
-            :tile tiles/grass}
-           {:pos [6 5]
-            :tile tiles/beach-rm-grass}
-
-           {:pos [7 0]
-            :tile tiles/beach-tld-grass}
-           {:pos [7 1]
-            :tile tiles/grass}
-           {:pos [7 2]
-            :tile tiles/grass}
-           {:pos [7 3]
-            :tile tiles/grass}
-           {:pos [7 4]
-            :tile tiles/grass}
-           {:pos [7 5]
-            :tile tiles/beach-trd-grass}
-           {:pos [7 6]
-            :tile tiles/beach-tm-grass}
-
-           {:pos [8 0]
-            :tile tiles/grass}
-           {:pos [8 1]
-            :tile tiles/grass}
-           {:pos [8 2]
-            :tile tiles/grass}
-           {:pos [8 3]
-            :tile tiles/grass}
-           {:pos [8 4]
-            :tile tiles/grass}
-           {:pos [8 5]
-            :tile tiles/grass}
-           {:pos [8 6]
-            :tile tiles/grass}
-
-           {:pos [9 0]
-            :tile tiles/grass}
-           {:pos [9 1]
-            :tile tiles/grass}
-           {:pos [9 2]
-            :tile tiles/grass}
-           {:pos [9 3]
-            :tile tiles/grass}
-           {:pos [9 4]
-            :tile tiles/grass}
-           {:pos [9 5]
-            :tile tiles/grass}
-           {:pos [9 6]
-            :tile tiles/grass}
-
-           {:pos [10 0]
-            :tile tiles/grass}
-           {:pos [10 1]
-            :tile tiles/grass}
-           {:pos [10 2]
-            :tile tiles/grass}
-           {:pos [10 3]
-            :tile tiles/grass}
-           {:pos [10 4]
-            :tile tiles/grass}
-           {:pos [10 5]
-            :tile tiles/grass}
-           {:pos [10 6]
-            :tile tiles/grass}
-
-           {:pos [11 0]
-            :tile tiles/grass}
-           {:pos [11 1]
-            :tile tiles/grass}
-           {:pos [11 2]
-            :tile tiles/grass}
-           {:pos [11 3]
-            :tile tiles/grass}
-           {:pos [11 4]
-            :tile tiles/grass}
-           {:pos [11 5]
-            :tile tiles/grass}
-           {:pos [11 6]
-            :tile tiles/grass}
-
-           {:pos [12 0]
-            :tile tiles/grass}
-           {:pos [12 1]
-            :tile tiles/grass}
-           {:pos [12 2]
-            :tile tiles/grass}
-           {:pos [12 3]
-            :tile tiles/grass}
-           {:pos [12 4]
-            :tile tiles/grass}
-           {:pos [12 5]
-            :tile tiles/grass}
-           {:pos [12 6]
-            :tile tiles/grass}
-
-           {:pos [13 0]
-            :tile tiles/grass}
-           {:pos [13 1]
-            :tile tiles/grass}
-           {:pos [13 2]
-            :tile tiles/grass}
-           {:pos [13 3]
-            :tile tiles/grass}
-           {:pos [13 4]
-            :tile tiles/grass}
-           {:pos [13 5]
-            :tile tiles/grass}
-           {:pos [13 6]
-            :tile tiles/grass}
-
-           {:pos [14 0]
-            :tile tiles/grass}
-           {:pos [14 1]
-            :tile tiles/grass}
-           {:pos [14 2]
-            :tile tiles/grass}
-           {:pos [14 3]
-            :tile tiles/grass}
-           {:pos [14 4]
-            :tile tiles/grass}
-           {:pos [14 5]
-            :tile tiles/grass}
-           {:pos [14 6]
-            :tile tiles/grass}
-
-           {:pos [15 0]
-            :tile tiles/grass}
-           {:pos [15 1]
-            :tile tiles/grass}
-           {:pos [15 2]
-            :tile tiles/grass}
-           {:pos [15 3]
-            :tile tiles/grass}
-           {:pos [15 4]
-            :tile tiles/grass}
-           {:pos [15 5]
-            :tile tiles/grass}
-           {:pos [15 6]
-            :tile tiles/grass}]})
+             :tile tiles/grass})})
