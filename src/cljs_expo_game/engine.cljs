@@ -37,7 +37,7 @@
                                       :dir :down}))))
 
 (defn handle-shoot [db]
-  (if (get-in db [:objects :rama :inventory :bow])
+  (if (get-in db [:controls :shoot-btn :enabled?])
     (let [touches (get-touches db)
           [x y] k/SHOOT-BTN-POS
           btn-area [x (+ y k/CONTROLS-Y) k/SHOOT-BTN-WIDTH k/SHOOT-BTN-HEIGHT]]

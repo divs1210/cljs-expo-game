@@ -29,7 +29,7 @@
                :width k/DPAD-WIDTH
                :height k/DPAD-HEIGHT}}]
      ;; shoot
-     (when @(<sub [:objects :rama :inventory :bow])
+     (when @(<sub [:controls :shoot-btn :enabled?])
        [com/view
         {:style {:justify-content :center
                  :align-items :center
@@ -165,20 +165,4 @@
           speech]])
 
       ;; render control panel
-      [controls]
-
-      ;; render info
-      [com/text
-       {:style {:position :absolute
-                :bottom 10
-                :left 10
-                :background-color :black
-                :color :white
-                :padding 3}}
-       (let [rama (objects :rama)
-             [x y] (:pos rama)
-             [row col] (u/obj->grid rama)]
-         (str "Pos: " (int x) "," (int y)
-              " Grid: " (int row) "," (int col)
-              " Frame: " (:curr-frame rama)
-              " Objects: " (count objects)))]])])
+      [controls]])])

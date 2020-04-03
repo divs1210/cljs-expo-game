@@ -79,7 +79,8 @@
    :fingers {}
    :controls {:dpad {:state :idle
                      :dir :down}
-              :shoot-btn {:state :idle}}
+              :shoot-btn {:state :idle
+                          :enabled? true}}
    :world (for [row (range 16)
                 col (range 7)]
             {:pos [row col]
