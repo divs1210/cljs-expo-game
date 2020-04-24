@@ -94,7 +94,7 @@
                       should-walk? (> (u/distance rama-pos (:pos this))
                                       (* 0.75 k/TILE-WIDTH))
 
-                      dir-to-rama (u/dir-from this rama)]
+                      dir-to-rama (u/dir-to this rama)]
                   (if should-walk?
                     [[:set-in [:objects (:id this) :dir] dir-to-rama]
                      [:walk this]]
@@ -131,6 +131,7 @@
   {:id :tadaka
    :type :tadaka
    :pos [(* 4 k/TILE-WIDTH) (* 6 k/TILE-HEIGHT)]
+   :walk-vel (map #(* 1.5 %) k/WALK-VEL)
    :width (* k/TILE-WIDTH 1.2)
    :height (* k/TILE-HEIGHT 1.3)
    :state :idle
@@ -138,14 +139,39 @@
    :curr-frame 0
    :on-collide {:rama
                 (fn [db this rama dir]
-                  [[:uncollide this rama dir]
-                   [:set-text {:speaker "Tadaka"
-                               :speech "Get off me!"}]
-                   [:after-ms 1000 [:clear-text]]])
+                  [[:uncollide this rama dir]])
 
                 :lakshmana
                 (fn [db this lxmn dir]
-                  [[:uncollide this lxmn dir]])}})
+                  (let [rama (-> db :objects :rama)
+                        walk-dir (case dir
+                                   (:top :bottom)
+                                   (if (u/left-of? rama lxmn)
+                                     :left
+                                     :right)
+
+                                   (:left :right)
+                                   (if (u/above? rama lxmn)
+                                     :up
+                                     :down))]
+                    [[:uncollide this lxmn dir]
+                     [:set-in [:objects (:id lxmn) :dir] walk-dir]
+                     [:walk lxmn]]))}
+   :on-update (fn [db this]
+                (let [rama (-> db :objects :rama)
+                      dist-to-rama (u/distance (-> this u/obj->box u/center)
+                                               (-> rama u/obj->box u/center))
+                      dir-to-rama (u/dir-to this rama)]
+                  [[:set-in [:objects (:id this) :dir] dir-to-rama]
+                   (cond
+                     (> dist-to-rama (/ k/TILE-WIDTH 1.5))
+                     [:walk this]
+
+                     (= :idle (:state rama))
+                     [:set-in [:objects (:id this) :state] :idle]
+
+                     :else
+                     [:no-op])]))})
 
 (def hut
   {:type :hut

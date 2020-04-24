@@ -152,24 +152,44 @@
   [(js/require (str "./assets/images/tadaka/walk_right_0.png"))])
 
 (def tadaka-walk-up
-  (mapcat (fn [i]
-            (repeat 2 (js/require (str "./assets/images/tadaka/walk_up_" i ".png"))))
-          (range 4)))
+  [(js/require (str "./assets/images/tadaka/walk_up_" 0 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_up_" 1 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_up_" 1 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_up_" 2 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_up_" 2 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_up_" 3 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_up_" 3 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_up_" 0 ".png"))])
 
 (def tadaka-walk-down
-  (mapcat (fn [i]
-            (repeat 2 (js/require (str "./assets/images/tadaka/walk_down_" i ".png"))))
-          (range 4)))
+  [(js/require (str "./assets/images/tadaka/walk_down_" 0 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_down_" 1 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_down_" 1 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_down_" 2 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_down_" 2 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_down_" 3 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_down_" 3 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_down_" 0 ".png"))])
 
 (def tadaka-walk-left
-  (mapcat (fn [i]
-            (repeat 2 (js/require (str "./assets/images/tadaka/walk_left_" i ".png"))))
-          (range 4)))
+  [(js/require (str "./assets/images/tadaka/walk_left_" 0 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_left_" 1 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_left_" 1 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_left_" 2 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_left_" 2 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_left_" 3 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_left_" 3 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_left_" 0 ".png"))])
 
 (def tadaka-walk-right
-  (mapcat (fn [i]
-            (repeat 2 (js/require (str "./assets/images/tadaka/walk_right_" i ".png"))))
-          (range 4)))
+  [(js/require (str "./assets/images/tadaka/walk_right_" 0 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_right_" 1 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_right_" 1 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_right_" 2 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_right_" 2 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_right_" 3 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_right_" 3 ".png"))
+   (js/require (str "./assets/images/tadaka/walk_right_" 0 ".png"))])
 
 
 ;; Arrow

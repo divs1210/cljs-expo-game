@@ -133,9 +133,10 @@
 (reg-event-db
  :walk
  (fn [db [_ obj]]
-   (let [{:keys [id state dir pos]} obj
+   (let [id (:id obj)
+         {:keys [dir pos walk-vel]} (-> db :objects id)
          [x y] pos
-         [dx dy] k/WALK-VEL
+         [dx dy] (or walk-vel k/WALK-VEL)
          new-pos (case dir
                    :left [(- x dx) y]
                    :right [(+ x dx) y]

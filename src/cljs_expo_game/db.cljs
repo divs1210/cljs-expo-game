@@ -63,7 +63,7 @@
    :objects {:rama (-> o/rama
                        (assoc :pos [60 390]
                               :dir :right))
-             :lakshmana (assoc o/lakshmana
+             #_:lakshmana #_(assoc o/lakshmana
                                :pos [45 405]
                                :dir :right)
              :tadaka (assoc o/tadaka

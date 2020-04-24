@@ -98,6 +98,10 @@
   (into {} (for [[k v] m]
              [(keyword (str (name p) "-" (name k))) v])))
 
+(defn center
+  [[x y w h]]
+  [(+ x (/ w 2)) (+ y (/ h 2))])
+
 (defn ahead-of?
   [this that]
   (let [this-dir (:dir this)
@@ -112,11 +116,31 @@
       :right (> (+ this-x this-w)
                 (+ that-x that-w)))))
 
-(defn center
-  [[x y w h]]
-  [(+ x (/ w 2)) (+ y (/ h 2))])
+(defn above?
+  [this that]
+  (let [this-box (obj->box this)
+        that-box (obj->box that)
+        [_ this-y] (center this-box)
+        [_ that-y] (center that-box)]
+    (< this-y that-y)))
 
-(defn dir-from
+(defn below?
+  [this that]
+  (above? that this))
+
+(defn left-of?
+  [this that]
+  (let [this-box (obj->box this)
+        that-box (obj->box that)
+        [this-x _] (center this-box)
+        [that-x _] (center that-box)]
+    (< this-x that-x)))
+
+(defn right-of?
+  [this that]
+  (left-of? that this))
+
+(defn dir-to
   [this that]
   (let [this-box (obj->box this)
         that-box (obj->box that)
