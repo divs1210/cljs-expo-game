@@ -1,7 +1,8 @@
 (ns cljs-expo-game.db
   (:require [clojure.spec.alpha :as s]
             [cljs-expo-game.tiles :as tiles]
-            [cljs-expo-game.objects :as o]))
+            [cljs-expo-game.objects :as o]
+            [cljs-expo-game.constants :as k]))
 
 ;; spec of app-db
 (s/def ::app-db map?)
@@ -65,10 +66,10 @@
              :lakshmana (assoc o/lakshmana
                                :pos [45 405]
                                :dir :right)
-             :vishwamitra o/vishwamitra
-             :tadaka o/tadaka
-             :bonfire1 (assoc o/bonfire :id :bonfire1)
-             :hut1 (assoc o/hut :id :hut1)}
+             :tadaka (assoc o/tadaka
+                            :pos [(-> k/RES first (- k/TILE-WIDTH)) 350]
+                            :dir :left
+                            :state :idle)}
    :text nil
    :fingers {}
    :controls {:dpad {:state :idle

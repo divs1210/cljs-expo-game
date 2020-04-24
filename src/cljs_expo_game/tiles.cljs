@@ -152,20 +152,24 @@
   [(js/require (str "./assets/images/tadaka/walk_right_0.png"))])
 
 (def tadaka-walk-up
-  (for [i (range 4)]
-    (js/require (str "./assets/images/tadaka/walk_up_" i ".png"))))
+  (mapcat (fn [i]
+            (repeat 2 (js/require (str "./assets/images/tadaka/walk_up_" i ".png"))))
+          (range 4)))
 
 (def tadaka-walk-down
-  (for [i (range 4)]
-    (js/require (str "./assets/images/tadaka/walk_down_" i ".png"))))
+  (mapcat (fn [i]
+            (repeat 2 (js/require (str "./assets/images/tadaka/walk_down_" i ".png"))))
+          (range 4)))
 
 (def tadaka-walk-left
-  (for [i (range 4)]
-    (js/require (str "./assets/images/tadaka/walk_left_" i ".png"))))
+  (mapcat (fn [i]
+            (repeat 2 (js/require (str "./assets/images/tadaka/walk_left_" i ".png"))))
+          (range 4)))
 
 (def tadaka-walk-right
-  (for [i (range 4)]
-    (js/require (str "./assets/images/tadaka/walk_right_" i ".png"))))
+  (mapcat (fn [i]
+            (repeat 2 (js/require (str "./assets/images/tadaka/walk_right_" i ".png"))))
+          (range 4)))
 
 
 ;; Arrow

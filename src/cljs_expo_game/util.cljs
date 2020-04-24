@@ -112,6 +112,25 @@
       :right (> (+ this-x this-w)
                 (+ that-x that-w)))))
 
+(defn center
+  [[x y w h]]
+  [(+ x (/ w 2)) (+ y (/ h 2))])
+
+(defn dir-from
+  [this that]
+  (let [this-box (obj->box this)
+        that-box (obj->box that)
+        [this-x this-y] (center this-box)
+        [that-x that-y] (center that-box)
+        distances {:up (- that-y this-y)
+                   :down (- this-y that-y)
+                   :left (- that-x this-x)
+                   :right (- this-x that-x)}]
+    (->> distances
+         (sort-by last)
+         first
+         first)))
+
 (defn opposite-dir [dir]
   (case dir
     :up :down

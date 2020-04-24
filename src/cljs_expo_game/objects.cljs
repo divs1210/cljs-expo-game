@@ -91,13 +91,15 @@
                       {:keys [rama-state rama-pos rama-dir]}
                       (u/with-prefix rama :rama)
 
-                      should-walk? (and (u/ahead-of? rama this)
-                                        (> (u/distance rama-pos (:pos this))
-                                           (* 0.75 k/TILE-WIDTH)))]
-                  [[:set-in [:objects (:id this) :dir] rama-dir]
-                   (if should-walk?
-                     [:walk this]
-                     [:set-in [:objects (:id this) :state] :idle])]))})
+                      should-walk? (> (u/distance rama-pos (:pos this))
+                                      (* 0.75 k/TILE-WIDTH))
+
+                      dir-to-rama (u/dir-from this rama)]
+                  (if should-walk?
+                    [[:set-in [:objects (:id this) :dir] dir-to-rama]
+                     [:walk this]]
+                    [[:set-in [:objects (:id this) :dir] (:dir rama)]
+                     [:set-in [:objects (:id this) :state] :idle]])))})
 
 (def vishwamitra
   {:id :vishwamitra
@@ -121,19 +123,29 @@
                 (fn [db this arrow _]
                   (let [id (gensym)]
                     [[:remove-object (:id arrow)]
-                     [:set-text {:id id
-                                 :speaker "Rishi Vishwamitra"
+                     [:set-text {:speaker "Rishi Vishwamitra"
                                  :speech "Careful, son!"}]
                      [:after-ms 2000 [:clear-text id]]]))}})
 
 (def tadaka
-  {:type :tadaka
+  {:id :tadaka
+   :type :tadaka
    :pos [(* 4 k/TILE-WIDTH) (* 6 k/TILE-HEIGHT)]
    :width (* k/TILE-WIDTH 1.2)
    :height (* k/TILE-HEIGHT 1.3)
    :state :idle
    :dir :left
-   :curr-frame 0})
+   :curr-frame 0
+   :on-collide {:rama
+                (fn [db this rama dir]
+                  [[:uncollide this rama dir]
+                   [:set-text {:speaker "Tadaka"
+                               :speech "Get off me!"}]
+                   [:after-ms 1000 [:clear-text]]])
+
+                :lakshmana
+                (fn [db this lxmn dir]
+                  [[:uncollide this lxmn dir]])}})
 
 (def hut
   {:type :hut
