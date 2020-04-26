@@ -147,3 +147,21 @@
      (-> db
          (assoc-in [:objects id :state] :walk)
          (assoc-in [:objects id :pos] new-pos)))))
+
+(reg-event-db
+ :retreat
+ (fn [db [_ obj]]
+   (let [id (:id obj)
+         {:keys [dir pos walk-vel]} (-> db :objects id)
+         [x y] pos
+         [dx dy] (or walk-vel k/WALK-VEL)
+         new-pos (case dir
+                   :right [(- x dx) y]
+                   :left [(+ x dx) y]
+                   :down [x (- y dy)]
+                   :up [x (+ y dy)]
+                   ;; else
+                   [x y])]
+     (-> db
+         (assoc-in [:objects id :state] :walk)
+         (assoc-in [:objects id :pos] new-pos)))))

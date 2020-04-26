@@ -131,15 +131,26 @@
   {:id :tadaka
    :type :tadaka
    :pos [(* 4 k/TILE-WIDTH) (* 6 k/TILE-HEIGHT)]
-   :walk-vel (map #(* 1.5 %) k/WALK-VEL)
-   :width (* k/TILE-WIDTH 1.2)
-   :height (* k/TILE-HEIGHT 1.3)
+   :walk-vel (map #(* 0.5 %) k/WALK-VEL)
+   :width (* k/TILE-WIDTH 2)
+   :height (* k/TILE-HEIGHT 2)
    :state :idle
    :dir :left
    :curr-frame 0
    :on-collide {:rama
                 (fn [db this rama dir]
-                  [[:uncollide this rama dir]])
+                  [[:uncollide this rama dir]
+                   [:retreat rama]
+                   [:retreat this]])
+
+                :arrow
+                (fn [db this arrow dir]
+                  [[:remove-object (:id arrow)]
+                   [:retreat this]
+                   [:retreat this]
+                   [:retreat this]
+                   [:set-in [:objects (:id this) :frozen?] true]
+                   [:after-ms 1000 [:set-in [:objects (:id this) :frozen?] false]]])
 
                 :lakshmana
                 (fn [db this lxmn dir]
@@ -158,20 +169,24 @@
                      [:set-in [:objects (:id lxmn) :dir] walk-dir]
                      [:walk lxmn]]))}
    :on-update (fn [db this]
-                (let [rama (-> db :objects :rama)
-                      dist-to-rama (u/distance (-> this u/obj->box u/center)
-                                               (-> rama u/obj->box u/center))
-                      dir-to-rama (u/dir-to this rama)]
-                  [[:set-in [:objects (:id this) :dir] dir-to-rama]
-                   (cond
-                     (> dist-to-rama (/ k/TILE-WIDTH 1.5))
-                     [:walk this]
+                (if (:frozen? this)
+                  [[:set-in [:objects (:id this) :state] :idle]]
+                  (let [rama (-> db :objects :rama)
+                        dist-to-rama (u/distance (-> this u/obj->box u/center)
+                                                 (-> rama u/obj->box u/center))
+                        dir-to-rama (u/dir-to this rama)]
+                    [(if (not= dir-to-rama (:dir this))
+                       [:after-ms 1000 [:set-in [:objects (:id this) :dir] dir-to-rama]]
+                       [:no-op])
+                     (cond
+                       (->> this :width (* 0.5) (> dist-to-rama))
+                       [:walk this]
 
-                     (= :idle (:state rama))
-                     [:set-in [:objects (:id this) :state] :idle]
+                       (= :idle (:state rama))
+                       [:set-in [:objects (:id this) :state] :idle]
 
-                     :else
-                     [:no-op])]))})
+                       :else
+                       [:no-op])])))})
 
 (def hut
   {:type :hut
