@@ -7,10 +7,11 @@
    :pos [0 0]
    :state :idle
    :dir :down
-   :life 50
+   :dist 50
+   :damage 10
    :curr-frame 0
    :on-update (fn [db this]
-                (let [{:keys [id dir pos life]} this
+                (let [{:keys [id dir pos dist]} this
                       [x y] pos
                       [dx dy] k/ARROW-VEL
                       new-pos (case dir
@@ -20,10 +21,10 @@
                                 :down [x (+ y dy)]
                                 ;; else
                                 [x y])]
-                  (if (zero? life)
+                  (if (zero? dist)
                     [[:remove-object id]]
                     [[:set-in [:objects id :pos] new-pos]
-                     [:set-in [:objects id :life] (dec life)]])))})
+                     [:set-in [:objects id :dist] (dec dist)]])))})
 
 (def rama
   {:id :rama
@@ -31,6 +32,8 @@
    :pos [(* 4 k/TILE-WIDTH) (* 7 k/TILE-HEIGHT)]
    :state :idle
    :dir :up
+   :hp 100
+   :life 100
    :inventory {}
    :curr-frame 0
    :on-update (fn [db rama]
@@ -134,6 +137,8 @@
    :walk-vel (map #(* 0.5 %) k/WALK-VEL)
    :width (* k/TILE-WIDTH 2)
    :height (* k/TILE-HEIGHT 2)
+   :hp 500
+   :life 500
    :state :idle
    :dir :left
    :curr-frame 0

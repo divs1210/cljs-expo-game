@@ -113,9 +113,7 @@
                                    (let [[x y w h] (u/obj->box obj)]
                                      (+ y h)))
                                  objects)
-            :let [{:keys [type width height rot
-                          state dir curr-frame]} object
-
+            :let [{:keys [type rot state dir curr-frame]} object
                   [x y width height] (u/obj->box object)]]
         ^{:key id}
         [com/sprite
@@ -128,6 +126,31 @@
                   :width width
                   :height height
                   :rot rot}}])
+
+      ;; render character healths
+      (for [[id object] (->> objects
+                             (filter (fn [[_ obj]]
+                                       (some? (:hp obj))))
+                             (sort-by (fn [[_ obj]]
+                                        (let [[_ y _ h] (u/obj->box obj)]
+                                          (+ y h)))))
+            :let [{:keys [hp life]} object
+                  [x y width _] (u/obj->box object)]]
+        ^{:key id}
+        [com/view
+         {:style {:top y
+                  :left x
+                  :width width
+                  :height 5
+                  :border-width 1
+                  :border-color :black}}
+         [com/view
+          {:style {:top 0
+                   :left 0
+                   :width (* (- width 2)
+                             (/ life hp))
+                   :height 3
+                   :background-color :red}}]])
 
       ;; render collision boxes
       #_(for [[id object] objects
