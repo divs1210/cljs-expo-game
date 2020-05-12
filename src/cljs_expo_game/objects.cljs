@@ -181,19 +181,23 @@
                   (let [rama (-> db :objects :rama)
                         dist-to-rama (u/distance (-> this u/obj->box u/center)
                                                  (-> rama u/obj->box u/center))
+                        rama-in-range? (< dist-to-rama (* 0.5 (:width this)))
                         dir-to-rama (u/dir-to this rama)]
-                    [(if (not= dir-to-rama (:dir this))
-                       [:after-ms 1000 [:set-in [:objects (:id this) :dir] dir-to-rama]]
-                       [:no-op])
-                     (cond
-                       (->> this :width (* 0.5) (> dist-to-rama))
-                       [:walk this]
+                    (cond
+                      (not= dir-to-rama (:dir this))
+                      [[:set-in [:objects (:id this) :state] :idle]
+                       [:after-ms 1000
+                        [:set-in [:objects (:id this) :dir] dir-to-rama]]]
 
-                       (= :idle (:state rama))
-                       [:set-in [:objects (:id this) :state] :idle]
+                      rama-in-range?
+                      [[:set-in [:objects (:id this) :state] :idle]
+                       [:set-in [:objects (:id rama) :life] (- (:life rama) 1)]]
 
-                       :else
-                       [:no-op])])))})
+                      (not rama-in-range?)
+                      [[:walk this]]
+
+                      :else
+                      [[:no-op]]))))})
 
 (def hut
   {:type :hut
