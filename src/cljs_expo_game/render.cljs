@@ -135,12 +135,15 @@
                                         (let [[_ y _ h] (u/obj->box obj)]
                                           (+ y h)))))
             :let [{:keys [hp life]} object
-                  [x y width _] (u/obj->box object)]]
+                  [x y width _] (u/obj->box object)
+                  bar-x (+ x (* 0.2 width))
+                  bar-y (- y 2)
+                  bar-width (* 0.6 width)]]
         ^{:key id}
         [com/view
-         {:style {:top y
-                  :left x
-                  :width width
+         {:style {:top bar-y
+                  :left bar-x
+                  :width bar-width
                   :height 5
                   :border-width 1
                   :border-color :black}}
@@ -148,7 +151,7 @@
           {:style {:top 0
                    :left 0
                    :width (if (pos? life)
-                            (* (- width 2)
+                            (* (- bar-width 2)
                                (/ life hp))
                             0)
                    :height 3
