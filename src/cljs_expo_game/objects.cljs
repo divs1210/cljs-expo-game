@@ -155,7 +155,9 @@
                    [:retreat this]
                    [:retreat this]
                    [:set-in [:objects (:id this) :frozen?] true]
-                   [:after-ms 1000 [:set-in [:objects (:id this) :frozen?] false]]])
+                   [:after-ms 1000 [:set-in [:objects (:id this) :frozen?] false]]
+                   [:set-in [:objects (:id this) :life] (- (:life this)
+                                                           (:damage arrow))]])
 
                 :lakshmana
                 (fn [db this lxmn dir]
