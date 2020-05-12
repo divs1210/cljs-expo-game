@@ -147,8 +147,10 @@
          [com/view
           {:style {:top 0
                    :left 0
-                   :width (* (- width 2)
-                             (/ life hp))
+                   :width (if (pos? life)
+                            (* (- width 2)
+                               (/ life hp))
+                            0)
                    :height 3
                    :background-color :red}}]])
 
