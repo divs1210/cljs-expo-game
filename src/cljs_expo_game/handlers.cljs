@@ -47,6 +47,11 @@
     (assoc-in db path val)))
 
 (reg-event-db
+  :update-in
+  (fn [db [_ path f & args]]
+    (update-in db path #(apply f % args))))
+
+(reg-event-db
  :tick
  (fn [db _]
    (-> db
@@ -165,3 +170,10 @@
      (-> db
          (assoc-in [:objects id :state] :walk)
          (assoc-in [:objects id :pos] new-pos)))))
+
+(reg-event-db
+ :freeze-for
+ (fn [db [_ ms obj]]
+   (let [curr (or (:frozen-for obj) 0)
+         new  (+ curr ms)]
+     (assoc-in db [:objects (:id obj) :frozen-for] new))))

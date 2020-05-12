@@ -142,6 +142,7 @@
    :state :idle
    :dir :left
    :curr-frame 0
+   :frozen-for 0
    :on-collide {:rama
                 (fn [db this rama dir]
                   [[:uncollide this rama dir]
@@ -151,13 +152,10 @@
                 :arrow
                 (fn [db this arrow dir]
                   [[:remove-object (:id arrow)]
-                   [:retreat this]
-                   [:retreat this]
-                   [:retreat this]
-                   [:set-in [:objects (:id this) :frozen?] true]
-                   [:after-ms 1000 [:set-in [:objects (:id this) :frozen?] false]]
                    [:set-in [:objects (:id this) :life] (- (:life this)
-                                                           (:damage arrow))]])
+                                                           (:damage arrow))]
+                   [:retreat this]
+                   [:freeze-for 750 this]])
 
                 :lakshmana
                 (fn [db this lxmn dir]
@@ -176,28 +174,31 @@
                      [:set-in [:objects (:id lxmn) :dir] walk-dir]
                      [:walk lxmn]]))}
    :on-update (fn [db this]
-                (if (:frozen? this)
-                  [[:set-in [:objects (:id this) :state] :idle]]
-                  (let [rama (-> db :objects :rama)
-                        dist-to-rama (u/distance (-> this u/obj->box u/center)
-                                                 (-> rama u/obj->box u/center))
-                        rama-in-range? (< dist-to-rama (* 0.5 (:width this)))
-                        dir-to-rama (u/dir-to this rama)]
-                    (cond
-                      (not= dir-to-rama (:dir this))
-                      [[:set-in [:objects (:id this) :state] :idle]
-                       [:after-ms 1000
-                        [:set-in [:objects (:id this) :dir] dir-to-rama]]]
+                (let [rama (-> db :objects :rama)
+                      dist-to-rama (u/distance (-> this u/obj->box u/center)
+                                               (-> rama u/obj->box u/center))
+                      rama-in-range? (< dist-to-rama (* 0.5 (:width this)))
+                      dir-to-rama (u/dir-to this rama)
+                      frozen-for (:frozen-for this)]
+                  (cond
+                    (pos? frozen-for)
+                    [[:set-in [:objects (:id this) :state] :idle]
+                     [:update-in [:objects (:id this) :frozen-for] - k/TICK-MS]]
 
-                      rama-in-range?
-                      [[:set-in [:objects (:id this) :state] :idle]
-                       [:set-in [:objects (:id rama) :life] (- (:life rama) 1)]]
+                    (not= dir-to-rama (:dir this))
+                    [[:set-in [:objects (:id this) :state] :idle]
+                     [:after-ms 750
+                      [:set-in [:objects (:id this) :dir] dir-to-rama]]]
 
-                      (not rama-in-range?)
-                      [[:walk this]]
+                    rama-in-range?
+                    [[:set-in [:objects (:id this) :state] :idle]
+                     [:set-in [:objects (:id rama) :life] (- (:life rama) 1)]]
 
-                      :else
-                      [[:no-op]]))))})
+                    (not rama-in-range?)
+                    [[:walk this]]
+
+                    :else
+                    [])))})
 
 (def hut
   {:type :hut

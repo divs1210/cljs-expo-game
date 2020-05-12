@@ -31,6 +31,9 @@
 (def ^:const FPS
   (/ 1000 30)) ;; 30 FPS
 
+(def ^:const TICK-MS
+  (/ 1000 FPS))
+
 (def ^:const DPAD-POS
   [(* 0.5 TILE-WIDTH) 0])
 

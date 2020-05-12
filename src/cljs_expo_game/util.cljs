@@ -12,7 +12,7 @@
   (rf/dispatch evt))
 
 (defn dissoc-in
-  [m [k & ks :as keys]]
+  [m [k & ks]]
   (if ks
     (if-let [nextmap (get m k)]
       (let [newmap (dissoc-in nextmap ks)]
