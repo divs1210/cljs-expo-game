@@ -12,7 +12,9 @@
         dpad @(<sub [:controls :dpad])
         arrows @(<sub [:inventory :arrows])
         shoot-btn-state @(<sub [:controls :shoot-btn :state])
-        shoot-btn-color @(<sub [:sprites :shoot-btn shoot-btn-state])]
+        shoot-btn-color @(<sub [:sprites :shoot-btn shoot-btn-state])
+        mantra-btn-state @(<sub [:controls :mantra-btn :state])
+        mantra-btn-color @(<sub [:sprites :mantra-btn mantra-btn-state])]
     [com/view
      {:style {:position :absolute
               :left 0
@@ -45,6 +47,21 @@
                  :left (k/SHOOT-BTN-POS 0)
                  :top (k/SHOOT-BTN-POS 1)}}
         [com/text arrows]])
+
+     ;; mantra
+     [com/view
+      {:style {:justify-content :center
+               :align-items :center
+               :border-radius (* k/FRADIUS 2)
+               :border-width 6
+               :border-color :black
+               :width k/SHOOT-BTN-WIDTH
+               :height k/SHOOT-BTN-HEIGHT
+               :background-color mantra-btn-color
+               :position :absolute
+               :left (k/MANTRA-BTN-POS 0)
+               :top (k/MANTRA-BTN-POS 1)}}
+      [com/text "ॐ"]]
 
      ;; reset
      [com/view
@@ -160,6 +177,38 @@
                             0)
                    :height 3
                    :background-color :red}}]])
+
+      ;; render glow
+      (for [[id object] (->> objects
+                             (filter (fn [[_ obj]]
+                                       (:glow? obj)))
+                             (sort-by (fn [[_ obj]]
+                                        (let [[_ y _ h] (u/obj->box obj)]
+                                          (+ y h)))))
+            :let [[x y w h] (u/obj->box object)
+                  glow-rate (:glow-rate object)
+                  width (* w glow-rate 2)
+                  height (* h glow-rate 2)
+                  x' (+ x
+                        (/ w 2)
+                        (- (/ width 2)))
+                  y' (+ y
+                        (/ h 2)
+                        (- (/ height 2)))]]
+        ^{:key id}
+        [com/view
+         {:style {:justify-content :center
+                  :align-items :center
+                  :border-radius (* k/FRADIUS 2)
+                  :border-width 2
+                  :border-color :orange
+                  :width width
+                  :height height
+                  :background-color :gold
+                  :position :absolute
+                  :opacity glow-rate
+                  :left x'
+                  :top y'}}])
 
       ;; render collision boxes
       #_(for [[id object] objects

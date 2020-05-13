@@ -45,6 +45,16 @@
         (assoc-in db [:controls :shoot-btn :state] :idle)))
     db))
 
+(defn handle-mantra [db]
+  (if (get-in db [:controls :mantra-btn :enabled?])
+    (let [touches (get-touches db)
+          [x y] k/MANTRA-BTN-POS
+          btn-area [x (+ y k/CONTROLS-Y) k/SHOOT-BTN-WIDTH k/SHOOT-BTN-HEIGHT]]
+      (if (some #(u/box-contains? btn-area %) touches)
+        (assoc-in db [:controls :mantra-btn :state] :press)
+        (assoc-in db [:controls :mantra-btn :state] :idle)))
+    db))
+
 (defn register-collisions! [db]
   (u/evt> [:clean-collisions])
   (doseq [obj1 (-> db :objects vals)
@@ -86,6 +96,7 @@
   (-> db
       handle-dpad
       handle-shoot
+      handle-mantra
       register-collisions!
       handle-collisions!))
 

@@ -47,6 +47,10 @@
   [(* (RES 0) 0.5)
    (* (RES 1) 0.09)])
 
+(def ^:const MANTRA-BTN-POS
+  [(* 1.3 (SHOOT-BTN-POS 0))
+   (* 0.4 (SHOOT-BTN-POS 1))])
+
 (def ^:const SHOOT-BTN-WIDTH
   (* FRADIUS 1.2))
 

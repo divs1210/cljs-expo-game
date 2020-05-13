@@ -34,52 +34,70 @@
    :dir :up
    :hp 100
    :life 100
+   :glow? false
+   :glow-rate 0
    :curr-frame 0
-   :on-update (fn [db rama]
-                (let [{:keys [pos dir curr-frame]} rama
+   :on-update (fn [db this]
+                (let [{:keys [pos dir curr-frame]} this
                       shoot-btn-state (-> db :controls :shoot-btn :state)
+                      mantra-btn-state (-> db :controls :mantra-btn :state)
                       {:keys [dpad-state dpad-dir]} (u/with-prefix (-> db :controls :dpad)
                                                       :dpad)
                       arrows (-> db :inventory :arrows)
+                      should-glow? (= :press mantra-btn-state)
                       should-shoot? (and (= :press shoot-btn-state)
                                          (pos? arrows))
                       should-walk? (= :press dpad-state)]
-                  (cond
-                    should-shoot?
-                    (let [shoot-frames-count (-> db :sprites :rama :shoot :up :frames count)
-                          [x y w h] (u/obj->box rama)
-                          aw (case dir
-                               :up (/ h 5)
-                               :down (/ h 5)
-                               :left (/ w 2)
-                               :right (/ w 2))
-                          ah (case dir
-                               :up (/ w 2)
-                               :down (/ w 2)
-                               :left (/ h 5)
-                               :right (/ h 5))
-                          [ax ay] (case dir
-                                    :up [(- (+ x (/ w 2)) (/ aw 2)) (- (+ y (/ h 2)) (/ ah 2))]
-                                    :down [(- (+ x (/ w 2)) (/ aw 2)) (+ y (/ h 2))]
-                                    :left [(- (+ x (/ w 2)) aw) (+ y (/ h 3))]
-                                    :right [(+ x (/ w 2)) (+ y (/ h 3))])
-                          release-arrow? (= (- shoot-frames-count 2)
-                                            curr-frame)]
-                      (if release-arrow?
-                        [[:add-object (assoc arrow
-                                             :pos [ax ay]
-                                             :width aw
-                                             :height ah
-                                             :dir dir)]
-                         [:set-in [:inventory :arrows] (dec arrows)]]
-                        [[:set-in [:objects :rama :state] :shoot]]))
+                  (case [should-glow? (:glow? this)]
+                    [true false]
+                    [[:set-in [:objects :rama :glow?] true]
+                     [:set-in [:objects :rama :glow-rate] 0.1]]
 
-                    should-walk?
-                    [[:set-in [:objects :rama :dir] dpad-dir]
-                     [:walk rama]]
+                    [true true]
+                    (if (< (:glow-rate this) 0.5)
+                      [[:update-in [:objects :rama :glow-rate] + 0.01]]
+                      [])
 
-                    (= :idle dpad-state)
-                    [[:set-in [:objects :rama :state] :idle]])))})
+                    [false true]
+                    [[:set-in [:objects :rama :glow?] false]]
+
+                    ;; default
+                    (cond
+                      should-shoot?
+                      (let [shoot-frames-count (-> db :sprites :rama :shoot :up :frames count)
+                            [x y w h] (u/obj->box this)
+                            aw (case dir
+                                 :up (/ h 5)
+                                 :down (/ h 5)
+                                 :left (/ w 2)
+                                 :right (/ w 2))
+                            ah (case dir
+                                 :up (/ w 2)
+                                 :down (/ w 2)
+                                 :left (/ h 5)
+                                 :right (/ h 5))
+                            [ax ay] (case dir
+                                      :up [(- (+ x (/ w 2)) (/ aw 2)) (- (+ y (/ h 2)) (/ ah 2))]
+                                      :down [(- (+ x (/ w 2)) (/ aw 2)) (+ y (/ h 2))]
+                                      :left [(- (+ x (/ w 2)) aw) (+ y (/ h 3))]
+                                      :right [(+ x (/ w 2)) (+ y (/ h 3))])
+                            release-arrow? (= (- shoot-frames-count 2)
+                                              curr-frame)]
+                        (if release-arrow?
+                          [[:add-object (assoc arrow
+                                               :pos [ax ay]
+                                               :width aw
+                                               :height ah
+                                               :dir dir)]
+                           [:set-in [:inventory :arrows] (dec arrows)]]
+                          [[:set-in [:objects :rama :state] :shoot]]))
+
+                      should-walk?
+                      [[:set-in [:objects :rama :dir] dpad-dir]
+                       [:walk this]]
+
+                      (= :idle dpad-state)
+                      [[:set-in [:objects :rama :state] :idle]]))))})
 
 (def lakshmana
   {:id :lakshmana

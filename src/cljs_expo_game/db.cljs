@@ -59,7 +59,9 @@
                             :left {:frames tiles/dpad-left}
                             :right {:frames tiles/dpad-right}}}
              :shoot-btn {:idle :gold
-                         :press :orange}}
+                         :press :red}
+             :mantra-btn {:idle :orange
+                          :press "#FF7C00"}}
    :objects {:rama (-> o/rama
                        (assoc :pos [60 390]
                               :dir :right))
@@ -76,7 +78,9 @@
    :controls {:dpad {:state :idle
                      :dir :down}
               :shoot-btn {:state :idle
-                          :enabled? true}}
+                          :enabled? true}
+              :mantra-btn {:state :idle
+                           :enabled? true}}
    :world (for [row (range 16)
                 col (range 7)]
             {:pos [row col]
