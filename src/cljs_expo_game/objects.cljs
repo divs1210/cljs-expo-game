@@ -156,24 +156,7 @@
                    [:set-in [:objects (:id this) :life] (- (:life this)
                                                            (:damage arrow))]
                    [:retreat this]
-                   [:freeze-for 750 this]])
-
-                :lakshmana
-                (fn [db this lxmn dir]
-                  (let [rama (-> db :objects :rama)
-                        walk-dir (case dir
-                                   (:top :bottom)
-                                   (if (u/left-of? rama lxmn)
-                                     :left
-                                     :right)
-
-                                   (:left :right)
-                                   (if (u/above? rama lxmn)
-                                     :up
-                                     :down))]
-                    [[:uncollide this lxmn dir]
-                     [:set-in [:objects (:id lxmn) :dir] walk-dir]
-                     [:walk lxmn]]))}
+                   [:freeze-for 750 this]])}
    :on-update (fn [db this]
                 (let [rama (-> db :objects :rama)
                       dist-to-rama (u/distance (-> this u/obj->box u/center)

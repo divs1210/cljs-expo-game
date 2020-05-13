@@ -1,7 +1,6 @@
 (ns cljs-expo-game.engine
   (:require [cljs-expo-game.util :as u]
-            [cljs-expo-game.constants :as k]
-            [cljs-expo-game.objects :as o]))
+            [cljs-expo-game.constants :as k]))
 
 (defn get-touches [db]
   (->> db :fingers vals (map :path) (map last)))
