@@ -70,6 +70,7 @@
                             :pos [(-> k/RES first (- k/TILE-WIDTH)) 350]
                             :dir :left
                             :state :idle)}
+   :inventory {:arrows 10}
    :text nil
    :fingers {}
    :controls {:dpad {:state :idle

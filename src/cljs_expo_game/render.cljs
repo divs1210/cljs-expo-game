@@ -10,6 +10,7 @@
 (defn controls []
   (let [sprites @(<sub [:sprites])
         dpad @(<sub [:controls :dpad])
+        arrows @(<sub [:inventory :arrows])
         shoot-btn-state @(<sub [:controls :shoot-btn :state])
         shoot-btn-color @(<sub [:sprites :shoot-btn shoot-btn-state])]
     [com/view
@@ -28,8 +29,9 @@
                :left (k/DPAD-POS 0)
                :width k/DPAD-WIDTH
                :height k/DPAD-HEIGHT}}]
+
      ;; shoot
-     (when @(<sub [:controls :shoot-btn :enabled?])
+     (when (pos? arrows)
        [com/view
         {:style {:justify-content :center
                  :align-items :center
@@ -41,7 +43,9 @@
                  :background-color shoot-btn-color
                  :position :absolute
                  :left (k/SHOOT-BTN-POS 0)
-                 :top (k/SHOOT-BTN-POS 1)}}])
+                 :top (k/SHOOT-BTN-POS 1)}}
+        [com/text arrows]])
+
      ;; reset
      [com/view
       {:style {:justify-content :center

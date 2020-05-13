@@ -34,14 +34,15 @@
    :dir :up
    :hp 100
    :life 100
-   :inventory {}
    :curr-frame 0
    :on-update (fn [db rama]
                 (let [{:keys [pos dir curr-frame]} rama
                       shoot-btn-state (-> db :controls :shoot-btn :state)
                       {:keys [dpad-state dpad-dir]} (u/with-prefix (-> db :controls :dpad)
-                                                                   :dpad)
-                      should-shoot? (= :press shoot-btn-state)
+                                                      :dpad)
+                      arrows (-> db :inventory :arrows)
+                      should-shoot? (and (= :press shoot-btn-state)
+                                         (pos? arrows))
                       should-walk? (= :press dpad-state)]
                   (cond
                     should-shoot?
@@ -64,14 +65,14 @@
                                     :right [(+ x (/ w 2)) (+ y (/ h 3))])
                           release-arrow? (= (- shoot-frames-count 2)
                                             curr-frame)]
-                      [[:set-in [:objects :rama :state] :shoot]
-                       (if release-arrow?
-                         [:add-object (assoc arrow
+                      (if release-arrow?
+                        [[:add-object (assoc arrow
                                              :pos [ax ay]
                                              :width aw
                                              :height ah
                                              :dir dir)]
-                         [:no-op])])
+                         [:set-in [:inventory :arrows] (dec arrows)]]
+                        [[:set-in [:objects :rama :state] :shoot]]))
 
                     should-walk?
                     [[:set-in [:objects :rama :dir] dpad-dir]
