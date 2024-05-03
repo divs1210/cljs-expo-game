@@ -2,6 +2,8 @@
 
 Re-made using [this](https://github.com/PEZ/rn-rf-shadow) awesome template.
 
+https://gist.github.com/assets/3773773/f8ecbc67-4b04-4468-aa9f-e786d9f64177
+
 ## Installing
 
 This project is ddeveloped on node 20 - use [nvm](https://github.com/nvm-sh/nvm) to install it.
